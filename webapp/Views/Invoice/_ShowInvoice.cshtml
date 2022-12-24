@@ -1,0 +1,140 @@
+﻿
+
+@model  SmartAdminMvc.Models.InvoiceVM
+
+<a class="btn btn-circle default purple-stripe hidden-print" style="width:160px;" onclick="printdiv('Rep');">
+    طباعه <i class="fa fa-print"></i>
+</a>
+
+
+
+<style>
+    .img-container {
+        text-align: center;
+    }
+</style>
+
+<div id="content">
+  
+    <section id="widget-grid" class="">
+       
+        <div class="row">
+           
+            <article id="Rep" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            
+                <div class="jarviswidget well jarviswidget-color-darken" id="wid-id-0" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-colorbutton="false">
+                   <header>
+                        <span class="widget-icon"> <i class="fa fa-barcode"></i> </span>
+                        <h2>Item #44761 </h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <div class="padding-10">
+                                <div class="row">
+                                    <div class="img-container">
+                                        <img src="~/content/img/truelogo.png" width="250" alt="invoice icon">
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <h3 class="font-400" style=" text-align: center; ">الفاتورة</h3>
+                                    </div>
+                                </div>
+
+                                <div class="pull-left">
+                                    <address>
+                                        <br />
+                                        <strong> العميل :  @Model.CustomerName </strong>
+                                        <br />
+                                        <strong> الخصم :  @Model.TotalDiscount</strong>
+                                        <br />
+                                        <strong>  ملاحظات : @Model.Notes</strong>
+                                        <br />
+                                    </address>
+                                </div>
+                                <div class="pull-right">
+                                    <br />
+                                    <strong> رقم الفاتورة :  @Model.ID</strong>
+                                    <br />
+                                    <strong> تاريخ الفاتورة : @Model.DateStr</strong>
+                                    <br />
+                                    <br />
+                                    <div class="well well-sm  bg-color-darken txt-color-white no-border">
+                                        <div class="fa-lg">
+                                            الصافى :
+                                            <span class="pull-right"> @Model.NetAmount EG </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>اسم الصنف</th>
+                                            <th>السعر  </th>
+                                            <th>الكميه  </th>
+                                            <th> الاجمالى </th>
+                                            <th> الخصم </th>
+                                            <th> الصافى </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+                                                <td>@item.ItemName</td>
+                                                <td><a href="javascript:void(0);">@item.Price</a></td>
+                                                <td>@item.Qty</td>
+                                                <td>@item.ItemTotal</td>
+                                                <td>@item.ItemDiscount</td>
+                                                <td class="text-center"><strong>@item.ItemNet</strong></td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>الخدمة </th>
+                                            <th>السعر  </th>
+                                            <th> الاجمالى </th>
+                                            <th> الخصم </th>
+                                            <th> الصافى </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Services)
+                                        {
+                                            <tr>
+                                                <td>@item.ServiceName</td>
+                                                <td><a href="javascript:void(0);">@item.ServicePrice</a></td>
+                                                <td>@item.ServiceTotal</td>
+                                                <td>@item.ServiceDiscount</td>
+                                                <td class="text-center"><strong>@item.ServiceNet</strong></td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                                <div class="invoice-footer">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="invoice-sum-total pull-right">
+                                                <h3><strong>الاجمالي: <span class="text-success">@Model.Total EG</span></strong></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+

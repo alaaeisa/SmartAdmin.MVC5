@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "    بيان صيانة واصلاح ";
+}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <form id="smartform" class="smart-form">
+
+                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
+                            @{Html.RenderPartial("~/Views/Invoice/_Master.cshtml");}
+                            @{Html.RenderPartial("~/Views/Invoice/_Details.cshtml");}
+                            @{Html.RenderPartial("~/Views/Invoice/_ServiceDetails.cshtml");}
+                            @{Html.RenderPartial("~/Views/Invoice/_CalcArea.cshtml");}
+                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+@section pagespecific {
+    @Html.Partial("_INVScript")
+    <script type="text/javascript">
+
+       var saveUrl = '@Url.Action("Create", "Invoice")';
+        var redirectUrl = '@Url.Action("index", "Invoice")';
+
+         $(document).ready(function () {
+            
+             ValidateForm();
+             DrawTable(null);
+             DrawTable_Service(null);
+        });
+    </script>
+}

@@ -1,0 +1,142 @@
+﻿
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <hr /><hr />
+            <div class="row">
+                <label class="label col col-3">رقم المستند<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <input type="text" name="n_document_no" id="n_document_no" value="" readonly>
+                    </label>
+                </section>
+                <label class="label col col-3">المستند  الدفترى<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <input type="text" name="s_book_doc_no" id="s_book_doc_no" value="">
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+                <label class="label col col-3">تاريخ المستند<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <input type="text" class="form-control input-append datepicker" name="d_stock_tacking_date" id="d_stock_tacking_date" value="" readonly>
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+                <label class="label col col-3">العمله<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <select class="form-control select2" id="n_stock_tacking_currency_id" name="n_stock_tacking_currency_id" onchange="loadCoff()" searchid="CURR" cvalue="">
+                        <option value="-1">غير محدد</option>
+                    </select>
+                </section>
+                <div id="CurrencyCoffDiv" hidden>
+                    <label class="label col col-3"> معامل التحويل  <span style="color:red">&nbsp;*</span></label>
+                    <section class="col col-3">
+                        <label class="input">
+                            <input type="text" name="n_currency_coff" id="n_currency_coff" cvalue="">
+                        </label>
+                    </section>
+                </div>
+
+            </div>
+            <div class="row">
+                <label class="label col col-3">مخازن متعددة<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="checkbox">
+                        <input type="checkbox" name="b_using_multi_store" id="b_using_multi_store" >
+                        <i></i>
+                    </label>
+                </section>
+
+                <label class="label col col-3">رقم المخزن  <span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <select class="form-control select2" id="n_store_id" name="n_store_id" >
+                        <option value="-1">غير محدد</option>
+                    </select>
+                </section>
+            </div>
+            <div class="row">
+                <label class="label col col-3">وصف عربى<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <input type="text" name="s_transaction_description" id="s_transaction_description" >
+                    </label>
+                </section>
+                <label class="label col col-3">وصف انجليزى<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <input type="text" name="s_transaction_description_eng" id="s_transaction_description_eng" >
+                    </label>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <hr /><hr />
+            <div class="row">
+                <label class="label col col-2"> مركز  تكلفه  1<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <select class="form-control select2" id="s_cost_center_id" name="s_cost_center_id" searchid="cost" >
+                            <option value="-1">غير محدد</option>
+                        </select>
+                    </label>
+                </section>
+                <label class="label col col-2"> مركز تكلفه  2<span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+
+                    <label class="input">
+
+                        <select class="form-control select2" id="s_cost_center_id2" name="n_acc_dir_id" searchid="cost" >
+                            <option value="-1">غير محدد</option>
+                        </select>
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+
+                <label class="label col col-2">مجموعات الاصناف <span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <select class="form-control select2" id="s_GroupItem_no" name="s_GroupItem_no" searchid="ItemGroup" >
+                            <option value="-1">غير محدد</option>
+                        </select>
+                    </label>
+                </section>
+                <label class="label col col-2">نوع الصنف <span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <select class="form-control select2" id="n_item_type_id" name="n_item_type_id" searchid="ItemType" >
+                            <option value="-1">غير محدد</option>
+                        </select>
+                    </label>
+                </section>
+
+            </div>
+            <div class="row">
+                <label class="label col col-2">  التوجيه  المحاسبى    <span style="color:red">&nbsp;*</span></label>
+                <section class="col col-3">
+                    <label class="input">
+                        <select class="form-control select2" id="n_acc_dir_id" name="n_acc_dir_id" searchid="CustDirection" >
+                            <option value="-1">غير محدد</option>
+                        </select>
+                    </label>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+﻿
+
+@{
+    ViewBag.Title = " بيان صيانة واصلاح ";
+}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+                </header>
+                <div class="glyphicon-align-center ">
+                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "Invoice")" title="">
+                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                        بيان  جديد
+                    </a>
+                </div>
+
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    @{Html.RenderPartial("~/Views/shared/_PrintModal.cshtml");}
+                    <div class="widget-body no-padding">
+                        <div class="custom-scroll table-responsive" style="height:100%; overflow-y: scroll;">
+                            <table id="demoGrid" class="table table-striped table-bordered table-hover" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th data-class="expand">رقم الفاتوره   </th>
+                                        <th data-hide="phone,tablet"> تاريخ  الفاتوره</th>
+                                        <th data-hide="phone,tablet"> العميل  </th>
+                                        <th data-hide="phone,tablet"> السيارة  </th>
+                                        <th data-hide="phone,tablet"> رقم اللوحة  </th>
+                                        <th data-hide="phone,tablet"> الصافى  </th>
+                                        <th data-hide="phone,tablet">   ملاحظات  </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+@section pagespecific {
+    <script type="text/javascript">
+       var formId = "smart-form";
+        var findUrl = "@Url.Action("LoadDataTable", "Invoice")";
+        var DeleteUrl = "@Url.Action("Delete", "Invoice")";
+        var PrintUrl = "@Url.Action("GetBill", "Invoice")";
+        var  EditUrl = "@Url.Action("Edit", "Invoice")";
+            loadcolumns = [
+                { data: "ID" },
+                { data: "DateStr" },
+                { data: "CustomerName" },
+                { data: "CarName" },
+                { data: "PlateNumber" },
+                { data: "NetAmount" },
+                { data: "Notes" },
+                
+        ];
+        loadcolumns.push({
+            title: "الخيارات", render: function (data, type, full, meta) {
+                return DataTableOperation(true, true, full.ID);
+
+            }
+        });
+     
+
+        $(document).ready(function () {
+            FindDataTable(findUrl);
+
+        });
+    </script>
+}

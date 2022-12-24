@@ -1,0 +1,441 @@
+﻿<!--  general -->
+<script type="text/javascript">
+    var NameOfListProp = "InvoiceItems";
+        var TaxValue = @ViewBag.Tax;
+
+    function ValidateForm() {
+            var validator = $("#smartform").validate({
+                rules:
+                    {
+                        Date: {
+                            required: true
+                        },
+                        Invoicetype: {
+                            required: true
+                        },
+                        CustomerId: {
+                            required: true
+                        }
+                    },
+                messages: {
+                    Date: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    Invoicetype: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    CustomerId: {
+                        required: 'الرجاء ادخال قيمه'
+                    }
+                },
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit({
+                        success: function () {
+
+                        }
+                    });
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                },
+                invalidHandler: function (form, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        validator.errorList[0].element.focus();
+                    }
+                }
+            });
+
+
+    }
+    function ValidLogicData() {
+        if (DetailsList.length == 0) {
+            ShowMessage("", "من  فضلك  ادخل العناصر اولا", "red")
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>
+
+<!--  frist  Grid Function  -->
+<script type="text/javascript">
+
+       function LoadItemData() {
+        var ModelId = $("#ModelId").val();
+        if (ModelId == -1) {
+            return;
+        }
+
+        $("#ItemID").empty();
+        $.ajax({
+            url: '@Url.Action("GetItemData", "Items")',
+            dataType: "json",
+            data: { "ModelId": ModelId },
+            type: "Post",
+            success: function (data) {
+                var opt = new Option('اختر الصنف', '-1');
+                $("#ItemID").append(opt);
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i].Name, data[i].ID);
+                    $("#ItemID").append(opt);
+                }
+            }
+        });
+    }
+
+     function GetItemPrice() {
+        var ItemID = $("#ItemID").val();
+
+        if (ItemID == -1) {
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("GetItemPrice", "Items")',
+            dataType: "json",
+            data: { "ItemID": ItemID },
+            type: "Post",
+            success: function (data) {
+                var res = data;
+                $("#Price").val(res);
+                Checkbalance(ItemID);
+            },
+            error: function (err) {
+              
+            }
+        });
+    }
+
+   
+    function CalcAfterAddDelete() {
+       
+        var Total = 0;
+        var TotalItemDiscount = 0;
+        var NetAmount = 0;
+
+        DetailsList.forEach(function (item) {
+            Total += parseFloat(item.ItemTotal);
+            TotalItemDiscount += parseFloat(item.ItemDiscount);
+            NetAmount += parseFloat(item.ItemNet);
+
+        });
+       
+        DetailsList_Service.forEach(function (ServiceObj) {
+           
+            Total += parseFloat(ServiceObj.ServicePrice);
+            TotalItemDiscount += parseFloat(ServiceObj.ServiceDiscount);
+            NetAmount += parseFloat(ServiceObj.ServiceNet);
+
+        });
+
+        $('#TotalDiscount').val(TotalItemDiscount);//  اجمالى قيمه  الفتوره
+        $('#Total').val(Total);//  اجمالى قيمه  الفتوره
+        $('#NetAmount').val(NetAmount);
+    }
+    function CalcInvoiceDiscount() {
+       
+        var OldTotalDiscount = parseFloat($('#TotalDiscount').val());
+        var NewTotalDiscount = OldTotalDiscount + parseFloat($('#InvoiceDiscount').val());
+
+        var OldNetAmount = $('#NetAmount').val();
+        if (NewTotalDiscount > OldNetAmount) {
+            $('#InvoiceDiscount').val('0');
+            ShowMessage("", "لايمكن  اضافه  خصم اكبر من صافى الفاتورة ....   ", "red")
+            return;
+
+        }
+        
+        var Total = $('#Total').val();
+        $('#TotalDiscount').val(NewTotalDiscount);
+        var NewNetAmount = parseFloat(Total) - parseFloat(NewTotalDiscount);
+        $('#NetAmount').val(NewNetAmount);
+        CalcRemainingAmount();
+    }
+    function CalcRemainingAmount()
+    {
+        var NetAmount = parseFloat($('#NetAmount').val());
+
+        var PaidAmount = parseFloat($('#PaidAmount').val());
+        var RemainingAmount = NetAmount - PaidAmount;
+        $('#RemainingAmount').val(RemainingAmount);
+    }
+
+</script>
+
+<!--  frist Grid Draw -->
+<script type="text/javascript">
+    var DetailsList = [];
+    var valid = true;
+
+    var columns = [
+        { data: "SerialNo" },
+        { data: "ItemID" },
+        { data: "ItemName" },
+        { data: "Qty" },
+        { data: "Price" },
+        { data: "ItemTotal" },
+        { data: "ItemDiscount" },
+        { data: "ItemNet" },
+
+    ];
+    function validationItemData() {
+        var done = true;
+        if ($('#ItemID').val() == "-1" || $('#ItemID').val() == null  || $('#Qty').val() == "" || $('#Price').val() == "") {
+            ShowMessage("", "ادخل بيانات العنصر كامله ", "red")
+            done = false;
+        }
+        return done;
+    }
+
+    function RowDoublClick(_row) {
+        selectedrow = MyTable.row($(_row).parents('tr')).data();
+        var ItemID = parseFloat(selectedrow.ItemID);
+        var Qty = parseFloat(selectedrow.Qty);
+        var Price = parseFloat(selectedrow.Price);
+        var ItemDiscount = parseFloat(selectedrow.ItemDiscount);
+        $('#ItemDiscount').val(ItemDiscount);
+        $('#ItemID').val(ItemID).trigger('change');
+        $('#Qty').val(Qty);
+        $('#Price').val(Price);
+        editRow = parseFloat(selectedrow.SerialNo) - 1;
+        editMode = true;
+    }
+    function AddItem() {
+        debugger;
+        if (!valid) {
+            ShowMessage("", "لايمكن  اضافه  العنصر .... خطا  بالرصيد", "red")
+            return;
+        }
+        if (!validationItemData()) {
+            return;
+        }
+
+        var nLineNo = editMode ? editRow : DetailsList.length;
+
+        var Total = parseFloat($('#Qty').val()) * parseFloat($('#Price').val());
+        var Discount = $('#ItemDiscount').val();
+        var ItemNet = Total - Discount;
+
+        object = {
+            SerialNo: nLineNo + 1,
+            ItemID: $('#ItemID').val(),
+            ItemName: $("#ItemID option:selected").text(),
+            Qty: parseFloat($('#Qty').val()),
+            Price: parseFloat($('#Price').val()),
+            ItemDiscount: Discount,
+            ItemNet: ItemNet,
+            ItemTotal: Total,
+        };
+        if (DetailsList) {
+            if (editMode) {
+                DetailsList[editRow] = object;
+            }
+            else {
+                DetailsList.push(object);
+            }
+        }
+        AddToTable();
+
+    }
+    function AfterDeleteItem() {
+        CalcAfterAddDelete();
+        CalcInvoiceDiscount();
+
+      
+    }
+    function AfterAddItem() {
+        CalcAfterAddDelete();
+        CalcInvoiceDiscount();
+      
+    }
+
+
+
+    function clearcontrol() {
+        $('#ItemID').val(-1).trigger('change');
+        $('#Qty').val('1');
+        $('#Price').val(' ');
+        $('#ItemDiscount').val('0');
+        editMode = false;
+    }
+</script>
+
+<!--  general -->
+<script type="text/javascript">
+
+    var DetailsList_Service = [];
+    var valid_Service = true;
+
+    var columns_Service = [
+        { data: "SerialNo" },
+        { data: "ServiceName" },
+        { data: "ServicePrice" },
+        { data: "ServiceDiscount" },
+        { data: "ServiceNet" },
+
+    ];
+    function validationData_Service() {
+        var done = true;
+        if ($('#ServiceName').val() == null || $('#ServiceName').val() == "" || $('#ServicePrice').val() == "") {
+            ShowMessage("", "ادخل بيانات الخدمة كامله ", "red")
+            done = false;
+        }
+        return done;
+    }
+
+    function RowDoublClick_Service(_row) {
+       
+        selectedrow = MyTable_Service.row($(_row).parents('tr')).data();
+  
+        var ServiceName = selectedrow.ServiceName;
+        $('#ServiceName').val(ServiceName);
+
+        var ServicePrice = parseFloat(selectedrow.ServicePrice);
+        $('#ServicePrice').val(ServicePrice);
+
+        var ServiceDiscount = parseFloat(selectedrow.ServiceDiscount);
+        $('#ServiceDiscount').val(ServiceDiscount);
+       
+        editRow_Service = parseFloat(selectedrow.SerialNo) - 1;
+        editMode_Service = true;
+    }
+    function AddService() {
+       
+       
+        if (!validationData_Service()) {
+            return;
+        }
+
+        var nLineNo = editMode_Service ? editRow_Service : DetailsList_Service.length;
+
+        var ServicePrice = parseFloat($('#ServicePrice').val());
+        var ServiceDiscount = $('#ServiceDiscount').val();
+        var ServiceNet = ServicePrice - ServiceDiscount;
+     
+        object_Service = {
+            SerialNo: nLineNo + 1,
+            ServiceName: $('#ServiceName').val(),
+            ServicePrice: parseFloat($('#ServicePrice').val()),
+            ServiceDiscount: ServiceDiscount,
+            ServiceNet: ServiceNet,
+        };
+        if (DetailsList_Service) {
+            if (editMode_Service) {
+                DetailsList_Service[editRow_Service] = object_Service;
+            }
+            else {
+                DetailsList_Service.push(object_Service);
+            }
+        }
+        AddToTable_Service();
+
+    }
+    function AfterDelete_Service() {
+        CalcAfterAddDelete();
+        CalcInvoiceDiscount();
+
+    }
+    function AfterAdd_Service() {
+        CalcAfterAddDelete();
+        CalcInvoiceDiscount();
+
+    }
+
+
+
+    function clearcontrol_Service() {
+
+        $('#ServiceDiscount').val('0');
+        $('#ServiceName').val('');
+        $('#ServicePrice').val('0');
+        editMode_Service = false;
+    }
+</script>
+
+<script type="text/javascript">
+   
+    var DetailsList_Service = [];
+    var editMode_Service = false;
+    var object_Service = {};
+    var MyTable_Service;
+    function DrawTable_Service(data) {
+
+        columns_Service.push({
+            title: "الاجراءت", render: function (data, type, full, meta) {
+                var btn = '<a href="#" onclick="RowDoublClick_Service(this);return false;"><span class="glyphicon glyphicon-pencil" title="تعديل"></span></a>';
+                btn += '   <a href="#" onclick="Delete_Service(' + full.SerialNo + ',this);return false;"><span class="glyphicon glyphicon-trash" title="حذف"></span></a>';
+                return btn;
+            }
+        });
+        var responsiveHelper_ServiceTable = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone: 480
+        };
+        var arr;
+        if (data == null) {
+            arr = null;
+        }
+        else {
+            arr = data;
+        }
+        MyTable_Service = $('#ServiceTable').DataTable({
+            bDestroy: true,
+            data: arr,
+            language: {
+                url: languageJsonUrl
+            },
+            columns: columns_Service,
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'T>r>" +
+                "t" +
+                "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oTableTools": {
+                "aButtons": "",
+                "sSwfPath": "" + "/Scripts/plugin/datatables/swf/copy_csv_xls_pdf.swf"
+            },
+            "autoWidth": true,
+            "filter": false,
+            "preDrawCallback": function () {
+                if (!responsiveHelper_ServiceTable) {
+                    responsiveHelper_ServiceTable = new ResponsiveDatatablesHelper($('#ServiceTable'), breakpointDefinition);
+                }
+            },
+            "rowCallback": function (nRow) {
+                responsiveHelper_ServiceTable.createExpandIcon(nRow);
+            },
+            "drawCallback": function (oSettings) {
+                responsiveHelper_ServiceTable.respond();
+            }
+        });
+        $('#ServiceTable tbody').on('dblclick', 'tr', function () {
+            RowDoublClick_Service(this);
+        });
+    }
+
+    function AddToTable_Service() {
+        if (MyTable_Service) {
+            if (editMode_Service) {
+                MyTable_Service.clear();
+                MyTable_Service.rows.add(DetailsList__Service);
+                MyTable_Service.draw();
+            }
+            else {
+
+                MyTable_Service.row.add(object_Service).draw();
+            }
+        }
+        AfterAdd_Service();
+        clearcontrol_Service();
+    }
+
+   
+    function AfterDelete_Service() { }
+    function Delete_Service(index, t) {
+        
+        DetailsList_Service = DetailsList_Service.filter(function (_obj) { return _obj.SerialNo != index });
+        MyTable_Service.row($(t).parents('tr')).remove().draw(false);
+        AfterDelete_Service();
+
+    }
+</script>

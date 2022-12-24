@@ -1,0 +1,513 @@
+﻿@*<div id="content">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="well">
+
+                    <table class="table table-striped table-forum">
+                        <thead>
+                            <tr>
+                                <th colspan="2">تقارير</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" style="width: 40px;"><i class="fa fa-user fa-2x text-muted"></i></td>
+                                <td>
+                                    <h4>
+                                        <a href="@Url.Action("printSalesReport", "Reports")">
+                                            تقرير المبيعات
+                                        </a>
+                                        <small>عرض  كافه  المبيعات </small>
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 40px;"><i class="fa fa-user fa-2x text-muted"></i></td>
+                                <td>
+                                    <h4>
+                                        <a href="@Url.Action("printPurchaseReport", "Reports")">
+                                            تقارير المشتريات
+                                        </a>
+                                        <small>التقارير الخاصه  بالمشتريات  </small>
+                                    </h4>
+                                </td>
+                            </tr>
+
+
+
+                            <tr>
+                                <td class="text-center" style="width: 40px;"><i class="fa fa-user fa-2x text-muted"></i></td>
+                                <td>
+                                    <h4>
+                                        <a href="@Url.Action("printItemsReport", "Reports")">
+                                            تقارير الاصناف
+                                        </a>
+                                        <small>التقارير الخاصه  بالاصناف   </small>
+                                    </h4>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="text-center" style="width: 40px;"><i class="fa fa-user fa-2x text-muted"></i></td>
+                                <td>
+                                    <h4>
+                                        <a href="@Url.Action("printItemsQTyReport", "Reports")">
+                                            تقارير كميات الاصناف
+                                        </a>
+                                        <small>التقارير الخاصه  بكميات  الاصناف   </small>
+                                    </h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+<article class="col-sm-12 col-md-12 col-lg-12">
+    <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-10" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+        <header>
+            <span class="widget-icon"> <i class="fa fa-list-alt"></i> </span>
+            <h2> تقارير  </h2>
+        </header>
+        <div>
+            <div class="jarviswidget-editbox">
+            </div>
+            <div class="widget-body no-padding">
+
+                <div class="panel-group smart-accordion-default" id="accordion-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#One-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>تقارير  المبيعات</a></h4>
+                        </div>
+                        <div id="One-1" class="panel-collapse collapse ">
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate" id="FromDate" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData" id="ToData" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  العميل<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("CustomerId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "CustomerId" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintSaleREP();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#Two-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>  تقارير المشتريات </a></h4>
+                        </div>
+                        <div id="Two-1" class="panel-collapse collapse">
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate" id="FromDate" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData" id="ToData" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  المورد<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("SupplierID", null, "", htmlAttributes: new { @class = "form-control select2", @id = "SupplierID" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintPurchaseRep();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#Three-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>  تقارير مرتد المبيعات </a></h4>
+                        </div>
+                        <div id="Three-1" class="panel-collapse collapse">
+
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate_SR" id="FromDate_SR" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData_SR" id="ToData_SR" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  العميل<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("CustomerId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "CustomerId" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintRetuenSaleREP();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#four-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>  تقارير مرتد المشتريات </a></h4>
+                        </div>
+                        <div id="four-1" class="panel-collapse collapse">
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate_PR" id="FromDate_PR" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData_PR" id="ToData_PR" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  المورد<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("SupplierID", null, "", htmlAttributes: new { @class = "form-control select2", @id = "SupplierID" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintReturnPurchaseRep();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#five-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i>   تقارير الاصناف    </a></h4>
+                        </div>
+                        <div id="five-1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-3">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate_PR" id="FromDate_PR" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData_PR" id="ToData_PR" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+
+                                            <label>  الصنف<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("Items", null, "", htmlAttributes: new { @class = "form-control select2", @id = "Items" })
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+
+                                            <label>  الوحدة<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("Units", null, "", htmlAttributes: new { @class = "form-control select2", @id = "Units" })
+                                            </label>
+                                        </section>
+                                    </div>
+
+
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintItemsRep();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#cust-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> كشف حساب عميل</a></h4>
+                        </div>
+                        <div id="cust-1" class="panel-collapse collapse ">
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate" id="FromDate" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData" id="ToData" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  العميل<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("CustomerId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "CustomerId" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintCustRep();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#seven-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> كشف حساب مورد </a></h4>
+                        </div>
+                        <div id="seven-1" class="panel-collapse collapse">
+                            <div class="panel-body">
+
+                                <form class="smart-form">
+                                    <div class="row">
+
+
+
+                                        <section class="col col-4">
+                                            <label> من تارخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="FromDate" id="FromDate" value="2000/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+                                            <label> الى تاريخ<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                <input type="text" class="form-control input-append datepicker" name="ToData" id="ToData" value="2050/01/01">
+
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-4">
+
+                                            <label>  المورد<span style="color:red">&nbsp;</span></label>
+                                            <label class="input">
+                                                @Html.DropDownList("SupplierID", null, "", htmlAttributes: new { @class = "form-control select2", @id = "SupplierID" })
+                                            </label>
+                                        </section>
+                                    </div>
+                                </form>
+                                <div class="glyphicon-align-center ">
+                                    <a class="btn  btn-labeled btn-success " onclick="PrintSuppRep();">
+                                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                                        طباعة
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</article>
+@section pagespecific {
+    <script type="text/javascript">
+       var formId = "smart-form";
+        var findUrl = "@Url.Action("LoadDataTable", "Sales")";
+        function PrintItemsRep() {
+
+             debugger;
+            var _ToData = $("#ToData").val();
+            var _FromDate = $("#FromDate").val();
+            var _ItemId = $("#Items").val();
+            var _UnitId = $("#Units").val();
+            var _url = '@Url.Action("PrintItemsRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&ItemId='+_ItemId +'&UnitId='+_UnitId;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        }
+        function PrintCustRep() {
+             debugger;
+            var _ToData = $("#ToData").val();
+            var _FromDate = $("#FromDate").val();
+            var _CustomerId = $("#CustomerId").val();
+            var _url = '@Url.Action("PrintCustRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&CustomerId='+_CustomerId;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+
+        }
+          
+        function PrintSaleREP() {
+            debugger;
+            var _ToData = $("#ToData").val();
+            var _FromDate = $("#FromDate").val();
+            var _CustomerId = $("#CustomerId").val();
+            var _url = '@Url.Action("PrintSalesRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&CustomerId='+_CustomerId;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        
+        };
+
+
+          function PrintRetuenSaleREP() {
+            debugger;
+            var _ToData = $("#ToData_SR").val();
+            var _FromDate = $("#FromDate_SR").val();
+            var _CustomerId = $("#CustomerId").val();
+            var _url = '@Url.Action("PrintRetuenSaleREP", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&CustomerId='+_CustomerId;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        
+        };
+        function PrintSuppRep() {
+             debugger;
+            var _ToData = $("#ToData").val();
+            var _FromDate = $("#FromDate").val();
+            var _SupplierID = $("#SupplierID").val();
+            var _url = '@Url.Action("PrintSuppRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&SupplierID='+_SupplierID;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        }
+           function PrintPurchaseRep() {
+            debugger;
+            var _ToData = $("#ToData").val();
+            var _FromDate = $("#FromDate").val();
+            var _SupplierID = $("#SupplierID").val();
+            var _url = '@Url.Action("PrintPurchaseRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&SupplierID='+_SupplierID;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        
+        };
+        
+             function PrintReturnPurchaseRep() {
+            debugger;
+            var _ToData = $("#ToData_PR").val();
+            var _FromDate = $("#FromDate_PR").val();
+            var _SupplierID = $("#SupplierID").val();
+            var _url = '@Url.Action("PrintReturnPurchaseRep", "reports")?FromDate=' + _FromDate + '&ToData='+ _ToData +'&SupplierID='+_SupplierID;
+            console.log(_url);
+            window.open(_url, '_blank').focus();
+        
+        };
+        
+        $(document).ready(function () {
+            FindDataTable(findUrl);
+
+        });
+    </script>
+}

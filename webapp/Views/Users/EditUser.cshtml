@@ -1,0 +1,242 @@
+﻿@model SmartAdminMvc.Models.User
+
+@{
+    ViewBag.Title = "  المستخدمين   ";
+}
+
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <form action="" id="smartform" class="smart-form">
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label "> كود المستخدم     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            <input type="text" name="UserId" id="UserId" value="@Model.UserId" readonly>
+                                        </label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label ">اسم المستخدم     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            <input type="text" name="UserName" id="UserName" value="@Model.UserName">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label class="label "> كلمه المرور     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            <input type="text" name="PassWord" id="PassWord" value="@Model.PassWord">
+                                        </label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label"> المخزن <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            @Html.DropDownList("StoreId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "ModelId", @onchange = "" })
+                                        </label>
+                                    </section>
+
+
+                                </div>
+                            </fieldset>
+                            <footer>
+                                <button type="button" onclick="SaveData();" class="btn btn-lg btn-info waves-effect waves-themed">
+                                    <span class="fa fa-save"></span>
+                                    حفظ البيانات
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+@section pagespecific {
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadDropDown();
+            ValidateForm();
+         //   SetDocNo();
+            //  DrawTableinstalition(null);
+        });
+        function ValidateForm() {
+
+            var validator = $("#smartform").validate({
+
+                // Rules for form validation
+                rules:
+                    {
+
+                        UserID: {
+                            required: true
+                        },
+                        UserName: {
+                            required: true
+                        },
+                        UserPass: {
+                            required: true
+                        }
+
+
+                    },
+
+                // Messages for form validation
+                messages: {
+                    UserID: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    UserName: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    UserPass: {
+                        required: 'الرجاء ادخال قيمه'
+                    }
+
+                },
+
+                // Ajax form submition
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit({
+                        success: function () {
+                            $("#smartform").addClass('submited');
+
+                            SaveJournal();
+                        }
+                    });
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                },
+                invalidHandler: function (form, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        validator.errorList[0].element.focus();
+                    }
+                }
+            });
+
+
+        }
+
+
+
+
+             function loadDropDown() {
+            debugger;
+            $.ajax({
+                url: "@Url.Action("GetData", "Users")",
+                  //  "Sales/GetData",
+                datatype: "JSON",
+                type: "Get",
+                success: function (data) {
+
+                    for (var i = 0; i < data.length; i++) {
+                        var opt = new Option(data[i].CompanyName );
+                        opt.value = data[i].CompanyID;
+                        $("#UserCompID").append(opt);
+                    }
+                }
+            });
+
+        }
+
+
+    function Saved() {
+
+
+
+        $.smallBox({
+            title: "تم بنجاح",
+            content: "تم حفظ الصنف  بنجاح .......",
+            color: "Green",
+            iconSmall: "fa fa-cloud",
+            timeout: 5000
+
+        });
+
+    }
+
+    function SaveData() {
+        debugger;
+
+
+        if (!($("#smartform").valid())) {
+            return;
+        }
+
+        var master = {
+            UserID: $('#UserID').val(),
+            UserName: $('#UserName').val(),
+            PassWord: $('#PassWord').val(),
+            StoreId: $('#StoreId').val(),
+
+
+
+        };
+
+        $('#click').prop("disabled", true);
+
+        $.ajax({
+            type: 'POST',
+
+            url: '@Url.Action("UpdateUser", "Users")',
+            dataType: 'json',
+            data: { master: JSON.stringify(master) },
+            success: function (data) {
+
+
+                if (data !== "Fail") {
+                    debugger;
+                    Saved();
+                    setTimeout(function () {
+                        (window.location.href = data)
+                    }, 500);
+
+                } else {
+                    $("#click").prop('disabled', false);
+                    // Failed();
+                }
+            },
+
+            error: function (ex) {
+
+                loadNotfy('SaveError', "3");
+                setTimeout(function () {
+                    $('#showimage').addClass('hide');
+                    $("#clicked").prop('disabled', false);
+                }, 3000);
+            }
+
+        });
+
+
+
+    }
+
+      @*function SetDocNo() {
+            debugger;
+            var x =@ViewBag.UserID;
+            //$("#n_currency_coff").val(1);
+          $("#UserID").val(x);
+        }*@
+
+
+
+
+
+    </script>
+}

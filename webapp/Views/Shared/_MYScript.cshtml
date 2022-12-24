@@ -1,0 +1,141 @@
+﻿<!-------------------HTML------------------->
+    <div id="notification" style="display: none;">
+        <span class="dismiss"><a title="dismiss this notification">x</a></span>
+    </div>
+
+<!-----------------end HTML----------------->
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        ToggleRTL();
+
+    
+
+    });
+
+
+
+
+    function ToggleRTL() {
+        //debugger;
+        //var maincss = $('#maincss');
+        //var bscss = $('#bscss');
+        //    maincss.attr('href', '/Content/app/css/app-rtl.css' );
+        //    bscss.attr('href',  '/Content/app/css/bootstrap-rtl.css');
+    }
+    function ToggleBtnSave() {
+        var disabled = $('#btnSave').prop('disabled');
+        if (disabled) { $('#btnSave').attr('disabled', false); }
+        else { $('#btnSave').attr('disabled', true); }
+    }
+    function SerializeFormData() {
+        debugger;
+        data = {};
+        $('form input,select').each(function () {
+            if ($(this).attr('type') == 'checkbox') { data[$(this).attr('name')] = $(this).is(':checked'); }
+            else {data[$(this).attr('name')] = $(this).val();}
+            
+        });
+        return data;
+    }
+    function SaveFormData() {
+        ToggleBtnSave();
+        debugger;
+        var FormDataObj = SerializeFormData();
+        $.ajax({
+            url: saveUrl,
+            data: FormDataObj,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                    debugger;
+                ToggleBtnSave();
+                if (data.Status == true) {
+                    NotificationMessage(data);
+                    setTimeout(function () { (window.location.href = redirectUrl) }, 3000);
+                }
+                else {
+                    NotificationMessage(data);
+                }
+            },
+            error: function (ex) {
+                ToggleBtnSave();
+            }
+        });
+
+
+
+    }
+
+    function NotificationMessage(data) {
+
+        $("#notification").fadeIn("slow").append('your message');
+$(".dismiss").click(function(){
+       $("#notification").fadeOut("slow");
+});
+       // $.notify({ 'type': 'success', 'color': "Green", 'message': '<strong>Success..........</strong> ' + data.Message + '!', 'progress': 25 });
+    }
+
+
+    function ShowMessage(title, message) {
+        $.notify({ 'type': 'success', 'color': "Green", 'message': '<strong>' + title + '</strong> ' + message + '!', 'progress': 25 });
+    }
+
+    // #region DataTables
+
+    function DrawTable(TableId, data, columns) {
+        $('#' + TableId + '').DataTable({
+            'paging': true,
+            'ordering': true,
+            'info': true,
+            bDestroy: true,
+            "language": { "search": "", "searchPlaceholder": "Search...", "lengthMenu": " _MENU_ " },
+            data: data,
+            aoColumns: columns
+        });
+        $('#' + TableId + '').on('dblclick','tr',function () {
+
+            RowDblClick(this);
+        });
+    }
+
+
+
+    function DataTableBasicActions(id) {
+        var actions = '';
+        actions += '<a href="' + editUrl + '/' + id + '"> <i class="fa fa-edit text-primary"></i></a>';
+        actions += ' <a href="' + deleteUrl + '/' + id + '"><i class="fa fa-trash text-danger"></i></a>';
+        return actions;
+    }
+
+
+    function DrawTable_Server(TableId, Url, Columns) {
+        $('#' + TableId + '').DataTable({
+            'ajax': {
+                'url': Url,
+                'type': 'Post',
+                'dataType': 'json'
+            },
+            'columns': Columns,
+            'serverSide': true,
+            'processing': true,
+            'order': [0, 'asc'],
+            'language': {
+                'processing': 'please wait...!',
+            }
+        });
+        $('#' + TableId + '').on('dblclick','tr',function () {
+            RowDblClick(this);
+        });
+    }
+
+    //search
+    $("table thead th input[type=text]").on('keyup change', function () {
+        var index = $(this).parent().index();
+        var val = this.value;
+        setTimeout(function () { $('table').DataTable().column(index).search(val).draw(); }, 500);
+    });
+
+    // #endregion
+
+</script>

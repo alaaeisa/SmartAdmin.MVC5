@@ -1,0 +1,89 @@
+﻿
+
+@{
+    ViewBag.Title = " الموديلات  ";
+}
+
+
+
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+                </header>
+
+             
+                <div class="glyphicon-align-center ">
+                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "CarModels")" title="">
+                        <span class="btn-label"><i class="fa fa-money"></i></span>
+                        انشاء  جديد
+                    </a>
+                </div>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+
+
+                        <div class="custom-scroll table-responsive" style="height:100%; overflow-y: scroll;">
+
+                            <table id="demoGrid" class="table table-striped table-bordered table-hover" width="100%">
+                                <thead>
+                                    <tr>
+
+                                        <th  data-hide="phone,tablet">الرقم     </th>
+                                        <th data-class="expand"> الاسم  </th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+
+    <!-- end row -->
+    <!-- end row -->
+
+</section>
+
+
+
+@section pagespecific {
+
+    <script type="text/javascript">
+       var formId = "smart-form";
+        var findUrl = "@Url.Action("LoadDataTable", "CarModels")";
+          var  EditUrl = "@Url.Action("Edit", "CarModels")";
+            loadcolumns = [
+                { data: "ID" },
+                { data: "Name" },
+        ];
+                  loadcolumns.push({
+            title: "الخيارات", render: function (data, type, full, meta) {
+                          return DataTableOperation(false, false, full.ID);
+
+            }
+        });
+        $(document).ready(function () {
+            FindDataTable(findUrl);
+
+        });
+    </script>
+}

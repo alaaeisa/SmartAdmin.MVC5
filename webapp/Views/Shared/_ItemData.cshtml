@@ -1,0 +1,43 @@
+﻿<fieldset>
+    <div class="row">
+
+        <section class="col col-3">
+            <label class="label ">الصنف<span style="color:red">&nbsp;*</span></label>
+            <select class="form-control select2" id="ItemID" name="ItemID" onchange="GetItemUnit()">
+                <option value="-1">اختر الصنف</option>
+            </select>
+        </section>
+        <section class="col col-2">
+            <label class="label ">الوحدة<span style="color:red">&nbsp;*</span></label>
+            <select class="form-control select2" id="nUnitID" name="nUnitID" onchange="GetItemPrice()">
+                <option value="-1">اختر الوحده </option>
+            </select>
+        </section>
+        <section class="col col-2">
+            <label class="label">الكميه <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="number" name="Qty" id="Qty" value="1" min="0" onchange="CheckQty()">
+            </label>
+        </section>
+        <section class="col col-2">
+            <label class="label ">السعر <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="number" name="Price" id="Price" min="0"disabled>
+            </label>
+        </section>
+
+        <section class="col col-1">
+            <label class="label">الخصم </label>
+            <label class="input">
+                <input type="number" name="ItemDiscount" id="ItemDiscount" min="0" value="0" onchange="CalcItemNet()">
+            </label>
+        </section>
+
+        <footer>
+            <button type="button" onclick="Addpart();" class="btn btn-lg btn-info waves-effect waves-themed">
+                <span class="fa fa-download"></span>
+                إضافة 
+            </button>
+        </footer>
+        </div>
+</fieldset>

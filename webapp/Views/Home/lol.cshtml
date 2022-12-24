@@ -1,0 +1,399 @@
+﻿@{
+    ViewBag.Title = "جرد مخزنى";
+}
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+
+        <!-- NEW COL START -->
+        <article class="col-sm-12 col-md-12 col-lg-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+
+                        <form action="" id="smart-form" class="smart-form">
+
+
+
+                            @{Html.RenderPartial("~/Views/Home/_Master.cshtml");}
+                            @{Html.RenderPartial("~/Views/Home/_Details.cshtml");}
+
+                            @*@{Html.RenderPartial("~/Views/shared/_AddUpdateControl.cshtml");}*@
+
+
+                        </form>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+
+    <!-- end row -->
+    <!-- end row -->
+
+</section>
+@section pagespecific {
+
+    <script type="text/javascript">
+        var formId = "smart-form";
+        var addUrl = "@Url.Action("CreateStockTaking", "StockTaking")";
+        var editUrl = "@Url.Action("CreateStockTaking", "StockTaking")";
+        var deleteUrl = "@Url.Action("CreateStockTaking", "StockTaking")";
+        var findUrl = "@Url.Action("CreateStockTaking", "StockTaking")";
+        var detailsListName = "";
+        var detailsinstallname = "StockRow";
+
+        var instaliationDetails = [];
+        var details = [];
+        var hasBusinessValidation = true;
+        var validBusiness = function () {
+            var valid = true;
+            return valid;
+        }
+
+
+
+
+        function ValidateForm() {
+
+            var validator = $("#smart-form").validate({
+
+                // Rules for form validation
+                rules:
+                {
+
+                    n_document_no: {
+                        required: true
+                    },
+                    d_stock_tacking_date: {
+                        required: true
+                    },
+                    n_store_id: {
+                        required: true
+                    }
+
+
+                },
+
+                // Messages for form validation
+                messages: {
+                    n_document_no: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    d_stock_tacking_date: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    n_store_id: {
+                        required: 'الرجاء ادخال قيمه'
+                    }
+
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                },
+                invalidHandler: function (form, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        validator.errorList[0].element.focus();
+                    }
+                }
+            });
+
+
+        }
+        ///////////////////////////////////////////////////////////////////////
+        var instaliationDetails = [];
+        var editModeforInstall = false;
+        var installobject = {};
+
+
+        var Instaliationcolumns = [
+            { data: "nLineNo" },
+            { data: "s_item_id" },
+            { data: "s_item_name_eng" },
+            { data: "n_unit_id" },
+            { data: "s_unit_name_eng" },
+            { data: "n_stock_tacking_unit_price" },
+            { data: "n_current_qty" },
+            { data: "n_counting_qty" },
+            { data: "n_diff" },
+            { data: "s_cost_center_id" },
+            { data: "s_cost_center_name" },
+            { data: "s_cost_center_id2" },
+            { data: "s_cost_center_name2" },
+
+        ];
+
+        var installTable;
+        function DrawTableinstalition(data) {
+
+            Instaliationcolumns.push({
+                title: "", render: function (data, type, full, meta) {
+                    return '<a href="#" onclick=" Deleteinstaliationpart(' + full.nLineNo + ',this);return false;"><span class="glyphicon glyphicon-trash" title="Delete"></span></a>';
+                }
+            });
+            var responsiveHelper_dta = undefined;
+            var breakpointDefinition = {
+                tablet: 1024,
+                phone: 480
+            };
+
+            var arr;
+            if (data == null) {
+                arr = null;
+            }
+            else {
+                arr = data;
+            }
+
+
+            installTable = $('#dta').DataTable({
+                bDestroy: true,
+                data: arr,
+                language: {
+                    url: languageJsonUrl
+                },
+                columns: Instaliationcolumns,
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'T>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+                "oTableTools": {
+                    "aButtons":"",
+                    "sSwfPath": "" + "/Scripts/plugin/datatables/swf/copy_csv_xls_pdf.swf"
+                },
+                "autoWidth": true,
+                "preDrawCallback": function () {
+                    // Initialize the responsive datatables helper once.
+                    if (!responsiveHelper_dta) {
+                        responsiveHelper_dta = new ResponsiveDatatablesHelper($('#dta'), breakpointDefinition);
+                    }
+                },
+                "rowCallback": function (nRow) {
+                    responsiveHelper_dta.createExpandIcon(nRow);
+                },
+                "drawCallback": function (oSettings) {
+                    responsiveHelper_dta.respond();
+
+
+                }
+            });
+
+
+            $('#dta tbody').on('dblclick', 'tr', function () {
+
+                debugger;
+
+                RowDoublClickofinstallition(this);
+
+            });
+
+        }
+
+        function RowDoublClickofinstallition(row) {
+
+            var alldata = installTable.rows().data();
+            debugger;
+            selectedrow = installTable.row(row).data();
+            _row = this;
+            var s_item_id = parseFloat(selectedrow.s_item_id);
+            var n_unit_id = parseFloat(selectedrow.n_unit_id);
+            var n_stock_tacking_unit_price = parseFloat(selectedrow.n_stock_tacking_unit_price);
+            var n_current_qty = parseFloat(selectedrow.n_current_qty);
+            var s_cost_center_id = parseFloat(selectedrow.s_cost_center_id);
+            var s_cost_center_id2 = parseFloat(selectedrow.s_cost_center_id2);
+            var n_counting_qty = selectedrow.n_counting_qty;
+            var n_diff = selectedrow.n_diff;
+            $('#ItemID').val(s_item_id).trigger('change');
+            $('#Units').val(n_unit_id).trigger('change');
+            $('#s_cost_center_id').val(s_cost_center_id).trigger('change');
+            $('#s_cost_center_id2').val(s_cost_center_id2).trigger('change');
+            $('#n_stock_tacking_unit_price').val(n_stock_tacking_unit_price);
+            $('#n_current_qty').val(n_current_qty);
+            $('#n_counting_qty').val(n_counting_qty);
+            $('#n_diff').val(n_diff);
+
+            editRow = parseFloat(selectedrow.nLineNo) - 1;
+            editModeforInstall = true;
+        }
+        function Addpart() {
+            debugger;
+            //if ($('#ItemID').val() == "-1" || $('#ItemID').val() == null || $('#n_stock_tacking_unit_price').val() == "") {
+            //    FillRequiredTextInstallement();
+
+            //    return;
+
+            //}
+
+            var nLineNo = editModeforInstall ? editRow : instaliationDetails.length;
+            installobject = {
+                nLineNo: nLineNo + 1,
+                s_item_id: $('#ItemID').val(),
+                s_item_name_eng: $('#ItemID').select2('data').text,
+                n_unit_id: $('#Units').val(),
+                s_unit_name_eng: $("#Units option:selected").text(),
+
+                n_stock_tacking_unit_price: $('#n_stock_tacking_unit_price').val(),
+                n_current_qty: $('#n_current_qty').val(),
+                n_counting_qty: $('#n_counting_qty').val(),
+                n_diff: $('#n_diff').val(),
+                s_cost_center_id: $('#s_cost_center_id').val(),
+                s_cost_center_name: $("#s_cost_center_id option:selected").text(),
+                s_cost_center_id2: $('#s_cost_center_id2').val(),
+                s_cost_center_name2: $("#s_cost_center_id2 option:selected").text()
+
+            };
+
+            if (instaliationDetails) {
+                if (editModeforInstall) {
+                    instaliationDetails[editRow] = installobject;
+                }
+                else {
+                    instaliationDetails.push(installobject);
+                }
+            }
+
+
+            debugger;
+            if (installTable) {
+                if (editModeforInstall) {
+                    installTable.clear();
+
+                    // Add updated data
+                    installTable.rows.add(instaliationDetails);
+
+                    // Redraw table
+                    installTable.draw();
+                    //console.log(linesTable.row(datatableEditRow).data());
+                    //linesTable.row(linesTable.row($(datatableEditRow).parent('tr')).node()).data(object).draw();
+
+                }
+                else {
+
+                    installTable.row.add(installobject).draw();
+                }
+            }
+
+            clearcontrolforinstaliation()
+
+        }
+
+        function clearcontrolforinstaliation() {
+            $('#n_customer_id').val(-1).trigger('change');
+            $('#n_debit').val(' ');
+            $('#n_credit').val(' ');
+            $('#s_arabic_description2').val(' ');
+            $('#s_cost_center_id').val(-1).trigger('change');
+            $('#s_cost_center_id2').val(-1).trigger('change');
+
+            editModeforInstall = false;
+        }
+        function Deleteinstaliationpart(index, t) {
+            instaliationDetails = instaliationDetails.filter(function (_obj) { return _obj.nLineNo != index });
+            installTable.row($(t).parents('tr')).remove().draw(false);
+        }
+
+
+
+        function SetDocNo() {
+            debugger;
+           // var x =@ViewBag.n_document_no;
+            //$("#n_currency_coff").val(1);
+            //$("#n_document_no").val(x);
+        }
+
+
+/////////////////////////////////////////////////////////
+
+
+
+        
+        function SaveJournal() {
+            debugger;
+
+
+
+            var master = {
+                InvoiceNo: $('#InvoiceNo').val(),
+                InvoiceDate: '1/1/1996',
+                TableName: "",
+                Notes: "gg",
+                Total: 20,
+                net: 50,
+
+            };
+
+            $('#click').prop("disabled", true);
+
+            $.ajax({
+                type: 'POST',
+
+                url: '@Url.Action("Add", "Sales")',
+                dataType: 'json',
+                data: { master: JSON.stringify(master), details: JSON.stringify(DetailsList) },
+                success: function (data) {
+
+
+                    if (data !== "Fail") {
+                        debugger;
+                        // Saved();
+                        setTimeout(function () {
+                            (window.location.href = data)
+                        }, 500);
+
+                    } else {
+                        $("#click").prop('disabled', false);
+                        // Failed();
+                    }
+                },
+
+                error: function (ex) {
+
+                    loadNotfy('SaveError', "3");
+                    setTimeout(function () {
+                        $('#showimage').addClass('hide');
+                        $("#clicked").prop('disabled', false);
+                    }, 3000);
+                }
+
+            });
+
+
+
+        }
+
+
+
+        $(document).ready(function () {
+
+            ValidateForm();
+            SetDocNo();
+            DrawTableinstalition(null);
+        });
+    </script>
+}

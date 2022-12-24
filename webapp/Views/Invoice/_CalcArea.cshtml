@@ -1,0 +1,39 @@
+﻿@model SmartAdminMvc.Models.InvoiceVM
+<fieldset>
+    <div class="row">
+        <section class="col-md-2">
+            <label for="exampletext"> الاجمالى </label>
+            <input type="text" readonly class="form-control" id="Total" name="Total" value="@Model.Total" placeholder="الاجمالى">
+        </section>
+        <section class="col-md-2">
+            <label for="exampletext"> الخصم  </label>
+            <input type="number" min="0" class="form-control" id="InvoiceDiscount" name="InvoiceDiscount" placeholder="الخصم" onchange="CalcInvoiceDiscount()" value="@Model.InvoiceDiscount">
+        </section>
+
+        <section class="col-md-2">
+            <label for="exampletext"> اجمالة الخصم   </label>
+            <input type="text" readonly class="form-control" id="TotalDiscount" name="TotalDiscount" placeholder="اجمالى الخصم" value="@Model.TotalDiscount">
+        </section>
+        <section class="col-md-2">
+            <label for="exampletext"> اجمالى الضريبه   </label>
+            <input type="text" readonly class="form-control" id="InvoiceTax" name="InvoiceTax" placeholder="اجمالى الضريبه" value="@Model.InvoiceTax">
+        </section>
+
+        <section class="col-md-2">
+            <label for="exampletext"> الصافى   </label>
+            <input type="text" readonly class="form-control" id="NetAmount" name="NetAmount" placeholder="الصافى" value="@Model.NetAmount">
+        </section>
+
+        <section class="col-md-2">
+            <label for="exampletext"> المدفوع    </label>
+            <input type="number"  class="form-control" id="PaidAmount" name="PaidAmount" onchange="CalcRemainingAmount()" placeholder="المدفوع" value="@Model.PaidAmount">
+        </section>
+
+        <section class="col-md-2">
+            <label for="exampletext"> الباقى   </label>
+            <input type="text" readonly class="form-control" id="RemainingAmount" name="RemainingAmount" placeholder="الباقى " value="@Model.RemainingAmount">
+        </section>
+
+    </div>
+  
+</fieldset>

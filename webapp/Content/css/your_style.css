@@ -1,0 +1,335 @@
+﻿/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+@font-face {
+    font-family: 'DroidKufi-Bold'; /*a name to be used later*/
+    src: url('../fonts/DroidKufi-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'DroidKufi-Regular'; /*a name to be used later*/
+    src: url('../fonts/DroidKufi-Regular.ttf');
+}
+
+.padding-top-0 {
+    padding-top: 0 !important;
+}
+
+.padding-top-5 {
+    padding-top: 5px !important;
+}
+
+.padding-bottom-0 {
+    padding-bottom: 0 !important;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5px !important;
+}
+
+.padding-left-5 {
+    padding-left: 5px !important;
+}
+
+.padding-left-10 {
+    padding-left: 10px !important;
+}
+
+.padding-right-5 {
+    padding-right: 5px !important;
+}
+
+.padding-right-10 {
+    padding-right: 10px !important;
+}
+
+.margin-top-0 {
+    margin-top: 0 !important;
+}
+
+.margin-top-5 {
+    margin-top: 5px !important;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0 !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-left-5 {
+    margin-left: 5px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px !important;
+}
+
+.margin-right-5 {
+    margin-right: 5px !important;
+}
+
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+
+.margin-right-15 {
+    margin-right: 15px !important;
+}
+/*.smart-form {
+    .input {
+        input {
+            padding: 4px 10px !important;
+        }
+    }
+}*/
+/* SmartForm Bootstrap Validation */
+#extr-page h4.paragraph-header {
+    width: auto;
+}
+
+#extr-page .smart-form .alert {
+    margin: 4px;
+}
+
+    #extr-page .smart-form .alert li {
+        margin-left: 14px;
+        list-style: none;
+    }
+
+        #extr-page .smart-form .alert li:before {
+            content: "\f071";
+            font-family: FontAwesome;
+            position: absolute;
+            left: 14px;
+        }
+
+#extr-page .smart-form div + fieldset {
+    padding-top: 15px;
+}
+
+.hide_column {
+    display: none;
+}
+
+
+.smart-rtl .smart-form .label {
+    text-align: right !important;
+}
+
+
+body.smart-rtl {
+    font-family: 'DroidKufi-Bold' !important;
+}
+
+
+.smart-rtl h1, .smart-rtl h2, .smart-rtl h3, .smart-rtl h4 {
+    font-family: 'DroidKufi-Bold' !important;
+}
+
+.smart-rtl h1 {
+    letter-spacing: -1px;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+
+
+.smart-rtl.minified nav ul ul ul li > a {
+    padding-right: 40px;
+}
+
+.smart-rtl.minified nav ul ul li a {
+    padding-right: 17px;
+}
+
+/*.smart-rtl nav ul ul ul li a {
+    color: #bfbfbf;
+    padding: 8px 10px 8px 60px;
+    font-size: 10px;
+}*/
+
+
+.smart-rtl nav ul ul li > a {
+    padding-left: 42px;
+    font-size: 10px;
+    font-weight: normal;
+    outline: 0;
+}
+
+.smart-rtl .myEngagementSummaryContainer .engg-myreivewnotes-container .engagement-status-box .count, .count {
+    font-size: 24px !important;
+}
+
+
+.smart-rtl .milestonetasklist-container .milestonetask-evidencename, .conclusion-milestonetask-evidencename {
+    display: inline-block;
+    color: #F9DE39;
+    font-size: 10px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-top: 7px;
+    cursor: pointer;
+}
+
+
+.smart-rtl .table thead tr, .smart-rtl .fc-head-container thead tr {
+    font-size: 11px;
+}
+
+
+.smart-form .label {
+    font-size: 12px;
+}
+
+h4.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 21px;
+    color: inherit;
+}
+
+@media (max-width: @screen-xs) {
+    h4.panel-title {
+        font-size: 17px;
+    }
+}
+
+.smart-rtl h4.panel-title {
+    font-size: 17px;
+}
+
+@media (max-width: @screen-xs) {
+    .smart-rtl h4.panel-title {
+        font-size: 16px;
+    }
+}
+
+
+.labelFont {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+.smart-form .state-error .select2-choice {
+    background: #fff0f0;
+    border-color: #A90329;
+}
+
+.priority-txt.has-zero-value.active {
+    background-color: #807C7C;
+}
+
+
+.smart-style-5 .smart-accordion-default .panel-default > .panel-heading {
+    background: none !important;
+}
+
+.smart-rtl .smart-form .input input, .smart-form .select select, .smart-form .textarea textarea {
+    font-family: 'DroidKufi-Bold' !important;
+}
+
+.smart-rtl .smart-form .input-file .button {
+    left: 4px;
+    right: auto;
+}
+
+/**fix datetime picker rtl***/
+/*.smart-rtl .ui-datepicker .ui-datepicker-prev {
+    right: 2px !important;
+}
+
+.smart-rtl .ui-datepicker .ui-datepicker-next {
+    left: 2px !important;
+}*/
+
+
+input[type="text"]:disabled {
+    background: #EFECEC;
+}
+
+
+
+.easy-pie-chart .percent {
+    font-size: 20px;
+    margin-top: -16px;
+}
+
+.tooltip2 {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+    .tooltip2 .tooltiptext {
+        visibility: hidden;
+        width: 300px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+    .tooltip2:hover .tooltiptext {
+        visibility: visible;
+    }
+
+#datatable_tabletools th {
+    text-align: center;
+}
+
+.miniPicRight {
+    right: 9px;
+}
+
+
+
+.attachmentList {
+    list-style-type: none;
+}
+.smart-rtl .attachmentList {
+    text-align: left;
+}
+
+.smart-rtl .ui-datepicker .ui-datepicker-next {
+    left: 2px;
+    right:auto;
+}
+
+.smart-rtl .ui-datepicker .ui-datepicker-prev {
+    left: auto;
+    right: 2px;
+}
+
+.smart-rtl .jarviswidget th:last-child,.smart-rtl .jarviswidget td:last-child {
+    border-right: 1px solid #dddddd;
+}
+
+.smart-rtl .smart-form .select i {
+    right: auto;
+}
+
+.smart-rtl .smart-form .select select {
+    padding: 4px;
+}

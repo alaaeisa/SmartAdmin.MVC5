@@ -1,0 +1,297 @@
+﻿<script type="text/javascript">
+
+
+        var NameOfListProp = "DetailsListProp";
+        var  TaxValue= @ViewBag.Tax;
+        function ValidateForm() {
+            var validator = $("#smartform").validate({
+                rules:
+                    {
+                        InvoiceDate: {
+                            required: true
+                        },
+                        Invoicetype: {
+                            required: true
+                        },
+                        CustomerId: {
+                            required: true
+                        }
+                    },
+                messages: {
+                    InvoiceDate: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    Invoicetype: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    CustomerId: {
+                        required: 'الرجاء ادخال قيمه'
+                    }
+                },
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit({
+                        success: function () {
+
+                        }
+                    });
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                },
+                invalidHandler: function (form, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        validator.errorList[0].element.focus();
+                    }
+                }
+            });
+
+
+        }
+
+    function ValidLogicData() {
+        debugger;
+        var _Id = $("#Invoicetype").val();
+        if (DetailsList.length > 0) {
+            if (_Id == 1) {
+                var _rmain = $('#RemainAmount').val();
+                if (_rmain > 0) {
+                    ShowMessage("", " الفاتوره  نقديه  يجب  سداد قيمتها", "red")
+                    return false;
+                }
+            }
+            if (_Id == 2) {
+                var _CustomerId = $('#CustomerId').val();
+                if (_CustomerId == ""  || _CustomerId==null ||  _CustomerId==-1) {
+                    ShowMessage("", " الفاتوره  اجل  يجب  اختيار عميل اولا ", "red")
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            ShowMessage("", "من  فضلك  ادخل العناصر اولا", "red")
+            return false;
+        }
+    }
+
+
+        function CalcItemNet() {
+            debugger;
+            var _Qty =$('#Qty').val();
+            var _price = $('#Price').val();
+            var total = _Qty * _price;
+            var discount =$('#ItemDiscount').val();
+            var totalWithOutTax = total - discount;
+            var ItemTax = (totalWithOutTax * TaxValue) / 100;
+            var _net = totalWithOutTax + ItemTax;
+            $('#ItemTax').val(ItemTax);
+            $('#ItemNet').val(_net);
+        }
+
+        function CalcPaid() {
+            debugger;
+            var NetValue = $('#net').val();
+            var PaidAmount = $('#PaidAmount').val();
+            var _res = parseFloat(NetValue) - parseFloat(PaidAmount);
+            $('#RemainAmount').val(_res);
+    }
+
+    
+        function CheckCustomer() {
+            debugger;
+            var _Id = $("#CustomerId").val();
+            if (_Id == -1) {
+                return;
+            }
+                $.ajax({
+                url: '@Url.Action("CheckCustomer", "Customer")',
+                dataType: "json",
+                data: { "Id": _Id },
+                type: "Post",
+                    success: function (data) {
+                       // console.log(data);
+                         document.getElementById("Invoicetype").disabled = false;
+                    if (data==1) {
+                        $('#CustSec').fadeIn('slow');
+                        $("#Invoicetype").val(1).trigger('change');
+                        document.getElementById("Invoicetype").disabled = true;
+                    } else {
+                        $('#CustSec').fadeOut('slow');
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        };
+        function CheckInvoicetype() {
+            debugger;
+            var _Id = $("#Invoicetype").val();
+            //if (_Id == -1) {
+            //    return;
+            //}
+            //if (_Id == 2) {
+                $('#DeferredDiv').fadeIn('slow');
+            //} else {
+            //    $('#DeferredDiv').fadeOut('slow');
+            //}
+
+        };
+
+        var DetailsList = [];
+        var valid = true;
+
+        function GetItemPrice()
+        {
+              var ItemID = $("#ItemID").val();
+            var nUnitID = $("#nUnitID").val();
+   
+            if (ItemID == -1|| nUnitID==-1) {
+                return;
+            }
+                $.ajax({
+                url: '@Url.Action("GetItemPrice", "Items")',
+                dataType: "json",
+              data: { "ItemID": ItemID,"UnitID":nUnitID },
+                type: "Post",
+                success: function (data) {
+                    console.log(data);
+                    var res = data.UnitsalesPrice;
+                    $("#Price").val(res);
+                  Checkbalance(ItemID,nUnitID);
+                    //GetItemUnit(ItemID);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+    }
+
+
+
+        var columns = [
+            { data: "SerialNo" },
+            { data: "ItemID" },
+            { data: "ItemName" },
+             { data: "sUnitName" },
+            { data: "Qty" },
+            { data: "Price" },
+            { data: "ItemTotal" },
+            { data: "ItemDiscount" },
+            { data: "ItemTax" },
+            { data: "ItemNet" },
+
+        ];
+          var currntnUnitID = 0;
+        function RowDoublClick(_row) {
+            //var alldata = MyTable.rows().data();
+            //selectedrow = MyTable.row(row).data();
+             selectedrow =MyTable.row($(_row).parents('tr')).data();
+          //  _row = this;
+            var ItemID = parseFloat(selectedrow.ItemID);
+            var Qty = parseFloat(selectedrow.Qty);
+            var Price = parseFloat(selectedrow.Price);
+            currntnUnitID = parseFloat(selectedrow.nUnitID);
+                  var  ItemDiscount= parseFloat(selectedrow.ItemDiscount);
+            $('#ItemDiscount').val(ItemDiscount);
+            $('#ItemID').val(ItemID).trigger('change');
+            $('#Qty').val(Qty);
+            $('#Price').val(Price);
+            editRow = parseFloat(selectedrow.SerialNo) - 1;
+            editMode = true;
+          //  $('#nUnitID').val(nUnitID).trigger('change');
+        }
+        function Addpart() {
+            debugger;
+            if (!valid) {
+                  ShowMessage("","لايمكن  اضافه  العنصر .... خطا  بالرصيد","red")
+                return;
+            }
+            if (!validationItemData()) {
+                return;
+            }
+         
+            var nLineNo = editMode ? editRow : DetailsList.length;
+            CalcItemNet();
+            object = {
+                SerialNo: nLineNo + 1,
+                ItemID: $('#ItemID').val(),
+                ItemName: $("#ItemID option:selected").text(),
+                 nUnitID: $('#nUnitID').val(),
+                sUnitName: $("#nUnitID option:selected").text(),
+                Qty: $('#Qty').val(),
+                Price: $('#Price').val(),
+                ItemDiscount: $('#ItemDiscount').val(),
+                ItemTax: $('#ItemTax').val(),
+               ItemNet: $('#ItemNet').val(),
+                ItemTotal:parseFloat( $('#Qty').val()) * parseFloat($('#Price').val()),
+            };
+            if (DetailsList) {
+                if (editMode) {
+                    DetailsList[editRow] = object;
+                }
+                else {
+                    DetailsList.push(object);
+                }
+            }
+            AddToTable();
+
+    }
+    function AfterDeleteItem() {
+           CalcTotal();
+            CalcDisCount();
+            CalcPaid();
+    }
+        function AfterAddItem() {
+            CalcTotal();
+            CalcDisCount();
+            CalcPaid();
+    }
+
+    function CalcTotal() {
+         var Total = 0;
+            var totalTax = 0;
+            var TotalitemDis = 0;
+            var netval = 0;
+            debugger;
+            DetailsList.forEach(function (item) {
+                Total += parseFloat(item.ItemTotal);
+                totalTax += parseFloat(item.ItemTax);
+                TotalitemDis += parseFloat(item.ItemDiscount);
+                 netval+=parseFloat(item.ItemNet);
+
+            });
+            $('#TotalTax').val(totalTax);//  اجمالى قيمه  الفتوره
+              $('#TotalDiscount').val(TotalitemDis);//  اجمالى قيمه  الفتوره
+            $('#Total').val(Total);//  اجمالى قيمه  الفتوره
+             $('#net').val(netval);
+    }
+    function CalcDisCount() {
+
+        var olddis = parseFloat($('#TotalDiscount').val());
+        olddis += parseFloat($('#DisCount').val());
+        $('#TotalDiscount').val(olddis);
+        var _net = $('#net').val();
+        var Disount = ($('#TotalDiscount').val() === "") ? 0 : $('#TotalDiscount').val();
+        if (Disount > _net) {
+            $('#DisCount').val('0');
+            ShowMessage("", "لايمكن  اضافه  خصم اكبر من صافى الفاتورة ....   ", "red")
+            return;
+
+        }
+        //(result[i].ItemTotal === null) ? 0 : result[i].ItemTotal,
+        var net = parseFloat(_net) - parseFloat(Disount);
+        $('#net').val(net);
+        CalcPaid();
+    }
+
+        function clearcontrol() {
+            $('#ItemID').val(-1).trigger('change');
+             $('#nUnitID').val(-1).trigger('change');
+            $('#Qty').val('1');
+            $('#Price').val(' ');
+                  $('#ItemDiscount').val('0');
+            editMode = false;
+        }
+
+    </script>

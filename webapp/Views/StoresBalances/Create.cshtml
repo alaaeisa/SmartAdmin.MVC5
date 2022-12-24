@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = " بحث وترصيد الاصناف ";
+}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <form id="smartform" class="smart-form">
+
+                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
+                            @{Html.RenderPartial("~/Views/StoresBalances/_Details.cshtml");}
+                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+@section pagespecific {
+    @Html.Partial("_INVScript")
+    <script type="text/javascript">
+
+       var saveUrl = '@Url.Action("Create", "StoresBalances")';
+        var redirectUrl = '@Url.Action("index", "StoresBalances")';
+
+         $(document).ready(function () {
+            
+             LoadItemData();
+             DrawTable(null);
+        });
+    </script>
+}

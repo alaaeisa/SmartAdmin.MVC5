@@ -1,0 +1,128 @@
+﻿<!--  general -->
+<script type="text/javascript">
+    var NameOfListProp = "InvoiceItems";
+
+
+    function ValidLogicData() {
+     
+            return true;
+    }
+
+</script>
+
+<!--  frist  Grid Function  -->
+<script type="text/javascript">
+
+       function LoadItemData() {
+        $("#ItemID").empty();
+        $.ajax({
+            url: '@Url.Action("GetItemData", "Items")',
+            dataType: "json",
+            data: { "ModelId": 0 },
+            type: "Post",
+            success: function (data) {
+                var opt = new Option('اختر الصنف', '-1');
+                $("#ItemID").append(opt);
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i].Name, data[i].ID);
+                    $("#ItemID").append(opt);
+                }
+            }
+        });
+    }
+
+   
+    function CalcAfterAddDelete() {
+     
+    }
+    function CalcInvoiceDiscount() {
+       
+       
+    }
+    function CalcRemainingAmount()
+    {
+       
+    }
+
+</script>
+
+<!--  frist Grid Draw -->
+<script type="text/javascript">
+    var DetailsList = [];
+    var valid = true;
+
+    var columns = [
+        { data: "SerialNo" },
+        { data: "ItemID" },
+        { data: "ItemName" },
+        { data: "Qty" },
+      
+
+    ];
+    function validationItemData() {
+        var done = true;
+        if ($('#ItemID').val() == "-1" || $('#ItemID').val() == null  || $('#Qty').val() == "" ) {
+            ShowMessage("", "ادخل بيانات العنصر كامله ", "red")
+            done = false;
+        }
+        return done;
+    }
+
+    function RowDoublClick(_row) {
+        selectedrow = MyTable.row($(_row).parents('tr')).data();
+        var ItemID = parseFloat(selectedrow.ItemID);
+        var Qty = parseFloat(selectedrow.Qty);
+        $('#ItemID').val(ItemID).trigger('change');
+        $('#Qty').val(Qty);
+      
+        editRow = parseFloat(selectedrow.SerialNo) - 1;
+        editMode = true;
+    }
+    function AddItem() {
+        debugger;
+       
+        if (!validationItemData()) {
+            return;
+        }
+
+        var nLineNo = editMode ? editRow : DetailsList.length;
+
+    
+
+        object = {
+            SerialNo: nLineNo + 1,
+            ItemID: $('#ItemID').val(),
+            ItemName: $("#ItemID option:selected").text(),
+            Qty: parseFloat($('#Qty').val()),
+          
+        };
+        if (DetailsList) {
+            if (editMode) {
+                DetailsList[editRow] = object;
+            }
+            else {
+                DetailsList.push(object);
+            }
+        }
+        AddToTable();
+
+    }
+    function AfterDeleteItem() {
+      
+
+      
+    }
+    function AfterAddItem() {
+      
+      
+    }
+
+
+
+    function clearcontrol() {
+        $('#ItemID').val(-1).trigger('change');
+        $('#Qty').val('1');
+       
+        editMode = false;
+    }
+</script>

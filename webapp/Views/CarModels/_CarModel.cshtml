@@ -1,0 +1,29 @@
+﻿@model SmartAdminMvc.Models.CarModel
+
+<fieldset>
+    <div class="row">
+
+        <section class="col col-3">
+            <label class="label "> الكود   <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" name="ID" id="ID" value="@Model.ID" readonly>
+            </label>
+        </section>
+
+        <section class="col col-3">
+            <label class="label ">الاسم    <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" name="Name" id="Name" value="@Model.Name">
+            </label>
+        </section>
+
+        <section class="col col-6">
+            <label class="label ">  ملاحظات  <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text"  name="Notes" id="Notes" value="@Model.Notes">
+            </label>
+        </section>
+
+    </div>
+
+</fieldset>

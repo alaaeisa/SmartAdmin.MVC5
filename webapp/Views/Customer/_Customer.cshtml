@@ -1,0 +1,47 @@
+﻿
+
+    @model SmartAdminMvc.Models.Customer
+
+    <fieldset>
+        <div class="row">
+
+            <section class="col col-3">
+                <label class="label "> رقم  العميل   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="ID" id="ID" value="@Model.ID" readonly>
+                </label>
+            </section>
+
+            <section class="col col-3">
+                <label class="label ">اسم العميل   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="Name" id="Name" value="@Model.Name">
+                </label>
+            </section>
+
+            <section class="col col-3">
+                <label class="label "> الجوال   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="Phone" id="Phone" value="@Model.Phone">
+                </label>
+            </section>
+            <section class="col col-3">
+                <label class="label "> العنوان  </label>
+                <label class="input">
+                    <input type="text" name="Address" id="Address" value="@Model.Address">
+                </label>
+            </section>
+
+
+          
+
+            @*<section class="col col-3">
+                <label class="label ">   ملاحظات </label>
+                <label class="input">
+                    <input type="text" name="Notes" id="Notes" value="@Model.Notes">
+                </label>
+            </section>*@
+
+        </div>
+
+    </fieldset>

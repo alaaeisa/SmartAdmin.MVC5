@@ -1,0 +1,79 @@
+﻿@model SmartAdminMvc.Models.InvoiceVM
+
+<fieldset>
+ 
+
+    <div class="row">
+
+        <section class="col col-3">
+            <label class="label ">رقم الفاتورة<span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" readonly name="ID" id="ID" value="@Model.ID">
+            </label>
+        </section>
+
+        <section class="col col-3">
+            <label class="label ">تاريخ الفاتورة<span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" class="form-control input-append datepicker" name="Date" id="Date" value="@Model.Date" readonly>
+            </label>
+        </section>
+
+        <section class="col col-6">
+
+            <label class="label">  العميل<span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                @Html.DropDownList("CustomerId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "CustomerId" })
+            </label>
+        </section>
+
+        <section class="col col-6">
+            <label class="label ">  وصف السيارة  </label>
+            <label class="input">
+                <input type="text" name="CarName" id="CarName" value="@Model.CarName">
+            </label>
+        </section>
+        <section class="col col-6">
+            <label class="label ">  رقم اللوحة  </label>
+            <label class="input">
+                <input type="text" name="PlateNumber" id="PlateNumber" value="@Model.PlateNumber">
+            </label>
+        </section>
+      
+        <section class="col col-6">
+            <label class="label ">   الماركة  </label>
+            <label class="input">
+                <input type="text" name="Brand" id="Brand" value="@Model.Brand">
+            </label>
+        </section>
+
+        <section class="col col-6">
+            <label class="label ">  رقم الشاسية  </label>
+            <label class="input">
+                <input type="text" name="ChassisNo" id="ChassisNo" value="@Model.ChassisNo">
+            </label>
+        </section>
+        
+        <section class="col col-6">
+            <label class="label"> الموديل <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                @Html.DropDownList("ModelId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "ModelId", @onchange = "LoadItemData()" })
+            </label>
+        </section>
+        <section class="col col-6">
+            <label class="label ">  عدد الكيلو متر </label>
+            <label class="input">
+                <input type="text" name="km" id="km" value="@Model.km">
+            </label>
+        </section>
+
+
+        <section class="col col-6">
+            <label class="label ">  ملاحظات </label>
+            <label class="input">
+                <input type="text" name="Notes" id="Notes" value="@Model.Notes">
+            </label>
+        </section>
+    </div>
+
+</fieldset>

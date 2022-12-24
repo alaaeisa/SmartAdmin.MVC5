@@ -1,0 +1,63 @@
+﻿@model SmartAdminMvc.Models.InvoiceVM
+
+<fieldset>
+    <div class="row">
+
+       
+        <section class="col col-6">
+            <label class="label">وصف الخدمة <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" name="ServiceName" id="ServiceName" >
+            </label>
+        </section>
+        <section class="col col-2">
+            <label class="label ">السعر <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="number" name="ServicePrice" id="ServicePrice" min="0" >
+            </label>
+        </section>
+
+        <section class="col col-2">
+            <label class="label">الخصم </label>
+            <label class="input">
+                <input type="number" name="ServiceDiscount" id="ServiceDiscount" min="0" value="0" >
+            </label>
+        </section>
+
+        <footer>
+            <button type="button" onclick="AddService();" class="btn btn-lg btn-info waves-effect waves-themed">
+                <span class="fa fa-download"></span>
+                إضافة
+            </button>
+        </footer>
+    </div>
+</fieldset>
+
+
+
+<fieldset>
+
+    <div class="row">
+        <br />
+        <div class="container-fluid">
+
+            <div class="custom-scroll table-responsive" style="height:290px; overflow-y: scroll;">
+
+                <table id="ServiceTable" class="table table-striped table-bordered table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th data-class="expand">اسم الخدمة</th>
+                            <th data-hide="phone,tablet"> السعر</th>
+                            <th data-hide="phone,tablet">  الخصم  </th>
+                            <th data-hide="phone,tablet">  الصافى  </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+
