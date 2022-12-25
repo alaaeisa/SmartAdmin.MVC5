@@ -23,40 +23,18 @@
         -->
 
         <ul>
-            <li @*class="@Html.RouteIf("index", "active")"*@>
+            <li >
                 <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">الرئيسية</span></a>
                 <ul>
                     <li>
                         <a href="@Url.Action("index", "home")" title="Dashboard"><span class="menu-item-parent">الرئيسية </span></a>
                     </li>
-
-
                 </ul>
             </li>
 
 
 
-            <li>
-                <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa fa-gears"></i> <span class="menu-item-parent">الاعدادات </span></a>
-                <ul>
 
-
-                    @if (@HttpUtility.UrlDecode(SmartAdminMvc.Models.Cookies.get_SuperAdmin()) == "1")
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", "Users")" title="Dashboard"><span class="menu-item-parent"> المستخدمين   </span></a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("EditConfig", "Settings")" title="Dashboard"><span class="menu-item-parent">  بيانات الشركة   </span></a>
-                        </li>
-                    }
-
-                    <li>
-                        <a href="@Url.Action("EditUser", "Users")" title="Dashboard"><span class="menu-item-parent">تعديل  كلمة المرور    </span></a>
-                    </li>
-
-                </ul>
-            </li>
             @if (@HttpUtility.UrlDecode(SmartAdminMvc.Models.Cookies.get_SuperAdmin()) == "1")
             {
                 <li>
@@ -100,13 +78,36 @@
                 </ul>
             </li>
 
-            <li @*class="@Html.RouteIf("index", "active")"*@>
+            <li >
                 <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-file-pdf-o"></i> <span class="menu-item-parent">تقارير    </span></a>
                 <ul>
                     <li>
 
                         <a href="@Url.Action("index", "Reports")" title="Dashboard"><i class="fa fa-cube"></i> <span class="menu-item-parent"> تقارير</span></a>
 
+                    </li>
+
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa fa-gears"></i> <span class="menu-item-parent">الاعدادات </span></a>
+                <ul>
+
+
+                    @if (@HttpUtility.UrlDecode(SmartAdminMvc.Models.Cookies.get_SuperAdmin()) == "1")
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Users")" title="Dashboard"><span class="menu-item-parent"> المستخدمين   </span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("EditConfig", "Settings")" title="Dashboard"><span class="menu-item-parent">  بيانات الشركة   </span></a>
+                        </li>
+                    }
+
+                    <li>
+                        <a href="@Url.Action("EditUser", "Users")" title="Dashboard"><span class="menu-item-parent">تعديل  كلمة المرور    </span></a>
                     </li>
 
                 </ul>

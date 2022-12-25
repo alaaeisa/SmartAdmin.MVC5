@@ -16,7 +16,16 @@ namespace SmartAdminMvc.Controllers
         SessionMange _sessionMange = new SessionMange();
         CarWorkShopEntities db = new CarWorkShopEntities();
         NotificationMessage ReturnMsg = new NotificationMessage();
+        
 
+        public JsonResult GetCustomerPhone(int CustomerId)
+        {
+
+        
+            var query = db.Customers.Where(x=>x.ID == CustomerId).FirstOrDefault();
+           
+            return Json(query.Phone, JsonRequestBehavior.AllowGet);
+        }
         #region  index 
         public ActionResult Index()
         {

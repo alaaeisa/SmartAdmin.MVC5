@@ -108,6 +108,23 @@
             }
         });
     }
+    
+    function LoadCustomerData() {
+        var CustomerId = $("#CustomerId").val();
+        if (CustomerId == -1) {
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("GetCustomerPhone", "Customer")',
+            dataType: "json",
+            data: { "CustomerId": CustomerId },
+            type: "Post",
+            success: function (data) {
+                $('#CustomerPhone').val(data);
+            }
+
+        });
+    }
 
     function LoadModelData() {
         var BrandId = $("#BrandId").val();
@@ -137,7 +154,7 @@
 
                 }
                 $('#ModelId').append(html);
-                $('#ModelId').trigger('change'); 
+                $('#ModelId').trigger('change');
               //  LoadItemData();
             }
 

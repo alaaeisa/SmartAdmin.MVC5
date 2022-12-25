@@ -36,7 +36,7 @@
     <link rel="apple-touch-startup-image" href="~/content/img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 </head>
 <body class="@ViewBag.PageClass @Settings.CurrentTheme smart-rtl">
-    @*@{ Html.RenderPartial("_Header", RenderSection("topright", false)); }*@
+    @{ Html.RenderPartial("_Header", RenderSection("topright", false)); }
     @if (@SmartAdminMvc.Models.Cookies.get_UserAuthorize() == "1")
     {
         { Html.RenderPartial("_Aside"); }
@@ -51,7 +51,7 @@
     <div id="main" role="main">
         @if (@SmartAdminMvc.Models.Cookies.get_UserAuthorize() == "1")
         {
-            { Html.RenderPartial("_Ribbon"); }
+            //{ Html.RenderPartial("_Ribbon"); }
 
         }
         else
