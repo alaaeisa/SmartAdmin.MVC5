@@ -18,7 +18,12 @@
 
                             <fieldset>
                                 <div class="row">
-
+                                    <section class="col col-6">
+                                        <label class="label ">اسم الشركة     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            <input type="text" name="CompanyName" id="CompanyName" value="@Model.CompanyName">
+                                        </label>
+                                    </section>
                                     <section class="col col-3">
                                         <label class="label ">الضريبة     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
@@ -26,20 +31,23 @@
                                         </label>
                                     </section>
 
-                                    <section class="col col-3">
-                                        <label class="label ">اسم الشركة     <span style="color:red">&nbsp;*</span></label>
-                                        <label class="input">
-                                            <input type="text" name="CompanyName" id="CompanyName" value="@Model.CompanyName">
+                                    <section class="col col-2">
+                                        <br />
+                                        <label class="btn btn-primary btn-block">
+                                            اختر صورة اللوجو
+                                            <input type="file" name="inpFile" id="inpFile" value="" accept='image/*' style="display:none"
+                                                   onchange="$('#lblFileName').text($(this).val().split('\\')[2])" />
                                         </label>
                                     </section>
-                                    <section class="col col-3">
-                                        <label class="label ">Logo     <span style="color:red">&nbsp;*</span></label>
-                                        <label class="input">
-                                            <input type="text" name="Logo" id="Logo" value="@Model.Logo">
-                                        </label>
+                                    <section class="col col-2">
+                                        <label class="label" id="lblFileName"></label>
                                     </section>
-
-
+                                    @if (!string.IsNullOrEmpty(@Model.Logo))
+                                    {
+                                        <section class="col col-md-2 card" style="width:200px;margin-top:10px">
+                                            <img src="~/Attachment/@Model.Logo" alt="--" style="width:100%;height:150px" />
+                                        </section>
+                                    }
                                 </div>
                             </fieldset>
                             @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}

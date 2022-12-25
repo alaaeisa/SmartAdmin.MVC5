@@ -6,25 +6,49 @@
     function ValidateForm() {
             var validator = $("#smartform").validate({
                 rules:
-                    {
-                        Date: {
-                            required: true
-                        },
-                        Invoicetype: {
-                            required: true
-                        },
-                        CustomerId: {
-                            required: true
-                        }
+                {
+                    Date: {
+                        required: true
                     },
+                    PlateNumber: {
+                        required: true
+                    },
+                    CustomerId: {
+                        required: true
+                    },
+                    ChassisNo: {
+                        required: true
+                    },
+                    BrandId: {
+                        required: true
+                    },
+                    ModelId: {
+                        required: true
+                    },
+                    km: {
+                        required: true
+                    }
+                },
                 messages: {
                     Date: {
                         required: 'الرجاء ادخال قيمه'
                     },
-                    Invoicetype: {
+                    PlateNumber: {
                         required: 'الرجاء ادخال قيمه'
                     },
                     CustomerId: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    ChassisNo: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    BrandId: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    ModelId: {
+                        required: 'الرجاء ادخال قيمه'
+                    },
+                    km: {
                         required: 'الرجاء ادخال قيمه'
                     }
                 },
@@ -49,7 +73,7 @@
 
     }
     function ValidLogicData() {
-        if (DetailsList.length == 0) {
+        if (DetailsList.length == 0 && DetailsList_Service.length == 0) {
             ShowMessage("", "من  فضلك  ادخل العناصر اولا", "red")
             return false;
         } else {
@@ -85,6 +109,41 @@
         });
     }
 
+    function LoadModelData() {
+        var BrandId = $("#BrandId").val();
+        if (BrandId == -1) {
+            return;
+        }
+        debugger;
+        $("#ModelId").empty();
+        $.ajax({
+            url: '@Url.Action("GetModelData", "CarBrands")',
+            dataType: "json",
+            data: { "BrandId": BrandId },
+            type: "Post",
+            success: function (data) {
+                var opt = new Option('اختر الموديل', '-1');
+                $("#ModelId").append(opt);
+                var html = '';
+                for (var i = 0; i < data.length; i++) {
+                    debugger;
+
+                    if (data[i].ID == '@ViewBag.ModelId') {
+                        html += '<option selected value="' + data[i].ID + '">' + data[i].Name + '</option>';
+                    } else {
+                        html += '<option value="' + data[i].ID + '">' + data[i].Name + '</option>';
+                    }
+
+
+                }
+                $('#ModelId').append(html);
+                $('#ModelId').trigger('change'); 
+              //  LoadItemData();
+            }
+
+        });
+    }
+
      function GetItemPrice() {
         var ItemID = $("#ItemID").val();
 
@@ -102,14 +161,14 @@
                 Checkbalance(ItemID);
             },
             error: function (err) {
-              
+
             }
         });
     }
 
-   
+
     function CalcAfterAddDelete() {
-       
+
         var Total = 0;
         var TotalItemDiscount = 0;
         var NetAmount = 0;
@@ -120,9 +179,9 @@
             NetAmount += parseFloat(item.ItemNet);
 
         });
-       
+
         DetailsList_Service.forEach(function (ServiceObj) {
-           
+
             Total += parseFloat(ServiceObj.ServicePrice);
             TotalItemDiscount += parseFloat(ServiceObj.ServiceDiscount);
             NetAmount += parseFloat(ServiceObj.ServiceNet);
@@ -132,23 +191,29 @@
         $('#TotalDiscount').val(TotalItemDiscount);//  اجمالى قيمه  الفتوره
         $('#Total').val(Total);//  اجمالى قيمه  الفتوره
         $('#NetAmount').val(NetAmount);
+        $('#NetAmountWithOutTax').val(NetAmount);
+
     }
     function CalcInvoiceDiscount() {
-       
+        debugger;
         var OldTotalDiscount = parseFloat($('#TotalDiscount').val());
         var NewTotalDiscount = OldTotalDiscount + parseFloat($('#InvoiceDiscount').val());
 
-        var OldNetAmount = $('#NetAmount').val();
+        var OldNetAmount = $('#NetAmountWithOutTax').val();
         if (NewTotalDiscount > OldNetAmount) {
             $('#InvoiceDiscount').val('0');
             ShowMessage("", "لايمكن  اضافه  خصم اكبر من صافى الفاتورة ....   ", "red")
             return;
 
         }
-        
+
         var Total = $('#Total').val();
         $('#TotalDiscount').val(NewTotalDiscount);
         var NewNetAmount = parseFloat(Total) - parseFloat(NewTotalDiscount);
+        $('#NetAmountWithOutTax').val(NewNetAmount);
+        var Tax = (NewNetAmount * TaxValue) / 100;
+        $('#InvoiceTax').val(Tax);
+         NewNetAmount =   NewNetAmount + Tax;
         $('#NetAmount').val(NewNetAmount);
         CalcRemainingAmount();
     }

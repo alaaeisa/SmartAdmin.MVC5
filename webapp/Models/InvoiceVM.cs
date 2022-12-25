@@ -13,10 +13,10 @@ namespace SmartAdminMvc.Models
         public int CustomerId { get; set; }
         public string CustomerName { get;  set; }
         public string Notes { get; set; }
-        public string CarName { get; set; }
+    
         public string ChassisNo { get; set; }
         public string PlateNumber { get; set; }
-        public string Brand { get; set; }
+        public int? BrandId { get; set; }
         public int ModelId { get; set; }
         public string ModelName { get;  set; }
         public int km { get; set; }
@@ -26,6 +26,7 @@ namespace SmartAdminMvc.Models
         public decimal TotalDiscount { get; set; }
         public decimal InvoiceTax { get; set; }
         public decimal PaidAmount { get; set; }
+        public decimal NetAmountWithOutTax { get;  set; }
         public decimal RemainingAmount { get; set; }
 
      
@@ -42,15 +43,15 @@ namespace SmartAdminMvc.Models
 
             VMObj.ID = DBObj.ID;
             VMObj.Date = DBObj.Date;
-            VMObj.DateStr = DBObj.Date.ToString();
+            VMObj.DateStr = DBObj.Date.ToString("yyyy/MM/dd");
             
             VMObj.CustomerId = DBObj.CustomerId;
             VMObj.CustomerName = DBObj.Customer.Name;
             VMObj.Notes = DBObj.Notes;
-            VMObj.CarName = DBObj.CarName;
+        
             VMObj.ChassisNo = DBObj.ChassisNo;
             VMObj.PlateNumber = DBObj.PlateNumber;
-            VMObj.Brand = DBObj.Brand;
+            VMObj.BrandId = DBObj.BrandId;
             VMObj.ModelId = DBObj.ModelId;
             VMObj.ModelName = DBObj.CarModel.Name;
             VMObj.km = DBObj.km;
@@ -60,6 +61,7 @@ namespace SmartAdminMvc.Models
             VMObj.TotalDiscount = DBObj.TotalDiscount;
             VMObj.InvoiceTax = DBObj.InvoiceTax;
             VMObj.PaidAmount = DBObj.PaidAmount;
+            VMObj.NetAmountWithOutTax = DBObj.NetAmountWithOutTax;
             VMObj.RemainingAmount = DBObj.RemainingAmount;
             if (!MasterOnly)
             {

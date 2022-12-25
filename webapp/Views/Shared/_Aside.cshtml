@@ -44,15 +44,15 @@
                     @if (@HttpUtility.UrlDecode(SmartAdminMvc.Models.Cookies.get_SuperAdmin()) == "1")
                     {
                         <li>
-                            <a href="@Url.Action("Createuser", "Users")" title="Dashboard"><span class="menu-item-parent">اضافه مستخدم   </span></a>
+                            <a href="@Url.Action("Index", "Users")" title="Dashboard"><span class="menu-item-parent"> المستخدمين   </span></a>
                         </li>
                         <li>
-                            <a href="@Url.Action("EditConfig", "Settings")" title="Dashboard"><span class="menu-item-parent">  الاعدادات   </span></a>
+                            <a href="@Url.Action("EditConfig", "Settings")" title="Dashboard"><span class="menu-item-parent">  بيانات الشركة   </span></a>
                         </li>
                     }
 
                     <li>
-                        <a href="@Url.Action("EditUser", "Users")" title="Dashboard"><span class="menu-item-parent">تعديل  المستخدم    </span></a>
+                        <a href="@Url.Action("EditUser", "Users")" title="Dashboard"><span class="menu-item-parent">تعديل  كلمة المرور    </span></a>
                     </li>
 
                 </ul>
@@ -62,6 +62,10 @@
                 <li>
                     <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i> <span class="menu-item-parent">التعريفات  </span></a>
                     <ul>
+
+                        <li>
+                            <a href="@Url.Action("Index", "Carbrands")" title="Dashboard"><span class="menu-item-parent"> الماركات     </span></a>
+                        </li>
 
                         <li>
                             <a href="@Url.Action("Index", "CarModels")" title="Dashboard"><span class="menu-item-parent"> الموديلات     </span></a>
@@ -84,32 +88,34 @@
                 </li>
             }
 
-                <li>
-                    <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-cubes"></i> <span class="menu-item-parent">المبيعات </span></a>
-                    <ul>
-                        <li>
-                            <a href="@Url.Action("index", "Invoice")" title="Dashboard"><span class="menu-item-parent">  كل الفواتير  </span></a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Create", "Invoice")" title="Dashboard"><span class="menu-item-parent">  فاتورة جديدة  </span></a>
-                        </li>
-                    </ul>
-                </li>
+            <li>
+                <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-cubes"></i> <span class="menu-item-parent">المبيعات </span></a>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("index", "Invoice")" title="Dashboard"><span class="menu-item-parent">  كل الفواتير  </span></a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Create", "Invoice")" title="Dashboard"><span class="menu-item-parent">  فاتورة جديدة  </span></a>
+                    </li>
+                </ul>
+            </li>
 
-                <li @*class="@Html.RouteIf("index", "active")"*@>
-                    <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-file-pdf-o"></i> <span class="menu-item-parent">تقارير    </span></a>
-                    <ul>
-                        <li>
+            <li @*class="@Html.RouteIf("index", "active")"*@>
+                <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-file-pdf-o"></i> <span class="menu-item-parent">تقارير    </span></a>
+                <ul>
+                    <li>
 
-                            <a href="@Url.Action("index", "Reports")" title="Dashboard"><i class="fa fa-cube"></i> <span class="menu-item-parent"> تقارير</span></a>
+                        <a href="@Url.Action("index", "Reports")" title="Dashboard"><i class="fa fa-cube"></i> <span class="menu-item-parent"> تقارير</span></a>
 
-                        </li>
+                    </li>
 
-                    </ul>
-                </li>
+                </ul>
+            </li>
 
-
-            </ul>
+            <li>
+                <a href="@Url.Action("Logout", "Users")" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong>Logout</strong></a>
+            </li>
+        </ul>
     </nav>
     <span class="minifyme" data-action="minifyMenu">
         <i class="fa fa-arrow-circle-left hit"></i>

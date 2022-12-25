@@ -1,11 +1,93 @@
 ﻿@model SmartAdminMvc.Models.InvoiceVM
 
-<fieldset>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion-2" href="#One-1" class="collapsed"> <i class="fa fa-fw fa-plus-circle txt-color-green"></i> <i class="fa fa-fw fa-minus-circle txt-color-red"></i> الاصناف  </a></h4>
+    </div>
+    <div id="One-1" class="panel-collapse collapse ">
+        <div class="panel-body">
+
+            <fieldset>
+                <div class="row">
+
+                    <section class="col col-3">
+                        <label class="label ">الصنف<span style="color:red">&nbsp;*</span></label>
+                        <select class="form-control select2" id="ItemID" name="ItemID" onchange="GetItemPrice()">
+                            <option value="-1">اختر الصنف</option>
+                        </select>
+                    </section>
+                    <section class="col col-2">
+                        <label class="label">الكميه <span style="color:red">&nbsp;*</span></label>
+                        <label class="input">
+                            <input type="number" name="Qty" id="Qty" value="1" min="0" onchange="CheckQty()">
+                        </label>
+                    </section>
+                    <section class="col col-2">
+                        <label class="label ">السعر <span style="color:red">&nbsp;*</span></label>
+                        <label class="input">
+                            <input type="text" name="Price" id="Price" min="0" disabled>
+                        </label>
+                    </section>
+
+                    <section class="col col-2">
+                        <label class="label">الخصم </label>
+                        <label class="input">
+                            <input type="number" name="ItemDiscount" id="ItemDiscount" min="0" value="0">
+                        </label>
+                    </section>
+
+                    <footer>
+                        <button type="button" onclick="AddItem();" class="btn btn-lg btn-info waves-effect waves-themed">
+                            <span class="fa fa-download"></span>
+                            إضافة
+                        </button>
+                    </footer>
+                </div>
+            </fieldset>
+
+
+            <fieldset>
+
+                <div class="row">
+                    <br />
+                    <div class="container-fluid">
+
+                        <div class="custom-scroll table-responsive" style="height:290px; overflow-y: scroll;">
+
+                            <table id="ItemTable" class="table table-striped table-bordered table-hover" width="100%">
+                                <thead>
+                                    <tr>
+
+                                        <th>#</th>
+                                        <th data-hide="phone,tablet">كود الصنف</th>
+                                        <th data-class="expand">اسم الصنف</th>
+                                        <th data-hide="phone,tablet">الكميه  </th>
+                                        <th data-hide="phone,tablet"> السعر</th>
+                                        <th data-hide="phone,tablet">  الاجمالى  </th>
+                                        <th data-hide="phone,tablet">  الخصم  </th>
+                                        <th data-hide="phone,tablet">  الصافى  </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+        </div>
+    </div>
+</div>
+
+
+@*<fieldset>
     <div class="row">
 
         <section class="col col-3">
             <label class="label ">الصنف<span style="color:red">&nbsp;*</span></label>
-            <select class="form-control select2" id="ItemID" name="ItemID"  onchange="GetItemPrice()" >
+            <select class="form-control select2" id="ItemID" name="ItemID" onchange="GetItemPrice()">
                 <option value="-1">اختر الصنف</option>
             </select>
         </section>
@@ -25,7 +107,7 @@
         <section class="col col-2">
             <label class="label">الخصم </label>
             <label class="input">
-                <input type="number" name="ItemDiscount" id="ItemDiscount" min="0" value="0" >
+                <input type="number" name="ItemDiscount" id="ItemDiscount" min="0" value="0">
             </label>
         </section>
 
@@ -39,7 +121,7 @@
 </fieldset>
 
 
-
+<fieldset>
 
     <div class="row">
         <br />
@@ -67,5 +149,5 @@
         </div>
     </div>
 
-
+</fieldset>*@
 

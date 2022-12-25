@@ -95,9 +95,11 @@ namespace SmartAdminMvc.Controllers
         {
             InvoiceVM obj = new InvoiceVM();
             ViewBag.CustomerId = new SelectList(db.Customers.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
-            ViewBag.ModelId = new SelectList(db.CarModels.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
+            ViewBag.BrandId = new SelectList(db.CarBrands.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
             ViewBag.Tax = db.Configurations.FirstOrDefault().Vat;
+            ViewBag.ModelId = 0;
             obj.ID = GetNewInvoiceNo();
+            obj.DateStr = DateTime.Now.ToString("yyyy/MM/dd");
             return View(obj);
         }
 
@@ -126,14 +128,15 @@ namespace SmartAdminMvc.Controllers
                 DBObj.Date = MasterObj.Date;
                 DBObj.CustomerId = MasterObj.CustomerId;
                 DBObj.Notes = MasterObj.Notes;
-                DBObj.CarName = MasterObj.CarName;
+     
                 DBObj.ChassisNo = MasterObj.ChassisNo;
                 DBObj.PlateNumber = MasterObj.PlateNumber;
-                DBObj.Brand = MasterObj.Brand;
+                DBObj.BrandId = MasterObj.BrandId;
                 DBObj.ModelId = MasterObj.ModelId;
                 DBObj.km = MasterObj.km;
                 DBObj.Total = MasterObj.Total;
                 DBObj.NetAmount = MasterObj.NetAmount;
+                DBObj.NetAmountWithOutTax = MasterObj.NetAmountWithOutTax;
                 DBObj.InvoiceDiscount = MasterObj.InvoiceDiscount;
                 DBObj.TotalDiscount = MasterObj.TotalDiscount;
                 DBObj.InvoiceTax = MasterObj.InvoiceTax;
@@ -153,7 +156,7 @@ namespace SmartAdminMvc.Controllers
                     db.InvoiceServices.Add(Service);
                 }
                 db.SaveChanges();
-                msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
+                msg.Status = true; msg.Message = " : تم  الحفظ بنجاح الفاتورة  رقم  " + DBObj.ID + " "; msg.MessageEng = "Done";
 
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
@@ -199,9 +202,9 @@ namespace SmartAdminMvc.Controllers
             InvoiceMaster Salesobj = db.InvoiceMasters.Where(x => x.ID == id).FirstOrDefault();
             InvoiceVM Obj = new InvoiceVM().Convert(Salesobj);
             ViewBag.CustomerId = new SelectList(db.Customers.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", Obj.CustomerId);
-            ViewBag.ModelId = new SelectList(db.CarModels.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", Obj.ModelId);
+            ViewBag.BrandId = new SelectList(db.CarBrands.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", Obj.BrandId);
             ViewBag.Tax = db.Configurations.FirstOrDefault().Vat;
-
+            ViewBag.ModelId = Obj.ModelId;
             return View(Obj);
         }
         [HttpPost]
@@ -230,14 +233,15 @@ namespace SmartAdminMvc.Controllers
                 DBObj.Date = MasterObj.Date;
                 DBObj.CustomerId = MasterObj.CustomerId;
                 DBObj.Notes = MasterObj.Notes;
-                DBObj.CarName = MasterObj.CarName;
+   
                 DBObj.ChassisNo = MasterObj.ChassisNo;
                 DBObj.PlateNumber = MasterObj.PlateNumber;
-                DBObj.Brand = MasterObj.Brand;
+                DBObj.BrandId = MasterObj.BrandId;
                 DBObj.ModelId = MasterObj.ModelId;
                 DBObj.km = MasterObj.km;
                 DBObj.Total = MasterObj.Total;
                 DBObj.NetAmount = MasterObj.NetAmount;
+                DBObj.NetAmountWithOutTax = MasterObj.NetAmountWithOutTax;
                 DBObj.InvoiceDiscount = MasterObj.InvoiceDiscount;
                 DBObj.TotalDiscount = MasterObj.TotalDiscount;
                 DBObj.InvoiceTax = MasterObj.InvoiceTax;
@@ -269,13 +273,13 @@ namespace SmartAdminMvc.Controllers
                     db.InvoiceServices.Add(Service);
                 }
                 db.SaveChanges();
-                msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
+                msg.Status = true; msg.Message = " : تم  الحفظ بنجاح الفاتورة  رقم  "+  DBObj.ID +  " "; msg.MessageEng = "Done";
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 msg.Status = false; msg.Message = "ناسف لم  يتم  الحفظ "; msg.MessageEng = "Sorry  save  Fail";
-                DbLogs.logData(_ControllerName, "EditSales", ex.Message, "    ");
+                DbLogs.logData(_ControllerName, "Edit", ex.Message, "    ");
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
         }

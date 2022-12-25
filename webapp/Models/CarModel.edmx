@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CarWorkShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CarBrand">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="CarModel">
           <Key>
             <PropertyRef Name="ID" />
@@ -12,6 +20,7 @@
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="BrandId" Type="int" />
         </EntityType>
         <EntityType Name="Configuration">
           <Key>
@@ -30,6 +39,18 @@
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Phone" Type="nvarchar(max)" />
           <Property Name="Address" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DBLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreID" Type="int" />
+          <Property Name="ControllerName" Type="nvarchar(max)" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="ActionName" Type="nvarchar(max)" />
+          <Property Name="EXMsg" Type="nvarchar(max)" />
+          <Property Name="UserMsg" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="InvoiceItems">
           <Key>
@@ -53,10 +74,9 @@
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="CarName" Type="nvarchar" MaxLength="50" />
           <Property Name="ChassisNo" Type="nvarchar" MaxLength="50" />
           <Property Name="PlateNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="Brand" Type="nvarchar" MaxLength="50" />
+          <Property Name="BrandId" Type="int" />
           <Property Name="ModelId" Type="int" Nullable="false" />
           <Property Name="km" Type="int" Nullable="false" />
           <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -66,6 +86,7 @@
           <Property Name="InvoiceTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PaidAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RemainingAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NetAmountWithOutTax" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="InvoiceServices">
           <Key>
@@ -119,6 +140,18 @@
           <Property Name="SuperAdmin" Type="bit" />
           <Property Name="StoreId" Type="int" />
         </EntityType>
+        <Association Name="FK_CarModel_CarBrand">
+          <End Role="CarBrand" Type="Self.CarBrand" Multiplicity="0..1" />
+          <End Role="CarModel" Type="Self.CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CarModel">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InvoiceItems_InvoiceMaster">
           <End Role="InvoiceMaster" Type="Self.InvoiceMaster" Multiplicity="1" />
           <End Role="InvoiceItems" Type="Self.InvoiceItems" Multiplicity="*" />
@@ -140,6 +173,18 @@
             </Principal>
             <Dependent Role="InvoiceItems">
               <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceMaster_CarBrand">
+          <End Role="CarBrand" Type="Self.CarBrand" Multiplicity="0..1" />
+          <End Role="InvoiceMaster" Type="Self.InvoiceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InvoiceMaster">
+              <PropertyRef Name="BrandId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -216,9 +261,11 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CarWorkShopModelStoreContainer">
+          <EntitySet Name="CarBrand" EntityType="Self.CarBrand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarModel" EntityType="Self.CarModel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DBLog" EntityType="Self.DBLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceItems" EntityType="Self.InvoiceItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceMaster" EntityType="Self.InvoiceMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceServices" EntityType="Self.InvoiceServices" Schema="dbo" store:Type="Tables" />
@@ -226,6 +273,10 @@
           <EntitySet Name="Stores" EntityType="Self.Stores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoresBalance" EntityType="Self.StoresBalance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CarModel_CarBrand" Association="Self.FK_CarModel_CarBrand">
+            <End Role="CarBrand" EntitySet="CarBrand" />
+            <End Role="CarModel" EntitySet="CarModel" />
+          </AssociationSet>
           <AssociationSet Name="FK_InvoiceItems_InvoiceMaster" Association="Self.FK_InvoiceItems_InvoiceMaster">
             <End Role="InvoiceMaster" EntitySet="InvoiceMaster" />
             <End Role="InvoiceItems" EntitySet="InvoiceItems" />
@@ -233,6 +284,10 @@
           <AssociationSet Name="FK_InvoiceItems_Items" Association="Self.FK_InvoiceItems_Items">
             <End Role="Items" EntitySet="Items" />
             <End Role="InvoiceItems" EntitySet="InvoiceItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceMaster_CarBrand" Association="Self.FK_InvoiceMaster_CarBrand">
+            <End Role="CarBrand" EntitySet="CarBrand" />
+            <End Role="InvoiceMaster" EntitySet="InvoiceMaster" />
           </AssociationSet>
           <AssociationSet Name="FK_InvoiceMaster_CarModel" Association="Self.FK_InvoiceMaster_CarModel">
             <End Role="CarModel" EntitySet="CarModel" />
@@ -264,9 +319,11 @@
     <edmx:ConceptualModels>
       <Schema Namespace="CarWorkShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CarWorkShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CarBrands" EntityType="CarWorkShopModel.CarBrand" />
           <EntitySet Name="CarModels" EntityType="CarWorkShopModel.CarModel" />
           <EntitySet Name="Configurations" EntityType="CarWorkShopModel.Configuration" />
           <EntitySet Name="Customers" EntityType="CarWorkShopModel.Customer" />
+          <EntitySet Name="DBLogs" EntityType="CarWorkShopModel.DBLog" />
           <EntitySet Name="InvoiceItems" EntityType="CarWorkShopModel.InvoiceItem" />
           <EntitySet Name="InvoiceMasters" EntityType="CarWorkShopModel.InvoiceMaster" />
           <EntitySet Name="InvoiceServices" EntityType="CarWorkShopModel.InvoiceService" />
@@ -274,6 +331,14 @@
           <EntitySet Name="Stores" EntityType="CarWorkShopModel.Store" />
           <EntitySet Name="StoresBalances" EntityType="CarWorkShopModel.StoresBalance" />
           <EntitySet Name="Users" EntityType="CarWorkShopModel.User" />
+          <AssociationSet Name="FK_CarModel_CarBrand" Association="CarWorkShopModel.FK_CarModel_CarBrand">
+            <End Role="CarBrand" EntitySet="CarBrands" />
+            <End Role="CarModel" EntitySet="CarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceMaster_CarBrand" Association="CarWorkShopModel.FK_InvoiceMaster_CarBrand">
+            <End Role="CarBrand" EntitySet="CarBrands" />
+            <End Role="InvoiceMaster" EntitySet="InvoiceMasters" />
+          </AssociationSet>
           <AssociationSet Name="FK_InvoiceMaster_CarModel" Association="CarWorkShopModel.FK_InvoiceMaster_CarModel">
             <End Role="CarModel" EntitySet="CarModels" />
             <End Role="InvoiceMaster" EntitySet="InvoiceMasters" />
@@ -307,6 +372,16 @@
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CarBrand">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CarModels" Relationship="CarWorkShopModel.FK_CarModel_CarBrand" FromRole="CarBrand" ToRole="CarModel" />
+          <NavigationProperty Name="InvoiceMasters" Relationship="CarWorkShopModel.FK_InvoiceMaster_CarBrand" FromRole="CarBrand" ToRole="InvoiceMaster" />
+        </EntityType>
         <EntityType Name="CarModel">
           <Key>
             <PropertyRef Name="ID" />
@@ -314,6 +389,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" />
+          <NavigationProperty Name="CarBrand" Relationship="CarWorkShopModel.FK_CarModel_CarBrand" FromRole="CarModel" ToRole="CarBrand" />
           <NavigationProperty Name="InvoiceMasters" Relationship="CarWorkShopModel.FK_InvoiceMaster_CarModel" FromRole="CarModel" ToRole="InvoiceMaster" />
         </EntityType>
         <EntityType Name="Configuration">
@@ -334,6 +411,18 @@
           <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="InvoiceMasters" Relationship="CarWorkShopModel.FK_InvoiceMaster_InvoiceMaster" FromRole="Customer" ToRole="InvoiceMaster" />
+        </EntityType>
+        <EntityType Name="DBLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreID" Type="Int32" />
+          <Property Name="ControllerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="ActionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EXMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserMsg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="InvoiceItem">
           <Key>
@@ -359,10 +448,9 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CarName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ChassisNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PlateNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" />
           <Property Name="ModelId" Type="Int32" Nullable="false" />
           <Property Name="km" Type="Int32" Nullable="false" />
           <Property Name="Total" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -372,6 +460,8 @@
           <Property Name="InvoiceTax" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="PaidAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="RemainingAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="NetAmountWithOutTax" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="CarBrand" Relationship="CarWorkShopModel.FK_InvoiceMaster_CarBrand" FromRole="InvoiceMaster" ToRole="CarBrand" />
           <NavigationProperty Name="CarModel" Relationship="CarWorkShopModel.FK_InvoiceMaster_CarModel" FromRole="InvoiceMaster" ToRole="CarModel" />
           <NavigationProperty Name="Customer" Relationship="CarWorkShopModel.FK_InvoiceMaster_InvoiceMaster" FromRole="InvoiceMaster" ToRole="Customer" />
           <NavigationProperty Name="InvoiceItems" Relationship="CarWorkShopModel.FK_InvoiceItems_InvoiceMaster" FromRole="InvoiceMaster" ToRole="InvoiceItem" />
@@ -437,6 +527,30 @@
           <Property Name="StoreId" Type="Int32" />
           <NavigationProperty Name="Store" Relationship="CarWorkShopModel.FK_Users_Stores" FromRole="User" ToRole="Store" />
         </EntityType>
+        <Association Name="FK_CarModel_CarBrand">
+          <End Type="CarWorkShopModel.CarBrand" Role="CarBrand" Multiplicity="0..1" />
+          <End Type="CarWorkShopModel.CarModel" Role="CarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CarModel">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceMaster_CarBrand">
+          <End Type="CarWorkShopModel.CarBrand" Role="CarBrand" Multiplicity="0..1" />
+          <End Type="CarWorkShopModel.InvoiceMaster" Role="InvoiceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarBrand">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InvoiceMaster">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InvoiceMaster_CarModel">
           <End Type="CarWorkShopModel.CarModel" Role="CarModel" Multiplicity="1" />
           <End Type="CarWorkShopModel.InvoiceMaster" Role="InvoiceMaster" Multiplicity="*" />
@@ -539,9 +653,19 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CarWorkShopModelStoreContainer" CdmEntityContainer="CarWorkShopEntities">
+          <EntitySetMapping Name="CarBrands">
+            <EntityTypeMapping TypeName="CarWorkShopModel.CarBrand">
+              <MappingFragment StoreEntitySet="CarBrand">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CarModels">
             <EntityTypeMapping TypeName="CarWorkShopModel.CarModel">
               <MappingFragment StoreEntitySet="CarModel">
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -568,6 +692,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DBLogs">
+            <EntityTypeMapping TypeName="CarWorkShopModel.DBLog">
+              <MappingFragment StoreEntitySet="DBLog">
+                <ScalarProperty Name="UserMsg" ColumnName="UserMsg" />
+                <ScalarProperty Name="EXMsg" ColumnName="EXMsg" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="InvoiceItems">
             <EntityTypeMapping TypeName="CarWorkShopModel.InvoiceItem">
               <MappingFragment StoreEntitySet="InvoiceItems">
@@ -586,6 +723,7 @@
           <EntitySetMapping Name="InvoiceMasters">
             <EntityTypeMapping TypeName="CarWorkShopModel.InvoiceMaster">
               <MappingFragment StoreEntitySet="InvoiceMaster">
+                <ScalarProperty Name="NetAmountWithOutTax" ColumnName="NetAmountWithOutTax" />
                 <ScalarProperty Name="RemainingAmount" ColumnName="RemainingAmount" />
                 <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
                 <ScalarProperty Name="InvoiceTax" ColumnName="InvoiceTax" />
@@ -595,10 +733,9 @@
                 <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="km" ColumnName="km" />
                 <ScalarProperty Name="ModelId" ColumnName="ModelId" />
-                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
                 <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
                 <ScalarProperty Name="ChassisNo" ColumnName="ChassisNo" />
-                <ScalarProperty Name="CarName" ColumnName="CarName" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />

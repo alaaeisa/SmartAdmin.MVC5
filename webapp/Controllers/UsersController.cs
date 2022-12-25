@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 //using SmartAdminMvc.App_Helpers;
 using SmartAdminMvc.Models;
 //using SmartAdminMvc.MvcCommon;
@@ -16,12 +17,64 @@ namespace SmartAdminMvc.Controllers
 {
     public class UsersController : Controller
     {
+
+        string _ControllerName = "Users";
+        NotificationMessage msg = new NotificationMessage();
         SessionMange _sessionMange = new SessionMange();
         CarWorkShopEntities db = new CarWorkShopEntities();
+        NotificationMessage ReturnMsg = new NotificationMessage();
+
+
+        #region  index 
         public ActionResult Index()
         {
             return View();
         }
+
+        public ActionResult LoadDataTable()
+        {
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+
+                var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = "desc";
+
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+                // var varData = db.Customers.ToList().AsEnumerable();
+
+                var varData = db.Users.Select(x => new SearchVM { ID = x.UserId, Name = x.UserName, Phone = x.Phone }).ToList().AsEnumerable();
+                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+                {
+                    //  varData = varData.OrderBy(x => x.d_doc_date);
+                }
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    varData = varData.Where(m => m.Name.Contains(searchValue) || m.ID.ToString().Contains(searchValue));
+                    // varData = varData.Where(m=>m.n_document_no==1);
+                }
+                //total number of rows count     
+                recordsTotal = varData.Count();
+                //Paging  
+                var data = varData.Skip(skip).Take(pageSize).ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                return Json(data: "Fail", behavior: JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region  Log IN  function 
         public ActionResult UserLogin()
         {
             // Session.Abandon();
@@ -79,33 +132,130 @@ namespace SmartAdminMvc.Controllers
                 return RedirectToAction("UserNotFound", "Users");
             }
         }
-        public ActionResult  CreateUser()
+        public ActionResult UserNotFound()
         {
-            ViewBag.StoreId = new SelectList(db.Stores.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
-            int UserIDNo = db.Users.Max(p => p.UserId);
-            ViewBag.UserID = UserIDNo + 1;
+            Session.Abandon();
             return View();
         }
-       
+        #endregion
 
-        public JsonResult AddUser(string master)
+
+        #region  Create  
+
+
+        int GetNewNo()
         {
+            int NewtypeId = 1;
             try
             {
-                System.Web.Script.Serialization.JavaScriptSerializer serilizer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                User MasterObj = serilizer.Deserialize<User>(master);
-                 db.Users.Add(MasterObj);
+                int? ItemID = db.Users.Max(p => p.UserId);
+                NewtypeId = (int)ItemID + 1;
+            }
+            catch (Exception)
+            {
+                NewtypeId = 1;
+            }
+
+            return NewtypeId;
+        }
+        public ActionResult Create()
+        {
+            ViewBag.StoreId = new SelectList(db.Stores.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
+            User Obj = new User();
+            Obj.UserId = GetNewNo();
+            return View(Obj);
+        }
+     
+        [HttpPost]
+        public JsonResult Create(User MasterObj)
+        {
+
+            try
+            {
+               
+                db.Users.Add(MasterObj);
                 db.SaveChanges();
-                return Json(data: Url.Action("index", "Home"), behavior: JsonRequestBehavior.AllowGet);
+                msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
+                return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(data: "Fail", behavior: JsonRequestBehavior.AllowGet);
+                msg.Status = false; msg.Message = "ناسف لم  يتم  الحفظ "; msg.MessageEng = "Sorry  save  Fail";
+                DbLogs.logData(_ControllerName, "CreateCustomer", ex.Message, "    ");
+                return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+
+        #region  edit
+
+
+        public ActionResult Edit(int id)
+        {
+            User obj = db.Users.Where(x => x.UserId == id).FirstOrDefault();
+            ViewBag.StoreId = new SelectList(db.Stores.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", obj.StoreId);
+            return View(obj);
+        }
+        [HttpPost]
+        public JsonResult Edit(User MasterObj)
+        {
+
+            try
+            {
+
+                User _DbObj = new User();
+                _DbObj = db.Users.Where(x => x.UserId == MasterObj.UserId).FirstOrDefault();
+                _DbObj.UserName = MasterObj.UserName;
+                _DbObj.SuperAdmin = MasterObj.SuperAdmin;
+                _DbObj.Phone = MasterObj.Phone;
+                _DbObj.StoreId = MasterObj.StoreId;
+                _DbObj.PassWord = MasterObj.PassWord;
+                db.Entry(_DbObj).State = EntityState.Modified;
+                db.SaveChanges();
+                msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
+                return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                msg.Status = false; msg.Message = "ناسف لم  يتم  الحفظ "; msg.MessageEng = "Sorry  save  Fail";
+                DbLogs.logData(_ControllerName, "EditCustomer", ex.Message, "    ");
+                return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
         }
 
 
-        #region  edit
+
+        #endregion
+
+        #region delete
+        public ActionResult Delete(int ID)
+        {
+            NotificationMessage ReturnMsg = new NotificationMessage();
+            try
+            {
+                var _obj = db.Users.Where(X => X.UserId == ID).FirstOrDefault();
+                db.Users.Remove(_obj);
+                db.SaveChanges();
+                ReturnMsg.Status = true; ReturnMsg.Message = "done";
+                return Json(data: ReturnMsg, behavior: JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ReturnMsg.Status = false; ReturnMsg.Message = "done";
+                DbLogs.logData(_ControllerName, "Delete", ex.Message, "    ");
+                return Json(data: ReturnMsg, behavior: JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
+        #endregion
+
+        #region  editMy Account 
 
 
         public ActionResult EditUser()
@@ -145,10 +295,6 @@ namespace SmartAdminMvc.Controllers
      
 
         #endregion
-        public ActionResult UserNotFound()
-        {
-            Session.Abandon();
-            return View();
-        }
+
     }
 }

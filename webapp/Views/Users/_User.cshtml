@@ -1,0 +1,54 @@
+﻿
+
+    @model SmartAdminMvc.Models.User
+
+    <fieldset>
+        <div class="row">
+
+            <section class="col col-3">
+                <label class="label "> رقم  المستخدم   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="UserId" id="UserId" value="@Model.UserId" readonly>
+                </label>
+            </section>
+
+            <section class="col col-3">
+                <label class="label ">اسم المستخدم   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="UserName" id="UserName" value="@Model.UserName">
+                </label>
+            </section>
+
+            <section class="col col-3">
+                <label class="label "> الجوال   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="text" name="Phone" id="Phone" value="@Model.Phone">
+                </label>
+            </section>
+            <section class="col col-3">
+                <label class="label "> الرقم السرى   <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    <input type="password" name="PassWord" id="PassWord" value="@Model.PassWord">
+                </label>
+            </section>
+            <section class="col col-3">
+                <label class="label"> المخزن <span style="color:red">&nbsp;*</span></label>
+                <label class="input">
+                    @Html.DropDownList("StoreId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "ModelId", @onchange = "" })
+                </label>
+            </section>
+            <section class="col col-6">
+                <label class="label">    </label>
+                <div class="inline-group">
+
+                    <label class="checkbox">
+                        <input type="checkbox" name="SuperAdmin" id="SuperAdmin" checked="@Model.SuperAdmin">
+                        <i></i> Super Admin
+                    </label>
+
+                </div>
+            </section>
+
+        </div>
+
+    </fieldset>

@@ -12,20 +12,21 @@ namespace SmartAdminMvc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CarModel
+    public partial class CarBrand
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CarModel()
+        public CarBrand()
         {
+            this.CarModels = new HashSet<CarModel>();
             this.InvoiceMasters = new HashSet<InvoiceMaster>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
         public string Notes { get; set; }
-        public Nullable<int> BrandId { get; set; }
     
-        public virtual CarBrand CarBrand { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CarModel> CarModels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceMaster> InvoiceMasters { get; set; }
     }

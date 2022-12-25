@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = " الموديلات  ";
+    ViewBag.Title = " الماركات  ";
 }
 
 
@@ -18,7 +18,7 @@
 
              
                 <div class="glyphicon-align-center ">
-                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "CarModels")" title="">
+                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "CarBrands")" title="">
                         <span class="btn-label"><i class="fa fa-money"></i></span>
                         انشاء  جديد
                     </a>
@@ -69,9 +69,9 @@
 
     <script type="text/javascript">
        var formId = "smart-form";
-        var findUrl = "@Url.Action("LoadDataTable", "CarModels")";
-        var EditUrl = "@Url.Action("Edit", "CarModels")";
-           var DeleteUrl = "@Url.Action("Delete", "CarModels")";
+        var findUrl = "@Url.Action("LoadDataTable", "CarBrands")";
+        var EditUrl = "@Url.Action("Edit", "CarBrands")";
+          var DeleteUrl = "@Url.Action("Delete", "CarBrands")";
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },

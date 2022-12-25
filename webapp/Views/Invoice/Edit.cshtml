@@ -15,7 +15,6 @@
                     <div class="widget-body no-padding">
                         <form id="smartform" class="smart-form">
 
-                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
                             @{Html.RenderPartial("~/Views/Invoice/_Master.cshtml");}
                             @{Html.RenderPartial("~/Views/Invoice/_Details.cshtml");}
                             @{Html.RenderPartial("~/Views/Invoice/_ServiceDetails.cshtml");}
@@ -47,7 +46,8 @@
              var Services = @Html.Raw(Json.Encode(Model.Services));
              DetailsList_Service = Services;
              DrawTable_Service(Services);
-             LoadItemData();
+             LoadModelData();
+           
         });
 </script>
 }

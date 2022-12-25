@@ -1500,29 +1500,20 @@
     <Content Include="Views\Home\_Master.cshtml" />
     <Content Include="Views\Home\_Details.cshtml" />
     <Content Include="Views\Users\UserNotFound.cshtml" />
-    <Content Include="Views\Sales\CreateSalesInvoice.cshtml" />
-    <Content Include="Views\Sales\_Details.cshtml" />
-    <Content Include="Views\Sales\_Master.cshtml" />
-    <Content Include="Views\Users\CreateUser.cshtml" />
     <Content Include="Views\Home\oldindex.cshtml" />
-    <Content Include="Views\Sales\Index.cshtml" />
-    <Content Include="Views\Sales\EditSales.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Users\EditUser.cshtml" />
     <Content Include="Views\Customer\CreateCustomer.cshtml" />
     <Content Include="Views\Customer\EditCustomer.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
-    <Content Include="Views\Sales\_CalcArea.cshtml" />
     <Content Include="Views\Shared\_MYScript.cshtml" />
     <Content Include="Views\Customer\_Customer.cshtml" />
     <Content Include="Views\Shared\_ItemData.cshtml" />
     <Content Include="Views\Shared\_BtnSave.cshtml" />
-    <Content Include="Views\Sales\_SalesScript.cshtml" />
     <Content Include="Views\Items\_item.cshtml" />
     <Content Include="Views\Settings\EditConfig.cshtml" />
     <Content Include="Views\Users\UserLoginff.cshtml" />
-    <Content Include="Views\Sales\_ShowBill.cshtml" />
     <Content Include="Views\Shared\_PrintModal.cshtml" />
     <Content Include="Views\Invoice\Create.cshtml" />
     <Content Include="Views\Invoice\_Master.cshtml" />
@@ -1547,6 +1538,14 @@
     <Content Include="Views\StoresBalances\Create.cshtml" />
     <Content Include="Views\StoresBalances\_Details.cshtml" />
     <Content Include="Views\StoresBalances\_INVScript.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\_User.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\CarBrands\_CarBrand.cshtml" />
+    <Content Include="Views\CarBrands\Create.cshtml" />
+    <Content Include="Views\CarBrands\Edit.cshtml" />
+    <Content Include="Views\CarBrands\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1571,6 +1570,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Helpers\Settings.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CarBrandsController.cs" />
     <Compile Include="Controllers\CarModelsController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -1587,6 +1588,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CarBrand.cs">
+      <DependentUpon>CarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CarModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1611,6 +1615,9 @@
     </Compile>
     <Compile Include="Models\Cookies.cs" />
     <Compile Include="Models\Customer.cs">
+      <DependentUpon>CarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBLog.cs">
       <DependentUpon>CarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DbLogs.cs" />
@@ -1646,8 +1653,10 @@
     <Compile Include="SessionMange.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Attachment\" />
     <Folder Include="Content\img\realestate\thumbs\" />
     <Folder Include="Report\" />
+    <Folder Include="Views\BaseController\" />
     <Folder Include="Views\Dashboard\" />
   </ItemGroup>
   <ItemGroup>

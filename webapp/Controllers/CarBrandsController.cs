@@ -8,15 +8,32 @@ using System.Web.Mvc;
 
 namespace SmartAdminMvc.Controllers
 {
-    public class CarModelsController : Controller
+    public class CarBrandsController : Controller
     {
-        // GET: CarModels
-
+        // GET: CarBrands
         NotificationMessage msg = new NotificationMessage();
         SessionMange _sessionMange = new SessionMange();
         CarWorkShopEntities db = new CarWorkShopEntities();
-        string _ControllerName = "CarModels";
+        string _ControllerName = "CarBrands";
+        
 
+        public JsonResult GetModelData(int BrandId)
+        {
+
+            var lst = new List<DropDownDataDTO>();
+            var query = db.CarModels.Where(x=>x.BrandId == BrandId).ToList();
+
+            foreach (var item in query)
+            {
+               
+                    var Obj = new DropDownDataDTO();
+                    Obj.ID = item.ID;
+                    Obj.Name = item.Name;
+                    lst.Add(Obj);
+            }
+
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
         #region  index 
         public ActionResult Index()
         {
@@ -38,7 +55,7 @@ namespace SmartAdminMvc.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var varData = db.CarModels.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Notes = x.Notes }).ToList().AsEnumerable();
+                var varData = db.CarBrands.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Notes = x.Notes }).ToList().AsEnumerable();
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
                 {
                     //  varData = varData.OrderBy(x => x.d_doc_date);
@@ -71,7 +88,7 @@ namespace SmartAdminMvc.Controllers
             int NewtypeId = 1;
             try
             {
-                int? ItemID = db.CarModels.Max(p => p.ID);
+                int? ItemID = db.CarBrands.Max(p => p.ID);
                 NewtypeId = (int)ItemID + 1;
             }
             catch (Exception)
@@ -85,20 +102,18 @@ namespace SmartAdminMvc.Controllers
         public ActionResult Create()
         {
 
-            CarModel obj = new CarModel();
+            CarBrand obj = new CarBrand();
             obj.ID = GetNewId();
-            ViewBag.BrandId = new SelectList(db.CarBrands.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name");
-           
             return View(obj);
         }
         [HttpPost]
-        public JsonResult Create(CarModel MasterObj)
+        public JsonResult Create(CarBrand MasterObj)
         {
 
             try
             {
 
-                db.CarModels.Add(MasterObj);
+                db.CarBrands.Add(MasterObj);
                 db.SaveChanges();
                 msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
@@ -115,20 +130,19 @@ namespace SmartAdminMvc.Controllers
 
         public ActionResult Edit(int id)
         {
-            CarModel obj = db.CarModels.Where(x => x.ID == id).FirstOrDefault();
-            ViewBag.BrandId = new SelectList(db.CarBrands.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", obj.BrandId);
+            CarBrand obj = db.CarBrands.Where(x => x.ID == id).FirstOrDefault();
             return View(obj);
         }
         [HttpPost]
-        public JsonResult Edit(CarModel MasterObj)
+        public JsonResult Edit(Item MasterObj)
         {
             try
             {
-                CarModel _DbObj = new CarModel();
-                _DbObj = db.CarModels.Where(x => x.ID == MasterObj.ID).FirstOrDefault();
+                CarBrand _DbObj = new CarBrand();
+                _DbObj = db.CarBrands.Where(x => x.ID == MasterObj.ID).FirstOrDefault();
                 _DbObj.Name = MasterObj.Name;
                 _DbObj.Notes = MasterObj.Notes;
-                _DbObj.BrandId = MasterObj.BrandId;
+              
 
                 db.Entry(_DbObj).State = EntityState.Modified;
                 db.SaveChanges();
@@ -155,8 +169,8 @@ namespace SmartAdminMvc.Controllers
             NotificationMessage ReturnMsg = new NotificationMessage();
             try
             {
-                var _obj = db.CarModels.Where(X => X.ID == ID).FirstOrDefault();
-                db.CarModels.Remove(_obj);
+                var _obj = db.CarBrands.Where(X => X.ID == ID).FirstOrDefault();
+                db.CarBrands.Remove(_obj);
                 db.SaveChanges();
                 ReturnMsg.Status = true; ReturnMsg.Message = "done";
                 return Json(data: ReturnMsg, behavior: JsonRequestBehavior.AllowGet);

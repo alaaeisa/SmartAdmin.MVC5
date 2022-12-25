@@ -25,10 +25,9 @@ namespace SmartAdminMvc.Models
         public System.DateTime Date { get; set; }
         public int CustomerId { get; set; }
         public string Notes { get; set; }
-        public string CarName { get; set; }
         public string ChassisNo { get; set; }
         public string PlateNumber { get; set; }
-        public string Brand { get; set; }
+        public Nullable<int> BrandId { get; set; }
         public int ModelId { get; set; }
         public int km { get; set; }
         public decimal Total { get; set; }
@@ -38,7 +37,9 @@ namespace SmartAdminMvc.Models
         public decimal InvoiceTax { get; set; }
         public decimal PaidAmount { get; set; }
         public decimal RemainingAmount { get; set; }
+        public decimal NetAmountWithOutTax { get; set; }
     
+        public virtual CarBrand CarBrand { get; set; }
         public virtual CarModel CarModel { get; set; }
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

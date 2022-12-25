@@ -1,7 +1,7 @@
 ﻿@model SmartAdminMvc.Models.User
 
 @{
-    ViewBag.Title = "  المستخدمين   ";
+    ViewBag.Title = "  تعديل كلمة المرور   ";
 }
 
 
@@ -21,13 +21,13 @@
 
                             <fieldset>
                                 <div class="row">
-                                    <section class="col col-3">
+                                    <section class="col col-3"  hidden>
                                         <label class="label "> كود المستخدم     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
                                             <input type="text" name="UserId" id="UserId" value="@Model.UserId" readonly>
                                         </label>
                                     </section>
-                                    <section class="col col-3">
+                                    <section class="col col-3"  hidden>
                                         <label class="label ">اسم المستخدم     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
                                             <input type="text" name="UserName" id="UserName" value="@Model.UserName">
@@ -37,15 +37,15 @@
                                     <section class="col col-3">
                                         <label class="label "> كلمه المرور     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
-                                            <input type="text" name="PassWord" id="PassWord" value="@Model.PassWord">
+                                            <input type="password" name="PassWord" id="PassWord" value="@Model.PassWord">
                                         </label>
                                     </section>
-                                    <section class="col col-3">
+                                    @*<section class="col col-3">
                                         <label class="label"> المخزن <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
                                             @Html.DropDownList("StoreId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "ModelId", @onchange = "" })
                                         </label>
-                                    </section>
+                                    </section>*@
 
 
                                 </div>

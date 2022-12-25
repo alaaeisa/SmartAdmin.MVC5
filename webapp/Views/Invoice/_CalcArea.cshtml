@@ -14,10 +14,21 @@
             <label for="exampletext"> اجمالة الخصم   </label>
             <input type="text" readonly class="form-control" id="TotalDiscount" name="TotalDiscount" placeholder="اجمالى الخصم" value="@Model.TotalDiscount">
         </section>
-        <section class="col-md-2">
-            <label for="exampletext"> اجمالى الضريبه   </label>
-            <input type="text" readonly class="form-control" id="InvoiceTax" name="InvoiceTax" placeholder="اجمالى الضريبه" value="@Model.InvoiceTax">
-        </section>
+
+        @if (ViewBag.Tax != 0)
+        {
+            <section class="col-md-2">
+                <label for="exampletext">   الصافى بدون  الضريبة    </label>
+                <input type="text" readonly class="form-control" id="NetAmountWithOutTax" name="NetAmountWithOutTax" placeholder="الصافى بدون  الضريبة " value="@Model.NetAmountWithOutTax">
+            </section>
+
+            <section class="col-md-2">
+                <label for="exampletext">  الضريبه   </label>
+                <input type="text" readonly class="form-control" id="InvoiceTax" name="InvoiceTax" placeholder=" الضريبه" value="@Model.InvoiceTax">
+            </section>
+
+
+        }
 
         <section class="col-md-2">
             <label for="exampletext"> الصافى   </label>
@@ -26,7 +37,7 @@
 
         <section class="col-md-2">
             <label for="exampletext"> المدفوع    </label>
-            <input type="number"  class="form-control" id="PaidAmount" name="PaidAmount" onchange="CalcRemainingAmount()" placeholder="المدفوع" value="@Model.PaidAmount">
+            <input type="number" class="form-control" id="PaidAmount" name="PaidAmount" onchange="CalcRemainingAmount()" placeholder="المدفوع" value="@Model.PaidAmount">
         </section>
 
         <section class="col-md-2">

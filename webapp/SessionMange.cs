@@ -14,15 +14,17 @@ namespace SmartAdminMvc
         {
             get
             {
-                if (Cookies.get_UserID() != null || Cookies.get_UserID() != "0")
+                
+                 var _UserID = Cookies.get_UserID();
+                if (!string.IsNullOrEmpty(_UserID) && _UserID != "0" )
                 {
-                    return int.Parse(Cookies.get_UserID());
+                    return int.Parse(_UserID);
                 }
 
                 else
                 {
                     HttpContext.Current.Response.Redirect(_loginUrl, true);
-                    return 0;
+                   return 0;
                 }
 
             }
@@ -40,9 +42,10 @@ namespace SmartAdminMvc
         {
             get
             {
-                if (Cookies.get_StoreID() != null || Cookies.get_StoreID() != "0")
+                var _StoreID = Cookies.get_StoreID();
+                if (!string.IsNullOrEmpty(_StoreID) && _StoreID != "0")
                 {
-                    return int.Parse(Cookies.get_StoreID());
+                    return int.Parse(_StoreID);
                 }
                 else
                 {

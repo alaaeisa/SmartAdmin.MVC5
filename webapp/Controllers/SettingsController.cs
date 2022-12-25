@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SmartAdminMvc.Controllers
 {
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
         SessionMange _sessionMange = new SessionMange();
         CarWorkShopEntities db = new CarWorkShopEntities();
@@ -35,7 +35,8 @@ namespace SmartAdminMvc.Controllers
                 _DbObj = db.Configurations.FirstOrDefault();
                 _DbObj.Vat = FormDataObj.Vat;
                 _DbObj.CompanyName = FormDataObj.CompanyName;
-                _DbObj.Logo = FormDataObj.Logo;
+                string _FileName = UploadFile();
+                _DbObj.Logo = _FileName;
 
                 db.Entry(_DbObj).State = EntityState.Modified;
                 db.SaveChanges();
