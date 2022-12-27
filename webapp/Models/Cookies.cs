@@ -26,6 +26,23 @@ namespace SmartAdminMvc.Models
             return name;
         }
 
+        public static void setCompLogo(string val)
+        {
+            HttpContext.Current.Response.Cookies.Remove("CompLogo");
+            HttpCookie cookie = new HttpCookie("CompLogo");
+            cookie["name"] = HttpUtility.UrlEncode(val);
+            cookie.Expires = DateTime.Now.AddDays(30d);
+            HttpContext.Current.Response.Cookies.Add(cookie);
+        }
+        public static string getCompLogo()
+        {
+            string name = string.Empty;
+            HttpCookie langauge = System.Web.HttpContext.Current.Request.Cookies.Get("CompLogo");
+            if (langauge == null) return "0";
+            name = langauge["name"];
+            return name;
+        }
+        
         public static void set_UserName(string val)
         {
             HttpContext.Current.Response.Cookies.Remove("UserName");

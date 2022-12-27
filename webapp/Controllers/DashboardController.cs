@@ -43,7 +43,7 @@ namespace SmartAdminMvc.Controllers
             {
                
                // var _items = db.Items.Where(z => z.CompanyID == _sessionMange.CompId && z.Is_Unbalance == true).Select(X => X).ToList();
-                var _items = db.Items.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Price = x.Price??0 }).ToList();
+                var _items = db.Items.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Price = x.Price }).ToList();
               
                 var jsonData = new
                 {

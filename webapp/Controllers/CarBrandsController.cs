@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Razor.Tokenizer;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace SmartAdminMvc.Controllers
 {
@@ -186,5 +190,52 @@ namespace SmartAdminMvc.Controllers
 
         }
         #endregion
+
+
+
+        public ActionResult CreateExcel()
+        {
+           
+            var table = new System.Data.DataTable("ExceFile");
+           
+
+            var data = db.CarBrands.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Notes = x.Notes }).ToList().AsEnumerable();
+            table.Columns.Add("الكود", typeof(int));
+            table.Columns.Add("الاسم", typeof(string));
+            table.Columns.Add("الملاحظات", typeof(string));
+            foreach (var item in data)
+            {
+                table.Rows.Add(item.ID, item.Name, item.Notes);
+            }
+
+            var style = new Style();
+            style.BorderStyle = BorderStyle.None;
+            style.Font.Size = FontUnit.Medium;
+            style.BorderWidth = Unit.Empty;
+
+            var grid = new GridView();
+            grid.DataSource = table;
+            grid.DataBind();
+            grid.ApplyStyle(style);
+            Response.ClearContent();
+            Response.Buffer = true;
+
+            string filname = "ExceFile.xls";
+            Response.AddHeader("content-disposition", "attachment;filename =" + filname);
+            Response.ContentType = "application/ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter htw = new HtmlTextWriter(sw))
+                {
+                    grid.RenderControl(htw);
+                    Response.Write(sw.ToString());
+                    Response.End();
+                }
+            }
+
+            return View();
+        }
     }
 }

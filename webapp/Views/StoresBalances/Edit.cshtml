@@ -17,7 +17,7 @@
 
                             @{Html.RenderPartial("~/Views/StoresBalances/_Master.cshtml");}
                             @{Html.RenderPartial("~/Views/StoresBalances/_Details.cshtml");}
-                            @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
+                            @*@{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}*@
 
                         </form>
                     </div>
@@ -28,15 +28,18 @@
 </section>
 @section pagespecific {
     @Html.Partial("_INVScript")
-    <script type="text/javascript">
+<script type="text/javascript">
 
        var saveUrl = '@Url.Action("Create", "StoresBalances")';
         var redirectUrl = '@Url.Action("index", "StoresBalances")';
 
          $(document).ready(function () {
-            
+
              LoadItemData();
-             DrawTable(null);
+          
+               var Items = @Html.Raw(Json.Encode(Model.BalanceItems));
+             DetailsList = Items;
+             DrawTable(Items);
         });
-    </script>
+</script>
 }

@@ -1,8 +1,8 @@
 ﻿
-@model SmartAdminMvc.Models.Item
+@model SmartAdminMvc.Models.ItemCategory
 
 @{
-    ViewBag.Title = " الاصناف   ";
+    ViewBag.Title = " تصنيفات الاصناف  ";
 }
 
 <section id="widget-grid" class="">
@@ -36,7 +36,7 @@
 
 
                         <form action="" id="smartform" class="smart-form">
-                            @{Html.RenderPartial("~/Views/Items/_Item.cshtml");}
+                            @{Html.RenderPartial("~/Views/ItemCategories/_Category.cshtml");}
                             @{Html.RenderPartial("~/Views/shared/_btnSave.cshtml");}
                         </form>
 
@@ -58,8 +58,8 @@
 @section pagespecific {
 
     <script type="text/javascript">
-               var saveUrl = '@Url.Action("Edit", "Items")';
-        var redirectUrl = '@Url.Action("index", "Items")';
+               var saveUrl = '@Url.Action("Edit", "ItemCategories")';
+        var redirectUrl = '@Url.Action("index", "ItemCategories")';
         function ValidLogicData() {
             return true;
 
@@ -70,28 +70,22 @@
 
             // Rules for form validation
             rules:
-            {
+                {
 
-                ID: {
-                    required: true
+                    ID: {
+                        required: true
+                    },
+                    Name: {
+                        required: true
+                    }
+
+
                 },
-                Name: {
-                    required: true
-                },
-                Price: {
-                    required: true
-                }
-
-
-            },
             messages: {
                 ID: {
                     required: 'الرجاء ادخال قيمه'
                 },
                 Name: {
-                    required: 'الرجاء ادخال قيمه'
-                },
-                Price: {
                     required: 'الرجاء ادخال قيمه'
                 }
 
@@ -124,11 +118,7 @@
     $(document).ready(function () {
 
         ValidateForm();
-           var  supids='@Model.CarModelsIDs';
 
-           $.each(supids.split(","), function (i, e) {
-               $("#CarModelsIDs option[value='" + e + "']").prop("selected", true);
-           });
     });
 
 

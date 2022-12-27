@@ -22,6 +22,10 @@
                         <span class="btn-label"><i class="fa fa-money"></i></span>
                         انشاء  جديد
                     </a>
+                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "Stores")" title="">
+                        <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>
+                        تحميل اكسيل
+                    </a>
                 </div>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -70,14 +74,15 @@
     <script type="text/javascript">
        var formId = "smart-form";
         var findUrl = "@Url.Action("LoadDataTable", "Stores")";
-          var  EditUrl = "@Url.Action("Edit", "Stores")";
+        var EditUrl = "@Url.Action("Edit", "Stores")";
+           var DeleteUrl = "@Url.Action("Delete", "Stores")";
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },
         ];
                   loadcolumns.push({
             title: "الخيارات", render: function (data, type, full, meta) {
-                          return DataTableOperation(false, false, full.ID);
+                          return DataTableOperation(false, true, full.ID);
 
             }
         });

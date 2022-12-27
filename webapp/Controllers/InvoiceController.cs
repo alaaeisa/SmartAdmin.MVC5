@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace SmartAdminMvc.Controllers
 {
@@ -48,7 +51,7 @@ namespace SmartAdminMvc.Controllers
                 int recordsTotal = 0;
                 var varData = db.InvoiceMasters.ToList().AsEnumerable();
                 //  var varData = db.InvoiceMasters.Select(x => new InvoiceVM().Convert(x,true)).ToList().AsEnumerable(); 
-
+                varData = varData.OrderByDescending(x => x.ID);
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
                 {
                     //  varData = varData.OrderBy(x => x.d_doc_date);
@@ -73,6 +76,59 @@ namespace SmartAdminMvc.Controllers
                 return Json(data: "Fail", behavior: JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult CreateExcel()
+        {
+
+            var table = new System.Data.DataTable("ExceFile");
+
+            var data = db.InvoiceMasters.ToList();
+            var varData = data.Select(x => new InvoiceVM().Convert(x, true)).ToList();
+            table.Columns.Add("الكود", typeof(int));
+            table.Columns.Add("التاريخ", typeof(string));
+            table.Columns.Add("العميل", typeof(string));
+            table.Columns.Add("رقم اللوحة", typeof(string));
+            table.Columns.Add("الموبايل", typeof(string));
+            table.Columns.Add("الماركة", typeof(string));
+            table.Columns.Add("الموديل", typeof(string));
+            table.Columns.Add("الصافى", typeof(decimal));
+            table.Columns.Add("ملاحظات", typeof(string));
+
+        
+
+            foreach (var item in varData)
+            {
+                table.Rows.Add(item.ID, item.DateStr, item.CustomerName, item.PlateNumber, item.CustomerPhone, item.BrandName, item.ModelName, item.NetAmount, item.Notes);
+            }
+
+            var style = new Style();
+            style.BorderStyle = BorderStyle.None;
+            style.Font.Size = FontUnit.Medium;
+            style.BorderWidth = Unit.Empty;
+
+            var grid = new GridView();
+            grid.DataSource = table;
+            grid.DataBind();
+            grid.ApplyStyle(style);
+            Response.ClearContent();
+            Response.Buffer = true;
+
+            string filname = "ExceFile.xls";
+            Response.AddHeader("content-disposition", "attachment;filename =" + filname);
+            Response.ContentType = "application/ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter htw = new HtmlTextWriter(sw))
+                {
+                    grid.RenderControl(htw);
+                    Response.Write(sw.ToString());
+                    Response.End();
+                }
+            }
+            return View();
+        }
         #endregion
 
         #region Add
@@ -81,7 +137,7 @@ namespace SmartAdminMvc.Controllers
             int NewtypeId = 1;
             try
             {
-                int? ItemID = db.InvoiceItems.Max(p => p.ID);
+                int? ItemID = db.InvoiceMasters.Max(p => p.ID);
                 NewtypeId = (int)ItemID + 1;
             }
             catch (Exception)
@@ -150,10 +206,14 @@ namespace SmartAdminMvc.Controllers
                     msg.Status = false; msg.Message = ReturnMsg.Message; msg.MessageEng = "Sorry  save  Fail";
                     return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
                 }
+               var _NewServiceId =  GetNewServiceId();
+                int Count = 0;
                 foreach (InvoiceService Service in Details_Service)
                 {
                     Service.InvoiceID = DBObj.ID;
+                    Service.ID = _NewServiceId + Count;
                     db.InvoiceServices.Add(Service);
+                    Count++;
                 }
                 db.SaveChanges();
                 msg.Status = true; msg.Message = " : تم  الحفظ بنجاح الفاتورة  رقم  " + DBObj.ID + " "; msg.MessageEng = "Done";
@@ -163,7 +223,7 @@ namespace SmartAdminMvc.Controllers
             catch (Exception ex)
             {
                 msg.Status = false; msg.Message = "ناسف لم  يتم  الحفظ "; msg.MessageEng = "Sorry  save  Fail";
-                DbLogs.logData(_ControllerName, "CreateSalesInvoice", ex.Message, "    ");
+                DbLogs.logData(_ControllerName, "CreateSalesInvoice", ex.InnerException.InnerException.Message, "    ");
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
         }
@@ -267,10 +327,14 @@ namespace SmartAdminMvc.Controllers
                 }
 
                 db.InvoiceServices.RemoveRange(DBObj.InvoiceServices);
+                var _NewServiceId = GetNewServiceId();
+                int Count = 0;
                 foreach (InvoiceService Service in Details_Service)
                 {
                     Service.InvoiceID = DBObj.ID;
+                    Service.ID = _NewServiceId + Count;
                     db.InvoiceServices.Add(Service);
+                    Count++;
                 }
                 db.SaveChanges();
                 msg.Status = true; msg.Message = " : تم  الحفظ بنجاح الفاتورة  رقم  "+  DBObj.ID +  " "; msg.MessageEng = "Done";
@@ -282,6 +346,22 @@ namespace SmartAdminMvc.Controllers
                 DbLogs.logData(_ControllerName, "Edit", ex.Message, "    ");
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private int GetNewServiceId()
+        {
+            int NewtypeId = 1;
+            try
+            {
+                int? ItemID = db.InvoiceServices.Max(p => p.ID);
+                NewtypeId = (int)ItemID + 1;
+            }
+            catch (Exception)
+            {
+                NewtypeId = 1;
+            }
+
+            return NewtypeId;
         }
 
         private NotificationMessage DoOLdItemBalance(InvoiceMaster masterObj, List<InvoiceItem> OLdDetailsdata)

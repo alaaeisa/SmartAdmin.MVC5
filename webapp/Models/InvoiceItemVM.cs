@@ -9,6 +9,7 @@ namespace SmartAdminMvc.Models
     {
         public int ID { get; set; }
         public int SerialNo { get; set; }
+        public int BalanceID { get; private set; }
         public int InvoiceID { get; set; }
         public int ItemID { get; set; }
         public string ItemName { get;  set; }
@@ -34,5 +35,20 @@ namespace SmartAdminMvc.Models
 
             return VMObj;
         }
+
+        public InvoiceItemVM BalanceConvert(BalanceItem DBObj)
+        {
+            InvoiceItemVM VMObj = new InvoiceItemVM();
+
+            VMObj.ID = DBObj.ID;
+            VMObj.SerialNo = DBObj.SerialNo;
+            VMObj.BalanceID = DBObj.BalanceID;
+            VMObj.ItemID = DBObj.ItemID;
+            VMObj.ItemName = DBObj.Item.Name;
+            VMObj.Qty = DBObj.Qty;
+
+            return VMObj;
+        }
+       
     }
 }

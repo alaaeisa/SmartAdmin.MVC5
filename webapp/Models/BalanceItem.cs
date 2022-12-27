@@ -12,22 +12,15 @@ namespace SmartAdminMvc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class StoresBalance
+    public partial class BalanceItem
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public StoresBalance()
-        {
-            this.InvoiceServices = new HashSet<InvoiceService>();
-        }
-    
         public int ID { get; set; }
-        public decimal Quantity { get; set; }
+        public int SerialNo { get; set; }
+        public int BalanceID { get; set; }
         public int ItemID { get; set; }
-        public int StoreID { get; set; }
+        public decimal Qty { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InvoiceService> InvoiceServices { get; set; }
+        public virtual BalanceMaster BalanceMaster { get; set; }
         public virtual Item Item { get; set; }
-        public virtual Store Store { get; set; }
     }
 }

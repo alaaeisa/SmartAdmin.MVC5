@@ -8,10 +8,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace SmartAdminMvc.Controllers
 {
@@ -72,6 +75,52 @@ namespace SmartAdminMvc.Controllers
                 return Json(data: "Fail", behavior: JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult CreateExcel()
+        {
+
+            var table = new System.Data.DataTable("ExceFile");
+
+
+
+            var data = db.Users.Select(x => new SearchVM { ID = x.UserId, Name = x.UserName, Notes = x.Email }).ToList().AsEnumerable();
+            table.Columns.Add("الكود", typeof(int));
+            table.Columns.Add("الاسم", typeof(string));
+            table.Columns.Add("الايميل", typeof(string));
+            foreach (var item in data)
+            {
+                table.Rows.Add(item.ID, item.Name, item.Notes);
+            }
+
+            var style = new Style();
+            style.BorderStyle = BorderStyle.None;
+            style.Font.Size = FontUnit.Medium;
+            style.BorderWidth = Unit.Empty;
+
+            var grid = new GridView();
+            grid.DataSource = table;
+            grid.DataBind();
+            grid.ApplyStyle(style);
+            Response.ClearContent();
+            Response.Buffer = true;
+
+            string filname = "ExceFile.xls";
+            Response.AddHeader("content-disposition", "attachment;filename =" + filname);
+            Response.ContentType = "application/ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter htw = new HtmlTextWriter(sw))
+                {
+                    grid.RenderControl(htw);
+                    Response.Write(sw.ToString());
+                    Response.End();
+                }
+            }
+
+            return View();
+        }
         #endregion
 
         #region  Log IN  function 
@@ -115,7 +164,9 @@ namespace SmartAdminMvc.Controllers
                 _sessionMange.CompanyName= cmp.CompanyName;
                 _sessionMange.UserID= User.UserId;
                 _sessionMange.UserName= User.UserName;
+                _sessionMange.Logo = cmp.Logo;
                 Cookies.setCompName(cmp.CompanyName);
+                Cookies.setCompLogo(cmp.Logo);
                 Cookies.set_UserName(User.UserName);
                 Cookies.set_UserAuthorize("1");
                 Cookies.set_UserID(User.UserId.ToString());
@@ -262,7 +313,6 @@ namespace SmartAdminMvc.Controllers
         {
             int UserID = _sessionMange.UserID;
             User Userobj = db.Users.Where(x => x.UserId == UserID  ).FirstOrDefault();
-            ViewBag.StoreId = new SelectList(db.Stores.Select(x => new { x.ID, x.Name }).ToList(), "ID", "Name", Userobj.StoreId);
 
             return View(Userobj);
         }
@@ -278,7 +328,10 @@ namespace SmartAdminMvc.Controllers
                 MasterObj.UserId = _sessionMange.UserID;
                 User _User = new User();
                 _User = db.Users.Where(x => x.UserId == MasterObj.UserId ).FirstOrDefault();
-                _User.UserName = MasterObj.UserName;
+                if (_User.PassWord != MasterObj.Email)
+                {
+                    return Json(data: "Fail2", behavior: JsonRequestBehavior.AllowGet);
+                }
                 _User.PassWord = MasterObj.PassWord;
                 db.Entry(_User).State = EntityState.Modified;
                 db.SaveChanges();

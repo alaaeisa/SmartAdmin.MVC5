@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = " بحث  الاصناف  والرصيد  ";
+    ViewBag.Title = "ارصدة الاصناف ";
 }
 
 
@@ -35,10 +35,11 @@
                                 <thead>
                                     <tr>
 
-                                        <th data-hide="phone,tablet">رقم الصنف    </th>
-                                        <th data-class="expand"> اسم  الصنف</th>
-                                        <th data-hide="phone,tablet">    الكمية   </th>
-                                  
+                                        <th data-hide="phone,tablet">رقم الحركة    </th>
+                                        <th data-class="expand"> اسم  المخزن</th>
+                                        <th data-hide="phone,tablet">    التاريخ   </th>
+                                        <th></th>
+
 
                                     </tr>
                                 </thead>
@@ -75,14 +76,14 @@
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },
-                { data: "Quantity" },
+                { data: "Date" },
         ];
-            //      loadcolumns.push({
-            //title: "الخيارات", render: function (data, type, full, meta) {
-            //              return DataTableOperation(false, false, full.ID);
+                  loadcolumns.push({
+            title: "الخيارات", render: function (data, type, full, meta) {
+                          return DataTableOperation(false, false, full.ID);
 
-            //}
-            //      });
+            }
+                  });
 
         $(document).ready(function () {
             FindDataTable(findUrl);

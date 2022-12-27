@@ -51,6 +51,11 @@
                         <li>
                             <a href="@Url.Action("Index", "Stores")" title="Dashboard"><span class="menu-item-parent"> المخازن     </span></a>
                         </li>
+
+                        <li>
+                            <a href="@Url.Action("Index", "ItemCategories")" title="Dashboard"><span class="menu-item-parent"> تصنيفات الاصناف  </span></a>
+                        </li>
+
                         <li>
                             <a href="@Url.Action("Index", "Items")" title="Dashboard"><span class="menu-item-parent"> الاصناف     </span></a>
                         </li>
@@ -59,7 +64,10 @@
                             <a href="@Url.Action("index", "customer")" title="Dashboard"><span class="menu-item-parent">  العملاء  </span></a>
                         </li>
                         <li>
-                            <a href="@Url.Action("index", "StoresBalances")" title="Dashboard"><span class="menu-item-parent">  بحث وترصيد الاصناف  </span></a>
+                            <a href="@Url.Action("index", "StoresBalances")" title="Dashboard"><span class="menu-item-parent">ارصدة الاصناف</span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Itemindex", "StoresBalances")" title="Dashboard"><span class="menu-item-parent">  بحث  الاصناف  </span></a>
                         </li>
 
                     </ul>
@@ -114,7 +122,11 @@
             </li>
 
             <li>
-                <a href="@Url.Action("Logout", "Users")" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong>Logout</strong></a>
+                <a href="@Url.Action("Logout", "Users")" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout">
+
+                    <span class="fa fa-sign-out fa-lg"></span> تسجيل خروج
+                </a>
+
             </li>
         </ul>
     </nav>

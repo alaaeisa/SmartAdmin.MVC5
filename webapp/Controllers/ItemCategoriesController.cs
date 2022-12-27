@@ -8,106 +8,17 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using System.Web.UI;
-using System.Web.WebPages;
 
 namespace SmartAdminMvc.Controllers
 {
-    public class ItemsController : Controller
+    public class ItemCategoriesController : Controller
     {
+        // GET: ItemCategories
+
         NotificationMessage msg = new NotificationMessage();
         SessionMange _sessionMange = new SessionMange();
         CarWorkShopEntities db = new CarWorkShopEntities();
-        string _ControllerName = "Items";
-      
-        #region logicMethoud
-        public JsonResult GetData()
-        {
-
-            var lstItem = db.CarModels.ToList();
-            return Json(lstItem, JsonRequestBehavior.AllowGet);
-        }
-        
-        public JsonResult GetItemData(int ModelId)
-        {
-
-            var lst = new List<DropDownDataDTO>();
-            var query = db.Items.ToList();
-
-            foreach (var item in query)
-            {
-                if (ModelId == 0)
-                {
-                    var Obj = new DropDownDataDTO();
-                    Obj.ID = item.ID;
-                    Obj.Name = item.Name;
-                    lst.Add(Obj);
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(item.CarModelsIDs) || item.CarModelsIDs == "null")
-                    {
-                        var Obj = new DropDownDataDTO();
-                        Obj.ID = item.ID;
-                        Obj.Name = item.Name;
-                        lst.Add(Obj);
-                    }
-                    else
-                    {
-                        var list = item.CarModelsIDs.Split(',');
-                        if (list.Contains(ModelId.ToString()))
-                        {
-                            var Obj = new DropDownDataDTO();
-                            Obj.ID = item.ID;
-                            Obj.Name = item.Name;
-                            lst.Add(Obj);
-                        }
-                    }
-                }
-            
-            }
-
-            return Json(lst, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult Checkbalance(int ItemID)
-        {
-
-            var _item = db.Items.Where(x => x.ID == ItemID ).FirstOrDefault();
-            if (_item == null)
-            {
-                return Json("0", JsonRequestBehavior.AllowGet);
-
-            }
-          
-            var _Store = db.StoresBalances.Where(x => x.ItemID == ItemID && x.StoreID == _sessionMange.StoreID).FirstOrDefault();
-            if (_Store == null)
-            {
-                return Json("0", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-
-                decimal balanceQty = ((decimal)_Store.Quantity);
-                return Json(balanceQty, JsonRequestBehavior.AllowGet);
-
-            }
-        }
-
-
-        public JsonResult GetItemPrice(int ItemID)
-        {
-
-            var _item = db.Items.Where(x => x.ID == ItemID).FirstOrDefault();
-            if (_item == null)
-            {
-                return Json("Fail", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(_item.Price, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        #endregion
+        string _ControllerName = "ItemCategories";
 
         #region  index 
         public ActionResult Index()
@@ -130,9 +41,7 @@ namespace SmartAdminMvc.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var varData = db.Items.Select(x => new SearchVM { ID = x.ID, Name = x.Name, CategoryName = x.ItemCategory.Name , Price = x.Price }).ToList().AsEnumerable();
-               // var varData = db.Items.ToList().AsEnumerable();
-
+                var varData = db.ItemCategories.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Notes = x.Notes }).ToList().AsEnumerable();
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
                 {
                     //  varData = varData.OrderBy(x => x.d_doc_date);
@@ -163,15 +72,13 @@ namespace SmartAdminMvc.Controllers
             var table = new System.Data.DataTable("ExceFile");
 
 
-           
-            var data = db.Items.Select(x => new SearchVM { ID = x.ID, Name = x.Name, CategoryName = x.ItemCategory.Name, Price = x.Price }).ToList().AsEnumerable();
+            var data = db.ItemCategories.Select(x => new SearchVM { ID = x.ID, Name = x.Name, Notes = x.Notes }).ToList().AsEnumerable();
             table.Columns.Add("الكود", typeof(int));
             table.Columns.Add("الاسم", typeof(string));
-            table.Columns.Add("التصنيف", typeof(string));
-            table.Columns.Add("سعر البيع", typeof(string));
+            table.Columns.Add("الملاحظات", typeof(string));
             foreach (var item in data)
             {
-                table.Rows.Add(item.ID, item.Name, item.CategoryName, item.Price);
+                table.Rows.Add(item.ID, item.Name, item.Notes);
             }
 
             var style = new Style();
@@ -206,13 +113,13 @@ namespace SmartAdminMvc.Controllers
         #endregion
 
         #region new
-        int GetNewItemId()
+        int GetNewId()
         {
 
             int NewtypeId = 1;
             try
             {
-                int? ItemID = db.Items.Max(p => p.ID);
+                int? ItemID = db.ItemCategories.Max(p => p.ID);
                 NewtypeId = (int)ItemID + 1;
             }
             catch (Exception)
@@ -226,20 +133,18 @@ namespace SmartAdminMvc.Controllers
         public ActionResult Create()
         {
 
-            Item obj = new Item();
-            ViewBag.CarModelsIDs = new SelectList(db.CarModels.ToList(), "ID", "Name");
-            ViewBag.CategoryID = new SelectList(db.ItemCategories.ToList(), "ID", "Name");
-            obj.ID = GetNewItemId();
+            ItemCategory obj = new ItemCategory();
+            obj.ID = GetNewId();
             return View(obj);
         }
         [HttpPost]
-        public JsonResult Create(Item MasterObj)
+        public JsonResult Create(ItemCategory MasterObj)
         {
 
             try
             {
 
-                db.Items.Add(MasterObj);
+                db.ItemCategories.Add(MasterObj);
                 db.SaveChanges();
                 msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";
                 return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
@@ -252,31 +157,23 @@ namespace SmartAdminMvc.Controllers
             }
         }
         #endregion
-
         #region  edit
 
         public ActionResult Edit(int id)
         {
-            Item obj = db.Items.Where(x => x.ID == id).FirstOrDefault();
-            ViewBag.CarModelsIDs = new SelectList(db.CarModels.ToList(), "ID", "Name");
-            ViewBag.CategoryID = new SelectList(db.ItemCategories.ToList(), "ID", "Name",obj.CategoryID);
+            ItemCategory obj = db.ItemCategories.Where(x => x.ID == id).FirstOrDefault();
             return View(obj);
         }
         [HttpPost]
-        public JsonResult Edit(Item MasterObj)
+        public JsonResult Edit(ItemCategory MasterObj)
         {
-
             try
             {
-
-                Item _DbObj = new Item();
-                _DbObj = db.Items.Where(x => x.ID == MasterObj.ID).FirstOrDefault();
+                ItemCategory _DbObj = new ItemCategory();
+                _DbObj = db.ItemCategories.Where(x => x.ID == MasterObj.ID).FirstOrDefault();
                 _DbObj.Name = MasterObj.Name;
-                _DbObj.Price = MasterObj.Price;
-                _DbObj.CarModelsIDs = MasterObj.CarModelsIDs;
-                _DbObj.CategoryID = MasterObj.CategoryID;
-                _DbObj.PurchasingPrice = MasterObj.PurchasingPrice;
                 _DbObj.Notes = MasterObj.Notes;
+
 
                 db.Entry(_DbObj).State = EntityState.Modified;
                 db.SaveChanges();
@@ -297,15 +194,14 @@ namespace SmartAdminMvc.Controllers
 
 
         #endregion
-
         #region delete
         public ActionResult Delete(int ID)
         {
             NotificationMessage ReturnMsg = new NotificationMessage();
             try
             {
-                var _obj = db.Items.Where(X => X.ID == ID).FirstOrDefault();
-                db.Items.Remove(_obj);
+                var _obj = db.ItemCategories.Where(X => X.ID == ID).FirstOrDefault();
+                db.ItemCategories.Remove(_obj);
                 db.SaveChanges();
                 ReturnMsg.Status = true; ReturnMsg.Message = "done";
                 return Json(data: ReturnMsg, behavior: JsonRequestBehavior.AllowGet);
@@ -321,10 +217,5 @@ namespace SmartAdminMvc.Controllers
 
         }
         #endregion
-
-
-
-
-
     }
 }

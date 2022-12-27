@@ -16,9 +16,6 @@
                     CustomerId: {
                         required: true
                     },
-                    ChassisNo: {
-                        required: true
-                    },
                     BrandId: {
                         required: true
                     },
@@ -37,9 +34,6 @@
                         required: 'الرجاء ادخال قيمه'
                     },
                     CustomerId: {
-                        required: 'الرجاء ادخال قيمه'
-                    },
-                    ChassisNo: {
                         required: 'الرجاء ادخال قيمه'
                     },
                     BrandId: {
@@ -212,6 +206,7 @@
 
     }
     function CalcInvoiceDiscount() {
+        CalcAfterAddDelete();
         debugger;
         var OldTotalDiscount = parseFloat($('#TotalDiscount').val());
         var NewTotalDiscount = OldTotalDiscount + parseFloat($('#InvoiceDiscount').val());

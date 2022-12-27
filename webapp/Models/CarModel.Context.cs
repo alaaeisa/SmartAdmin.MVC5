@@ -25,6 +25,8 @@ namespace SmartAdminMvc.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BalanceItem> BalanceItems { get; set; }
+        public virtual DbSet<BalanceMaster> BalanceMasters { get; set; }
         public virtual DbSet<CarBrand> CarBrands { get; set; }
         public virtual DbSet<CarModel> CarModels { get; set; }
         public virtual DbSet<Configuration> Configurations { get; set; }
@@ -33,6 +35,7 @@ namespace SmartAdminMvc.Models
         public virtual DbSet<InvoiceItem> InvoiceItems { get; set; }
         public virtual DbSet<InvoiceMaster> InvoiceMasters { get; set; }
         public virtual DbSet<InvoiceService> InvoiceServices { get; set; }
+        public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StoresBalance> StoresBalances { get; set; }

@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = " الاصناف  ";
+    ViewBag.Title = " بحث  الاصناف  والرصيد  ";
 }
 
 
@@ -16,17 +16,8 @@
                     <h2>@ViewBag.Title</h2>
                 </header>
 
-             
-                <div class="glyphicon-align-center ">
-                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "Items")" title="">
-                        <span class="btn-label"><i class="fa fa-money"></i></span>
-                        انشاء  جديد
-                    </a>
-                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "Items")" title="">
-                        <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>
-                        تحميل اكسيل
-                    </a>
-                </div>
+
+               
                 <div>
                     <div class="jarviswidget-editbox">
                     </div>
@@ -41,9 +32,8 @@
 
                                         <th data-hide="phone,tablet">رقم الصنف    </th>
                                         <th data-class="expand"> اسم  الصنف</th>
-                                        <th data-class="expand">التصنيف</th>
-                                        <th data-hide="phone,tablet">   سعر البيع   </th>
-                                        <th></th>
+                                        <th data-hide="phone,tablet">    الكمية   </th>
+
 
                                     </tr>
                                 </thead>
@@ -75,22 +65,15 @@
 
     <script type="text/javascript">
        var formId = "smart-form";
-        var findUrl = "@Url.Action("LoadDataTable", "Items")";
-        var EditUrl = "@Url.Action("Edit", "Items")";
-                var DeleteUrl = "@Url.Action("Delete", "Items")";
+        var findUrl = "@Url.Action("ItemLoadDataTable", "StoresBalances")";
+          var  EditUrl = "@Url.Action("Edit", "StoresBalances")";
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },
-                { data: "CategoryName" },
-
-                { data: "Price" },
+                { data: "Quantity" },
         ];
-                  loadcolumns.push({
-            title: "الخيارات", render: function (data, type, full, meta) {
-                          return DataTableOperation(false, true, full.ID);
+            
 
-            }
-        });
         $(document).ready(function () {
             FindDataTable(findUrl);
 

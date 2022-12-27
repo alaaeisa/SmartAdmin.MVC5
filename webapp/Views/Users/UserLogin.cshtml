@@ -3,8 +3,11 @@
 
     ViewBag.PageId = "extr-page";
     ViewBag.PageClass = "animated fadeInDown";
+
+    var ImgPath = @HttpUtility.UrlDecode(SmartAdminMvc.Models.Cookies.getCompLogo());
 }
-<div id="content" class="container" style="background-image:url('../../Content/img/truelogo.png');background-repeat:no-repeat">
+
+<div id="content" class="container" style="background-image: url('../../Attachment/@ImgPath'); background-repeat: no-repeat">
 
     <div class="row">
 

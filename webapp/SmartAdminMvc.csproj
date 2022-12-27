@@ -1546,6 +1546,13 @@
     <Content Include="Views\CarBrands\Create.cshtml" />
     <Content Include="Views\CarBrands\Edit.cshtml" />
     <Content Include="Views\CarBrands\Index.cshtml" />
+    <Content Include="Views\StoresBalances\_Master.cshtml" />
+    <Content Include="Views\ItemCategories\_Category.cshtml" />
+    <Content Include="Views\ItemCategories\Create.cshtml" />
+    <Content Include="Views\ItemCategories\Edit.cshtml" />
+    <Content Include="Views\ItemCategories\Index.cshtml" />
+    <Content Include="Views\StoresBalances\ItemIndex.cshtml" />
+    <Content Include="Views\StoresBalances\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1576,6 +1583,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
+    <Compile Include="Controllers\ItemCategoriesController.cs" />
     <Compile Include="Controllers\StoresBalancesController.cs" />
     <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1588,6 +1596,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BalanceItem.cs">
+      <DependentUpon>CarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BalanceMaster.cs">
+      <DependentUpon>CarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CarBrand.cs">
       <DependentUpon>CarModel.tt</DependentUpon>
     </Compile>
@@ -1636,6 +1650,9 @@
     <Compile Include="Models\InvoiceServiceVM.cs" />
     <Compile Include="Models\InvoiceVM.cs" />
     <Compile Include="Models\Item.cs">
+      <DependentUpon>CarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ItemCategory.cs">
       <DependentUpon>CarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NotificationMessage.cs" />

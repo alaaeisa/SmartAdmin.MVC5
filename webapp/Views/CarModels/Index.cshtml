@@ -22,6 +22,10 @@
                         <span class="btn-label"><i class="fa fa-money"></i></span>
                         انشاء  جديد
                     </a>
+                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "CarModels")" title="">
+                        <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>
+                        تحميل اكسيل
+                    </a>
                 </div>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -35,8 +39,9 @@
                                 <thead>
                                     <tr>
 
-                                        <th  data-hide="phone,tablet">الرقم     </th>
+                                        <th data-hide="phone,tablet">الرقم     </th>
                                         <th data-class="expand"> الاسم  </th>
+                                        <th data-class="expand"> الماركة  </th>
                                         <th></th>
 
                                     </tr>
@@ -75,6 +80,7 @@
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },
+                { data: "BrandName" },
         ];
                   loadcolumns.push({
                       title: "الخيارات", render: function (data, type, full, meta) {

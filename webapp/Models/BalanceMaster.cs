@@ -12,30 +12,25 @@ namespace SmartAdminMvc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Item
+    public partial class BalanceMaster
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Item()
+        public BalanceMaster()
         {
             this.BalanceItems = new HashSet<BalanceItem>();
-            this.InvoiceItems = new HashSet<InvoiceItem>();
-            this.StoresBalances = new HashSet<StoresBalance>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
+        public System.DateTime Date { get; set; }
+        public int StoreId { get; set; }
         public string Notes { get; set; }
-        public decimal Price { get; set; }
-        public string CarModelsIDs { get; set; }
-        public Nullable<int> CategoryID { get; set; }
-        public decimal PurchasingPrice { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> EditBy { get; set; }
+        public Nullable<System.DateTime> EditDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BalanceItem> BalanceItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
-        public virtual ItemCategory ItemCategory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StoresBalance> StoresBalances { get; set; }
+        public virtual Store Store { get; set; }
     }
 }

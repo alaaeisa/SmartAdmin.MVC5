@@ -12,11 +12,13 @@ namespace SmartAdminMvc.Models
         public string DateStr { get;  set; }
         public int CustomerId { get; set; }
         public string CustomerName { get;  set; }
+        public string CustomerPhone { get;  set; }
         public string Notes { get; set; }
     
         public string ChassisNo { get; set; }
         public string PlateNumber { get; set; }
         public int? BrandId { get; set; }
+        public string BrandName { get;  set; }
         public int ModelId { get; set; }
         public string ModelName { get;  set; }
         public int km { get; set; }
@@ -35,7 +37,9 @@ namespace SmartAdminMvc.Models
         public string  InvoiceServices { get; set; }
         public List<InvoiceItemVM> Items { get;  set; }
         public List<InvoiceServiceVM> Services { get; set; }
-       
+        public int StoreId { get;  set; }
+        public string StoreName { get;  set; }
+        public List<InvoiceItemVM> BalanceItems { get;  set; }
 
         public InvoiceVM Convert(InvoiceMaster DBObj , bool MasterOnly =false)
         {
@@ -47,11 +51,13 @@ namespace SmartAdminMvc.Models
             
             VMObj.CustomerId = DBObj.CustomerId;
             VMObj.CustomerName = DBObj.Customer.Name;
+            VMObj.CustomerPhone = DBObj.Customer.Phone;
             VMObj.Notes = DBObj.Notes;
         
             VMObj.ChassisNo = DBObj.ChassisNo;
             VMObj.PlateNumber = DBObj.PlateNumber;
             VMObj.BrandId = DBObj.BrandId;
+            VMObj.BrandName = DBObj.CarBrand.Name;
             VMObj.ModelId = DBObj.ModelId;
             VMObj.ModelName = DBObj.CarModel.Name;
             VMObj.km = DBObj.km;
@@ -78,6 +84,36 @@ namespace SmartAdminMvc.Models
                 }
             }
           
+
+            return VMObj;
+        }
+
+       
+
+        public InvoiceVM ConvertBalance(BalanceMaster DBObj, bool MasterOnly = false)
+        {
+            InvoiceVM VMObj = new InvoiceVM();
+
+            VMObj.ID = DBObj.ID;
+            VMObj.Date = DBObj.Date;
+            VMObj.DateStr = DBObj.Date.ToString("yyyy/MM/dd");
+
+            VMObj.StoreId = DBObj.StoreId;
+            VMObj.StoreName = DBObj.Store.Name;
+            VMObj.Notes = DBObj.Notes;
+
+          
+            if (!MasterOnly)
+            {
+                if (DBObj.BalanceItems != null)
+                {
+                    VMObj.BalanceItems = DBObj.BalanceItems.Select(x => new InvoiceItemVM().BalanceConvert(x)).OrderBy(x => x.SerialNo).ToList();
+
+
+                }
+               
+            }
+
 
             return VMObj;
         }

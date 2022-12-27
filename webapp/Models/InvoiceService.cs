@@ -22,7 +22,14 @@ namespace SmartAdminMvc.Models
         public decimal ServiceDiscount { get; set; }
         public decimal ServiceTotal { get; set; }
         public decimal ServiceNet { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> EditBy { get; set; }
+        public Nullable<System.DateTime> EditDate { get; set; }
     
         public virtual InvoiceMaster InvoiceMaster { get; set; }
+        public virtual StoresBalance StoresBalance { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

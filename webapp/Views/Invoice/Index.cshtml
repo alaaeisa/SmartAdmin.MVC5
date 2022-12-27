@@ -16,6 +16,10 @@
                         <span class="btn-label"><i class="fa fa-money"></i></span>
                         بيان  جديد
                     </a>
+                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "Invoice")" title="">
+                        <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>
+                        تحميل اكسيل
+                    </a>
                 </div>
 
                 <div>
@@ -30,8 +34,11 @@
                                         <th data-class="expand">رقم الفاتوره   </th>
                                         <th data-hide="phone,tablet"> تاريخ  الفاتوره</th>
                                         <th data-hide="phone,tablet"> العميل  </th>
-                                     
+
                                         <th data-hide="phone,tablet"> رقم اللوحة  </th>
+                                        <th data-hide="phone,tablet"> الموبايل  </th>
+                                        <th data-hide="phone,tablet"> الماركة  </th>
+                                        <th data-hide="phone,tablet"> الموديل  </th>
                                         <th data-hide="phone,tablet"> الصافى  </th>
                                         <th data-hide="phone,tablet">   ملاحظات  </th>
                                         <th></th>
@@ -57,6 +64,9 @@
                 { data: "DateStr" },
                 { data: "CustomerName" },
                 { data: "PlateNumber" },
+                { data: "CustomerPhone" },
+                { data: "BrandName" },
+                { data: "ModelName" },
                 { data: "NetAmount" },
                 { data: "Notes" },
                 

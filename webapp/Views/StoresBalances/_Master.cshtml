@@ -1,0 +1,34 @@
+﻿@model SmartAdminMvc.Models.InvoiceVM
+
+<fieldset>
+
+
+    <div class="row">
+
+        <section class="col col-3">
+            <label class="label ">رقم الحركة<span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" readonly name="ID" id="ID" value="@Model.ID">
+            </label>
+        </section>
+
+        <section class="col col-3">
+            <label class="label ">تاريخ الحركة<span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                <input type="text" class="form-control input-append datepicker" name="Date" id="Date" value="@Model.DateStr" readonly>
+            </label>
+        </section>
+
+        <section class="col col-3">
+
+            <label class="label">  المخزن <span style="color:red">&nbsp;*</span></label>
+            <label class="input">
+                @Html.DropDownList("StoreID", null, "", htmlAttributes: new { @class = "form-control select2", @id = "StoreID", @onchange = "" })
+            </label>
+        </section>
+
+   
+
+    </div>
+
+</fieldset>

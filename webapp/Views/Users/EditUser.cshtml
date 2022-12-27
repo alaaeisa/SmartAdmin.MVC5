@@ -21,32 +21,33 @@
 
                             <fieldset>
                                 <div class="row">
-                                    <section class="col col-3"  hidden>
+                                    <section class="col col-3" hidden>
                                         <label class="label "> كود المستخدم     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
                                             <input type="text" name="UserId" id="UserId" value="@Model.UserId" readonly>
                                         </label>
                                     </section>
-                                    <section class="col col-3"  hidden>
-                                        <label class="label ">اسم المستخدم     <span style="color:red">&nbsp;*</span></label>
-                                        <label class="input">
-                                            <input type="text" name="UserName" id="UserName" value="@Model.UserName">
-                                        </label>
-                                    </section>
+                                
 
                                     <section class="col col-3">
-                                        <label class="label "> كلمه المرور     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="label "> كلمه المرور القديمة     </label>
                                         <label class="input">
-                                            <input type="password" name="PassWord" id="PassWord" value="@Model.PassWord">
+                                            <input type="password" name="Email" id="Email" value="">
                                         </label>
                                     </section>
-                                    @*<section class="col col-3">
-                                        <label class="label"> المخزن <span style="color:red">&nbsp;*</span></label>
+                                    <section class="col col-3">
+                                        <label class="label "> كلمه المرور الجديدة     <span style="color:red">&nbsp;*</span></label>
                                         <label class="input">
-                                            @Html.DropDownList("StoreId", null, "", htmlAttributes: new { @class = "form-control select2", @id = "ModelId", @onchange = "" })
+                                            <input type="password" name="PassWord" id="PassWord" value="">
                                         </label>
-                                    </section>*@
-
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label "> تاكيد كلمة المرور     <span style="color:red">&nbsp;*</span></label>
+                                        <label class="input">
+                                            <input type="password" name="PassWordConfirm" id="PassWordConfirm" value="">
+                                        </label>
+                                    </section>
+                                    
 
                                 </div>
                             </fieldset>
@@ -79,16 +80,15 @@
 
                 // Rules for form validation
                 rules:
-                    {
-
-                        UserID: {
+                {
+                    Email: {
+                        required: true
+                    },
+                    PassWord: {
                             required: true
                         },
-                        UserName: {
-                            required: true
-                        },
-                        UserPass: {
-                            required: true
+                    PassWordConfirm: {
+                        equalTo: "#PassWord"
                         }
 
 
@@ -96,14 +96,14 @@
 
                 // Messages for form validation
                 messages: {
-                    UserID: {
+                    Email: {
                         required: 'الرجاء ادخال قيمه'
                     },
-                    UserName: {
+                    PassWord: {
                         required: 'الرجاء ادخال قيمه'
                     },
-                    UserPass: {
-                        required: 'الرجاء ادخال قيمه'
+                    PassWordConfirm: {
+                        equalTo: '  يرجى ادخال كلمة المرور متطابقة'
                     }
 
                 },
@@ -154,14 +154,27 @@
 
         }
 
+        function Error() {
 
+
+
+            $.smallBox({
+                title: "لم تتم العملية ",
+                content: "كلمة المرور القديمة  خطا",
+                color: "Red",
+                iconSmall: "fa fa-cloud",
+                timeout: 5000
+
+            });
+
+        }
     function Saved() {
 
 
 
         $.smallBox({
             title: "تم بنجاح",
-            content: "تم حفظ الصنف  بنجاح .......",
+            content: "تم الحفظ   بنجاح .......",
             color: "Green",
             iconSmall: "fa fa-cloud",
             timeout: 5000
@@ -180,9 +193,8 @@
 
         var master = {
             UserID: $('#UserID').val(),
-            UserName: $('#UserName').val(),
+            Email: $('#Email').val(),
             PassWord: $('#PassWord').val(),
-            StoreId: $('#StoreId').val(),
 
 
 
@@ -200,15 +212,19 @@
 
 
                 if (data !== "Fail") {
-                    debugger;
-                    Saved();
-                    setTimeout(function () {
-                        (window.location.href = data)
-                    }, 500);
+                    if (data =="Fail2") {
+                        Error();
+                    } else {
+                        Saved();
+                        setTimeout(function () {
+                            (window.location.href = data)
+                        }, 500);
+                    }
+                
 
                 } else {
                     $("#click").prop('disabled', false);
-                    // Failed();
+                   
                 }
             },
 

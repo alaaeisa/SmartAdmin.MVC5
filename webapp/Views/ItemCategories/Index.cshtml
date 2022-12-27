@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    ViewBag.Title = " الاصناف  ";
+    ViewBag.Title = " تصنيفات الاصناف  ";
 }
 
 
@@ -18,11 +18,11 @@
 
              
                 <div class="glyphicon-align-center ">
-                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "Items")" title="">
+                    <a class="btn  btn-labeled btn-success " href="@Url.Action("Create", "ItemCategories")" title="">
                         <span class="btn-label"><i class="fa fa-money"></i></span>
                         انشاء  جديد
                     </a>
-                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "Items")" title="">
+                    <a class="btn  btn-labeled btn-info " href="@Url.Action("CreateExcel", "ItemCategories")" title="">
                         <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>
                         تحميل اكسيل
                     </a>
@@ -39,10 +39,8 @@
                                 <thead>
                                     <tr>
 
-                                        <th data-hide="phone,tablet">رقم الصنف    </th>
-                                        <th data-class="expand"> اسم  الصنف</th>
-                                        <th data-class="expand">التصنيف</th>
-                                        <th data-hide="phone,tablet">   سعر البيع   </th>
+                                        <th  data-hide="phone,tablet">الرقم     </th>
+                                        <th data-class="expand"> الاسم  </th>
                                         <th></th>
 
                                     </tr>
@@ -75,18 +73,15 @@
 
     <script type="text/javascript">
        var formId = "smart-form";
-        var findUrl = "@Url.Action("LoadDataTable", "Items")";
-        var EditUrl = "@Url.Action("Edit", "Items")";
-                var DeleteUrl = "@Url.Action("Delete", "Items")";
+        var findUrl = "@Url.Action("LoadDataTable", "ItemCategories")";
+        var EditUrl = "@Url.Action("Edit", "ItemCategories")";
+          var DeleteUrl = "@Url.Action("Delete", "ItemCategories")";
             loadcolumns = [
                 { data: "ID" },
                 { data: "Name" },
-                { data: "CategoryName" },
-
-                { data: "Price" },
         ];
                   loadcolumns.push({
-            title: "الخيارات", render: function (data, type, full, meta) {
+                      title: "الخيارات", render: function (data, type, full, meta) {
                           return DataTableOperation(false, true, full.ID);
 
             }

@@ -66,8 +66,9 @@ namespace SmartAdminMvc
         public string UserName { get; set; }
         public bool Authorize { get; set; }
         public bool BigAdmin { get; set; }
+        public string Logo { get; set; }
 
-        
+
 
     }
 }

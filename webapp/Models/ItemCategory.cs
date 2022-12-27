@@ -12,14 +12,12 @@ namespace SmartAdminMvc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Store
+    public partial class ItemCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Store()
+        public ItemCategory()
         {
-            this.BalanceMasters = new HashSet<BalanceMaster>();
-            this.StoresBalances = new HashSet<StoresBalance>();
-            this.Users = new HashSet<User>();
+            this.Items = new HashSet<Item>();
         }
     
         public int ID { get; set; }
@@ -27,10 +25,6 @@ namespace SmartAdminMvc.Models
         public string Notes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BalanceMaster> BalanceMasters { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StoresBalance> StoresBalances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
     }
 }
