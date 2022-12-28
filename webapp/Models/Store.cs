@@ -18,6 +18,7 @@ namespace SmartAdminMvc.Models
         public Store()
         {
             this.BalanceMasters = new HashSet<BalanceMaster>();
+            this.InvoiceMasters = new HashSet<InvoiceMaster>();
             this.StoresBalances = new HashSet<StoresBalance>();
             this.Users = new HashSet<User>();
         }
@@ -28,6 +29,8 @@ namespace SmartAdminMvc.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BalanceMaster> BalanceMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceMaster> InvoiceMasters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StoresBalance> StoresBalances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

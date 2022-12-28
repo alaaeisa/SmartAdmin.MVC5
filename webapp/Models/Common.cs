@@ -34,7 +34,7 @@ namespace SmartAdminMvc.Models
                 if (_store == null)
                 {
                     StoresBalance BalanceObj = new StoresBalance();
-                    BalanceObj.ID = GetNewNo(db);
+                   // BalanceObj.ID = GetNewNo(db);
                     BalanceObj.Quantity = Quantity;
                     BalanceObj.ItemID = ItemId;
                     BalanceObj.StoreID = StoreID;   

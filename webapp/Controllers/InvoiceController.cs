@@ -182,6 +182,8 @@ namespace SmartAdminMvc.Controllers
                 DBObj.ID = GetNewInvoiceNo();
 
                 DBObj.Date = MasterObj.Date;
+
+                DBObj.StoreID = _sessionMange.StoreID;
                 DBObj.CustomerId = MasterObj.CustomerId;
                 DBObj.Notes = MasterObj.Notes;
      
@@ -290,7 +292,16 @@ namespace SmartAdminMvc.Controllers
                 #region FillEditpramter
 
                 DBObj = db.InvoiceMasters.Where(x => x.ID == MasterObj.ID).FirstOrDefault();
+                var OLdDetailsdata = db.InvoiceItems.Where(x => x.InvoiceID == MasterObj.ID).ToList();
+                ReturnMsg = DoOLdItemBalance(DBObj, OLdDetailsdata);
+                if (!ReturnMsg.Status)
+                {
+                    msg.Status = false; msg.Message = ReturnMsg.Message;
+                    return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
+                }
+
                 DBObj.Date = MasterObj.Date;
+                DBObj.StoreID = _sessionMange.StoreID;
                 DBObj.CustomerId = MasterObj.CustomerId;
                 DBObj.Notes = MasterObj.Notes;
    
@@ -311,13 +322,7 @@ namespace SmartAdminMvc.Controllers
                 #endregion
 
 
-                var OLdDetailsdata = db.InvoiceItems.Where(x => x.InvoiceID == MasterObj.ID).ToList();
-                ReturnMsg = DoOLdItemBalance(DBObj, OLdDetailsdata);
-                if (!ReturnMsg.Status)
-                {
-                    msg.Status = false; msg.Message = ReturnMsg.Message;
-                    return Json(data: msg, behavior: JsonRequestBehavior.AllowGet);
-                }
+              
 
                 ReturnMsg = DoNewBalance(DBObj, Details_Item);
                 if (!ReturnMsg.Status)
@@ -364,7 +369,7 @@ namespace SmartAdminMvc.Controllers
             return NewtypeId;
         }
 
-        private NotificationMessage DoOLdItemBalance(InvoiceMaster masterObj, List<InvoiceItem> OLdDetailsdata)
+        private NotificationMessage DoOLdItemBalance(InvoiceMaster MasterObj, List<InvoiceItem> OLdDetailsdata)
         {
             NotificationMessage message = new NotificationMessage();
             message.Status = true;
@@ -373,7 +378,7 @@ namespace SmartAdminMvc.Controllers
             {
 
                 decimal _BMainQty = item.Qty;
-                if (_com.balancIn(item.ItemID, _sessionMange.StoreID, _BMainQty, db))
+                if (_com.balancIn(item.ItemID, MasterObj.StoreID, _BMainQty, db))
                 {
                 }
                 else

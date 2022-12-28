@@ -38,12 +38,14 @@ namespace SmartAdminMvc.Models
         public decimal PaidAmount { get; set; }
         public decimal RemainingAmount { get; set; }
         public decimal NetAmountWithOutTax { get; set; }
+        public int StoreID { get; set; }
     
         public virtual CarBrand CarBrand { get; set; }
         public virtual CarModel CarModel { get; set; }
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
+        public virtual Store Store { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceService> InvoiceServices { get; set; }
     }
