@@ -9,6 +9,21 @@ namespace SmartAdminMvc.Models
     public class Common
 
     {
+        private int GetNewNo(CarWorkShopEntities db)
+        {
+            int NewtypeId = 1;
+            try
+            {
+                int? ItemID = db.BalanceMasters.Max(p => p.ID);
+                NewtypeId = (int)ItemID + 1;
+            }
+            catch (Exception)
+            {
+                NewtypeId = 1;
+            }
+
+            return NewtypeId;
+        }
         public  bool balancIn(int  ItemId,int StoreID , decimal  Quantity , CarWorkShopEntities db)
         {
            
@@ -18,11 +33,12 @@ namespace SmartAdminMvc.Models
                 _store = db.StoresBalances.Where(x => x.ItemID == ItemId && x.StoreID == StoreID).FirstOrDefault();
                 if (_store == null)
                 {
-                    StoresBalance st = new StoresBalance();
-                    st.Quantity = Quantity;
-                    st.ItemID = ItemId;
-                    st.StoreID = StoreID;   
-                    db.StoresBalances.Add(st);
+                    StoresBalance BalanceObj = new StoresBalance();
+                    BalanceObj.ID = GetNewNo(db);
+                    BalanceObj.Quantity = Quantity;
+                    BalanceObj.ItemID = ItemId;
+                    BalanceObj.StoreID = StoreID;   
+                    db.StoresBalances.Add(BalanceObj);
                     db.SaveChanges();
                     return true;
                 }
