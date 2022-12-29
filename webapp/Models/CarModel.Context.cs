@@ -12,6 +12,8 @@ namespace SmartAdminMvc.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CarWorkShopEntities : DbContext
     {
@@ -40,5 +42,99 @@ namespace SmartAdminMvc.Models
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StoresBalance> StoresBalances { get; set; }
         public virtual DbSet<User> Users { get; set; }
+    
+        public virtual ObjectResult<GetInvoiceDetailsWithItems_Result> GetInvoiceDetailsWithItems(Nullable<int> invoiceID)
+        {
+            var invoiceIDParameter = invoiceID.HasValue ?
+                new ObjectParameter("InvoiceID", invoiceID) :
+                new ObjectParameter("InvoiceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceDetailsWithItems_Result>("GetInvoiceDetailsWithItems", invoiceIDParameter);
+        }
+    
+        public virtual ObjectResult<GetInvoiceDetailsWithService_Result> GetInvoiceDetailsWithService(Nullable<int> invoiceID)
+        {
+            var invoiceIDParameter = invoiceID.HasValue ?
+                new ObjectParameter("InvoiceID", invoiceID) :
+                new ObjectParameter("InvoiceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoiceDetailsWithService_Result>("GetInvoiceDetailsWithService", invoiceIDParameter);
+        }
+    
+        public virtual ObjectResult<GetInvoicesDetailsInDate_Result> GetInvoicesDetailsInDate(Nullable<int> customerId, Nullable<int> itemId, Nullable<int> itemGroupId, string fromDate, string toDate)
+        {
+            var customerIdParameter = customerId.HasValue ?
+                new ObjectParameter("CustomerId", customerId) :
+                new ObjectParameter("CustomerId", typeof(int));
+    
+            var itemIdParameter = itemId.HasValue ?
+                new ObjectParameter("ItemId", itemId) :
+                new ObjectParameter("ItemId", typeof(int));
+    
+            var itemGroupIdParameter = itemGroupId.HasValue ?
+                new ObjectParameter("ItemGroupId", itemGroupId) :
+                new ObjectParameter("ItemGroupId", typeof(int));
+    
+            var fromDateParameter = fromDate != null ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(string));
+    
+            var toDateParameter = toDate != null ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoicesDetailsInDate_Result>("GetInvoicesDetailsInDate", customerIdParameter, itemIdParameter, itemGroupIdParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual ObjectResult<GetInvoicesInDate_Result> GetInvoicesInDate(Nullable<int> customerId, string fromDate, string toDate)
+        {
+            var customerIdParameter = customerId.HasValue ?
+                new ObjectParameter("CustomerId", customerId) :
+                new ObjectParameter("CustomerId", typeof(int));
+    
+            var fromDateParameter = fromDate != null ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(string));
+    
+            var toDateParameter = toDate != null ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetInvoicesInDate_Result>("GetInvoicesInDate", customerIdParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual ObjectResult<GetMaintainceOrder_Result> GetMaintainceOrder(Nullable<int> invoiceID)
+        {
+            var invoiceIDParameter = invoiceID.HasValue ?
+                new ObjectParameter("InvoiceID", invoiceID) :
+                new ObjectParameter("InvoiceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMaintainceOrder_Result>("GetMaintainceOrder", invoiceIDParameter);
+        }
+    
+        public virtual ObjectResult<GetItemsBalanceInDate_Result> GetItemsBalanceInDate(Nullable<int> storeId, Nullable<int> itemId, Nullable<int> itemGroupId, string fromDate, string toDate)
+        {
+            var storeIdParameter = storeId.HasValue ?
+                new ObjectParameter("StoreId", storeId) :
+                new ObjectParameter("StoreId", typeof(int));
+    
+            var itemIdParameter = itemId.HasValue ?
+                new ObjectParameter("ItemId", itemId) :
+                new ObjectParameter("ItemId", typeof(int));
+    
+            var itemGroupIdParameter = itemGroupId.HasValue ?
+                new ObjectParameter("ItemGroupId", itemGroupId) :
+                new ObjectParameter("ItemGroupId", typeof(int));
+    
+            var fromDateParameter = fromDate != null ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(string));
+    
+            var toDateParameter = toDate != null ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetItemsBalanceInDate_Result>("GetItemsBalanceInDate", storeIdParameter, itemIdParameter, itemGroupIdParameter, fromDateParameter, toDateParameter);
+        }
     }
 }
