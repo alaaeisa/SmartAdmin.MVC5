@@ -52,24 +52,23 @@
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Design, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\RepWithGit\ASZMall\ASZMALL.CONTROLPANEL\bin\CrystalDecisions.CrystalReports.Design.dll</HintPath>
+      <HintPath>bin\CrystalDecisions.CrystalReports.Design.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\RepWithGit\ASZMall\ASZMALL.CONTROLPANEL\bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <HintPath>bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\RepWithGit\ASZMall\ASZMALL.CONTROLPANEL\bin\CrystalDecisions.ReportSource.dll</HintPath>
+      <HintPath>bin\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\RepWithGit\ASZMall\ASZMALL.CONTROLPANEL\bin\CrystalDecisions.Shared.dll</HintPath>
+      <HintPath>bin\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Web, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\RepWithGit\ASZMall\ASZMALL.CONTROLPANEL\bin\CrystalDecisions.Web.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>bin\CrystalDecisions.Web.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -2278,20 +2277,20 @@
     <Compile Include="Report\MainReports\ItemsBalanceInDate.cs">
       <DependentUpon>ItemsBalanceInDate.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Report\MainReports\MaintanceOrdersDetailsInDate.cs">
       <DependentUpon>MaintanceOrdersDetailsInDate.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Report\MainReports\MaintanceOrdersInDate.cs">
       <DependentUpon>MaintanceOrdersInDate.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Report\MainReports\InvoiceMaster.cs">
       <AutoGen>True</AutoGen>

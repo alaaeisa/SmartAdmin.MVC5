@@ -30,7 +30,7 @@ namespace SmartAdminMvc.Report
                 if (Session["Rep_" + Index.ReportType] == null || !IsPostBack)
                 {
                     var li = new ReportBL().RelodDataSource(Index);
-                    var img = HttpContext.Current.Server.MapPath(user.Logo);
+                    var img = HttpContext.Current.Server.MapPath("/Attachment/"+user.Logo);
                     rptH = new ReportClass();
                     rptH.FileName = Server.MapPath(@"/Report/MainReports/" + li.FileName + "");
                     rptH.Load();

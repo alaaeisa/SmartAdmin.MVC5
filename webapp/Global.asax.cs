@@ -23,11 +23,12 @@ namespace SmartAdminMvc
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             var p = Request.Path.ToLower().Trim();
-            if (p.EndsWith("/crystalimagehandler.aspx") && p != "/crystalimagehandler.aspx" && p.EndsWith("/reports/crystalimagehandler.aspx"))
+            if (p.EndsWith("/crystalimagehandler.aspx") && p != "/crystalimagehandler.aspx" && p.EndsWith("/report/crystalimagehandler.aspx"))
             {
                 var fullPath = Request.Url.AbsoluteUri.ToLower();
-                var r = fullPath.IndexOf("/reports");
-                Response.Redirect(fullPath.Remove(r, 8));
+                var r = fullPath.IndexOf("/report");
+                var y = fullPath.Remove(r, 7);
+                Response.Redirect(y);
             }
         }
     }

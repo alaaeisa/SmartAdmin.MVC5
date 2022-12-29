@@ -62,12 +62,61 @@ namespace SmartAdminMvc
                 }
             }
         }
-        public string CompanyName { get; set; }
+
         public string UserName { get; set; }
         public bool Authorize { get; set; }
         public bool BigAdmin { get; set; }
-        public string Logo { get; set; }
+   
 
+        public string CompanyName
+        {
+            get
+            {
+                var _CompanyName = Cookies.getCompName();
+                if (!string.IsNullOrEmpty(_CompanyName) && _CompanyName != "0")
+                {
+                    return HttpUtility.UrlDecode(_CompanyName);
+                }
+                else
+                {
+                    HttpContext.Current.Response.Redirect(_loginUrl, true);
+                    return "";
+                }
+
+            }
+            set
+            {
+                if (value !="")
+                {
+                    Cookies.setCompName(value.ToString());
+                }
+            }
+        }
+
+        public string Logo
+        {
+            get
+            {
+                var _Logo = Cookies.getCompLogo();
+                if (!string.IsNullOrEmpty(_Logo) && _Logo != "0")
+                {
+                    return _Logo;
+                }
+                else
+                {
+                    HttpContext.Current.Response.Redirect(_loginUrl, true);
+                    return "";
+                }
+
+            }
+            set
+            {
+                if (value != "")
+                {
+                    Cookies.setCompLogo(value.ToString());
+                }
+            }
+        }
 
 
     }

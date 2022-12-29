@@ -365,13 +365,14 @@
             });
         }
 
-    function DataTableOperation(CheckPrint, CheckDelete,_RowID,hasDetails) {
+    function DataTableOperation(CheckPrint, CheckDelete, _RowID, hasDetails) {
+
         if (CheckPrint == undefined)
             CheckPrint = false;
         if (CheckDelete == undefined)
             CheckDelete = false;
-        if (hasDetails = undefined)
-            hasDetails = false;
+        //if (hasDetails = undefined)
+        //    hasDetails = false;
         var _col = "";
         _col += '       <a href="#" onclick=" Edit('+_RowID+',this);return false;"><span class="glyphicon glyphicon-pencil" title="Edit"></span></a>';
         if (CheckPrint) {
@@ -395,7 +396,9 @@
         //     location.href = ''+PrintUrl+'?id=' +_RowID;
         //}
     
-    function PrintIndex(_RowID, _row, hasDetails) {
+    function PrintIndex(_RowID, hasDetails, _row) {
+        console.log(hasDetails);
+        debugger;
         Model = {
             InvoiceID: _RowID,
             ReportType: hasDetails ? "DtInvoice" :"MsInvoice"
