@@ -394,6 +394,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetInvoiceDetailsWithItems" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InvoiceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetInvoiceDetailsWithService" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InvoiceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetInvoicesDetailsInDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerId" Type="int" Mode="In" />
+          <Parameter Name="ItemId" Type="int" Mode="In" />
+          <Parameter Name="ItemGroupId" Type="int" Mode="In" />
+          <Parameter Name="fromDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="toDate" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetInvoicesInDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerId" Type="int" Mode="In" />
+          <Parameter Name="fromDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="toDate" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetItemsBalanceInDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StoreId" Type="int" Mode="In" />
+          <Parameter Name="ItemId" Type="int" Mode="In" />
+          <Parameter Name="ItemGroupId" Type="int" Mode="In" />
+          <Parameter Name="fromDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="toDate" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetMaintainceOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InvoiceID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="CarWorkShopModelStoreContainer">
           <EntitySet Name="BalanceItems" EntityType="Self.BalanceItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BalanceMaster" EntityType="Self.BalanceMaster" Schema="dbo" store:Type="Tables" />
@@ -575,6 +603,34 @@
             <End Role="Store" EntitySet="Stores" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <FunctionImport Name="GetInvoiceDetailsWithItems" ReturnType="Collection(CarWorkShopModel.GetInvoiceDetailsWithItems_Result)">
+          <Parameter Name="InvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetInvoiceDetailsWithService" ReturnType="Collection(CarWorkShopModel.GetInvoiceDetailsWithService_Result)">
+          <Parameter Name="InvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetInvoicesDetailsInDate" ReturnType="Collection(CarWorkShopModel.GetInvoicesDetailsInDate_Result)">
+            <Parameter Name="CustomerId" Mode="In" Type="Int32" />
+            <Parameter Name="ItemId" Mode="In" Type="Int32" />
+            <Parameter Name="ItemGroupId" Mode="In" Type="Int32" />
+            <Parameter Name="fromDate" Mode="In" Type="String" />
+            <Parameter Name="toDate" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetInvoicesInDate" ReturnType="Collection(CarWorkShopModel.GetInvoicesInDate_Result)">
+            <Parameter Name="CustomerId" Mode="In" Type="Int32" />
+            <Parameter Name="fromDate" Mode="In" Type="String" />
+            <Parameter Name="toDate" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetMaintainceOrder" ReturnType="Collection(CarWorkShopModel.GetMaintainceOrder_Result)">
+          <Parameter Name="InvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetItemsBalanceInDate" ReturnType="Collection(CarWorkShopModel.GetItemsBalanceInDate_Result)">
+            <Parameter Name="StoreId" Mode="In" Type="Int32" />
+            <Parameter Name="ItemId" Mode="In" Type="Int32" />
+            <Parameter Name="ItemGroupId" Mode="In" Type="Int32" />
+            <Parameter Name="fromDate" Mode="In" Type="String" />
+            <Parameter Name="toDate" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="BalanceItem">
           <Key>
@@ -1001,6 +1057,99 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetInvoiceDetailsWithItems_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CustomerName" Nullable="false" />
+          <Property Type="String" Name="CustomerPhone" Nullable="false" />
+          <Property Type="String" Name="CustomerAddress" Nullable="false" />
+          <Property Type="String" Name="CarBrandName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CarModelName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PlateNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="km" Nullable="false" />
+          <Property Type="Decimal" Name="Total" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="InvoiceDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="InvoiceTax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="NetAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PaidAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="ItemName" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="ItemQty" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemTotal" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemNet" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetInvoiceDetailsWithService_Result">
+          <Property Type="Int32" Name="InvoiceID" Nullable="false" />
+          <Property Type="String" Name="ServiceName" Nullable="false" />
+          <Property Type="Decimal" Name="ServicePrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ServiceTotal" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ServiceDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ServiceNet" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetInvoicesDetailsInDate_Result">
+          <Property Type="String" Name="FromDate" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TromDate" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CustomerName" Nullable="false" />
+          <Property Type="String" Name="CustomerPhone" Nullable="false" />
+          <Property Type="String" Name="CustomerAddress" Nullable="false" />
+          <Property Type="String" Name="CarBrandName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CarModelName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ItemName" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="ItemQty" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemPrice" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemTotal" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ItemNet" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="ItemID" Nullable="false" />
+          <Property Type="Int32" Name="CategoryID" Nullable="false" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetInvoicesInDate_Result">
+          <Property Type="String" Name="FromDate" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TromDate" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CustomerName" Nullable="false" />
+          <Property Type="String" Name="CustomerPhone" Nullable="false" />
+          <Property Type="String" Name="CustomerAddress" Nullable="false" />
+          <Property Type="String" Name="CarBrandName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CarModelName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PlateNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="km" Nullable="false" />
+          <Property Type="Decimal" Name="Total" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TotalDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="InvoiceDiscount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="InvoiceTax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="NetAmount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PaidAmount" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetMaintainceOrder_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Date" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CustomerName" Nullable="false" />
+          <Property Type="String" Name="CustomerPhone" Nullable="false" />
+          <Property Type="String" Name="CarBrandName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CarModelName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PlateNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="km" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetItemsBalanceInDate_Result">
+          <Property Type="String" Name="FromDate" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TromDate" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="StoreID" Nullable="false" />
+          <Property Type="Int32" Name="ItemID" Nullable="false" />
+          <Property Type="Decimal" Name="BeforeQty" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="InQty" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="OutQty" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="CurrentQty" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="String" Name="ItemName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ItemCategoryName" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="ItemPrice" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1195,6 +1344,123 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoiceDetailsWithItems" FunctionName="CarWorkShopModel.Store.GetInvoiceDetailsWithItems">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetInvoiceDetailsWithItems_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CarBrandName" ColumnName="CarBrandName" />
+                <ScalarProperty Name="CarModelName" ColumnName="CarModelName" />
+                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+                <ScalarProperty Name="km" ColumnName="km" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+                <ScalarProperty Name="InvoiceDiscount" ColumnName="InvoiceDiscount" />
+                <ScalarProperty Name="InvoiceTax" ColumnName="InvoiceTax" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemQty" ColumnName="ItemQty" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+                <ScalarProperty Name="ItemTotal" ColumnName="ItemTotal" />
+                <ScalarProperty Name="ItemDiscount" ColumnName="ItemDiscount" />
+                <ScalarProperty Name="ItemNet" ColumnName="ItemNet" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoiceDetailsWithService" FunctionName="CarWorkShopModel.Store.GetInvoiceDetailsWithService">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetInvoiceDetailsWithService_Result">
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ServicePrice" ColumnName="ServicePrice" />
+                <ScalarProperty Name="ServiceTotal" ColumnName="ServiceTotal" />
+                <ScalarProperty Name="ServiceDiscount" ColumnName="ServiceDiscount" />
+                <ScalarProperty Name="ServiceNet" ColumnName="ServiceNet" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoicesDetailsInDate" FunctionName="CarWorkShopModel.Store.GetInvoicesDetailsInDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetInvoicesDetailsInDate_Result">
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="TromDate" ColumnName="TromDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CarBrandName" ColumnName="CarBrandName" />
+                <ScalarProperty Name="CarModelName" ColumnName="CarModelName" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemQty" ColumnName="ItemQty" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+                <ScalarProperty Name="ItemTotal" ColumnName="ItemTotal" />
+                <ScalarProperty Name="ItemDiscount" ColumnName="ItemDiscount" />
+                <ScalarProperty Name="ItemNet" ColumnName="ItemNet" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoicesInDate" FunctionName="CarWorkShopModel.Store.GetInvoicesInDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetInvoicesInDate_Result">
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="TromDate" ColumnName="TromDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CarBrandName" ColumnName="CarBrandName" />
+                <ScalarProperty Name="CarModelName" ColumnName="CarModelName" />
+                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+                <ScalarProperty Name="km" ColumnName="km" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+                <ScalarProperty Name="InvoiceDiscount" ColumnName="InvoiceDiscount" />
+                <ScalarProperty Name="InvoiceTax" ColumnName="InvoiceTax" />
+                <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetMaintainceOrder" FunctionName="CarWorkShopModel.Store.GetMaintainceOrder">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetMaintainceOrder_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CarBrandName" ColumnName="CarBrandName" />
+                <ScalarProperty Name="CarModelName" ColumnName="CarModelName" />
+                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+                <ScalarProperty Name="km" ColumnName="km" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetItemsBalanceInDate" FunctionName="CarWorkShopModel.Store.GetItemsBalanceInDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarWorkShopModel.GetItemsBalanceInDate_Result">
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="TromDate" ColumnName="TromDate" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="BeforeQty" ColumnName="BeforeQty" />
+                <ScalarProperty Name="InQty" ColumnName="InQty" />
+                <ScalarProperty Name="OutQty" ColumnName="OutQty" />
+                <ScalarProperty Name="CurrentQty" ColumnName="CurrentQty" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemCategoryName" ColumnName="ItemCategoryName" />
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

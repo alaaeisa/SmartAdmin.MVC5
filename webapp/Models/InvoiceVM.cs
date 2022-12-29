@@ -40,7 +40,7 @@ namespace SmartAdminMvc.Models
         public int StoreId { get;  set; }
         public string StoreName { get;  set; }
         public List<InvoiceItemVM> BalanceItems { get;  set; }
-
+        public bool HasDetails { get; set; }
         public InvoiceVM Convert(InvoiceMaster DBObj , bool MasterOnly =false)
         {
             InvoiceVM VMObj = new InvoiceVM();
@@ -83,7 +83,9 @@ namespace SmartAdminMvc.Models
 
                 }
             }
-          
+            VMObj.HasDetails = DBObj.InvoiceItems.Any() || DBObj.InvoiceServices.Any();
+
+
 
             return VMObj;
         }

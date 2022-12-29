@@ -365,15 +365,17 @@
             });
         }
 
-    function DataTableOperation(CheckPrint, CheckDelete,_RowID) {
+    function DataTableOperation(CheckPrint, CheckDelete,_RowID,hasDetails) {
         if (CheckPrint == undefined)
             CheckPrint = false;
         if (CheckDelete == undefined)
             CheckDelete = false;
+        if (hasDetails = undefined)
+            hasDetails = false;
         var _col = "";
         _col += '       <a href="#" onclick=" Edit('+_RowID+',this);return false;"><span class="glyphicon glyphicon-pencil" title="Edit"></span></a>';
         if (CheckPrint) {
-            _col += '       <a href="#" onclick="PrintIndex('+_RowID+',this);return false;"><span class="fa fa-lg fa-print" title="طباعه"></span></a>';
+            _col += '       <a href="#" onclick="PrintIndex(' + _RowID + ',' + hasDetails +',this);return false;"><span class="fa fa-lg fa-print" title="طباعه"></span></a>';
         }
         if (CheckDelete) {
             _col += '      <a href="#" onclick="DeleteFromIndex('+_RowID+',this);return false;"><span class="fa fa-lg fa-trash" title="حذف"></span></a>';
@@ -393,10 +395,30 @@
         //     location.href = ''+PrintUrl+'?id=' +_RowID;
         //}
     
-    function PrintIndex(_RowID, _row) {
-        var href = '' + PrintUrl + '?id=' + _RowID;
-        $('#PrintDiv').load(href);
-        $('#myModal').modal('show');
+    function PrintIndex(_RowID, _row, hasDetails) {
+        Model = {
+            InvoiceID: _RowID,
+            ReportType: hasDetails ? "DtInvoice" :"MsInvoice"
+        };
+        $.ajax({
+            url: "/Reports/FillDS",
+            type: "POST",
+            data: { Index: Model },
+            success: function (data) {
+                if (hasDetails) {
+                    var query = "rpt=DtInvoice&GenType=" + false;
+                } else {
+                    var query = "rpt=MsInvoice&GenType=" + false;
+                }
+                window.open("/Report/BaseReport.aspx?" + query);
+            }
+        });
+
+        
+
+        //var href = '' + PrintUrl + '?id=' + _RowID;
+        //$('#PrintDiv').load(href);
+        //$('#myModal').modal('show');
     }
        function DeleteFromIndex(_RowID, t) {
            // debugger;

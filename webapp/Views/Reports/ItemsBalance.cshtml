@@ -1,0 +1,141 @@
+﻿@model SmartAdminMvc.Models.ReportVM
+@{
+    ViewBag.Title = " ارصده الاصناف خلال فتره ";
+}
+
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+
+        <!-- NEW COL START -->
+        <article class="col-sm-12 col-md-12 col-lg-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>@ViewBag.Title</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+
+                        <form action="" id="smartform" class="smart-form">
+                            <fieldset>
+                                <div class="row">
+
+                                    <section class="col col-3">
+                                        <label class="label ">من تاريخ</label>
+                                        <label class="input">
+                                            <input type="text" class="form-control input-append datepicker" name="FromDate" id="FromDate">
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-3">
+                                        <label class="label ">الى تاريخ</label>
+                                        <label class="input">
+                                            <input type="text" class="form-control input-append datepicker" name="ToDate" id="ToDate">
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label"> المخزن </label>
+                                        <label class="input">
+                                            <select class="form-control select2" id="StoreID" name="StoreID">
+                                                <option></option>
+                                                @foreach (var item in Model.Stores)
+                                                {
+                                                    <option value="@item.ID">@item.Name</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label"> الصنف </label>
+                                        <label class="input">
+                                            <select class="form-control select2" id="ItemID" name="ItemID">
+                                                <option></option>
+                                                @foreach (var item in Model.Items)
+                                                {
+                                                    <option value="@item.ID">@item.Name</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label"> مجموعه الصنف </label>
+                                        <label class="input">
+                                            <select class="form-control select2" id="ItemGroupID" name="ItemGroupID">
+                                                <option></option>
+                                                @foreach (var item in Model.ItemsCategories)
+                                                {
+                                                    <option value="@item.ID">@item.Name</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </section>
+                                </div>
+
+                            </fieldset>
+                            <footer>
+                                <button type="button" onclick="printData();" class="btn btn-lg btn-info waves-effect waves-themed">
+                                    <span class="fa fa-save"></span>
+                                    طباعه البيانات
+                                </button>
+                            </footer>
+                        </form>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+
+    <!-- end row -->
+    <!-- end row -->
+
+</section>
+@section pagespecific {
+
+
+    <script type="text/javascript">
+
+        function printData() {
+            var Model = {
+                StoreID: $("#StoreID").val(),
+                FDate: $("#FromDate").val(),
+                ToDate: $("#ToDate").val(),
+                ItemID: $("#ItemID").val(),
+                ItemGroupID: $("#ItemGroupID").val(),
+                ReportType: "ItemsBalanceInDate"
+            };
+            $.ajax({
+                url: "/Reports/FillDS",
+                type: "POST",
+                data: { Index: Model },
+                success: function (data) {
+                    var query = "rpt=ItemsBalanceInDate&GenType=" + false;
+                    window.open("/Report/BaseReport.aspx?" + query);
+                }
+            });
+        }
+
+    </script>
+}
