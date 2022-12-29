@@ -1553,6 +1553,16 @@
     <Content Include="Views\ItemCategories\Index.cshtml" />
     <Content Include="Views\StoresBalances\ItemIndex.cshtml" />
     <Content Include="Views\StoresBalances\Edit.cshtml" />
+    <Content Include="Report\_ItemQtyReport.rpt" />
+    <Content Include="Report\_ItemReport.rpt" />
+    <Content Include="Report\_PurchaseBillReport.rpt" />
+    <Content Include="Report\_PurchaseReport.rpt" />
+    <Content Include="Report\_SalseBillReport.rpt" />
+    <Content Include="Report\_SalseReport.rpt" />
+    <Content Include="Report\SalesInVoice.rpt" />
+    <Content Include="Report\ReturnSalesInVoice.rpt" />
+    <Content Include="Report\ReturenPurchaseInVoice.rpt" />
+    <Content Include="Report\PurchaseInVoice.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1672,7 +1682,6 @@
   <ItemGroup>
     <Folder Include="Attachment\" />
     <Folder Include="Content\img\realestate\thumbs\" />
-    <Folder Include="Report\" />
     <Folder Include="Views\BaseController\" />
     <Folder Include="Views\Dashboard\" />
   </ItemGroup>
