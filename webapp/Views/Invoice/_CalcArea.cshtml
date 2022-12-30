@@ -6,19 +6,20 @@
             <input type="text" readonly class="form-control" id="Total" name="Total" value="@Model.Total" placeholder="الاجمالى">
         </section>
         <section class="col-md-2">
-            <label for="exampletext"> الخصم  </label>
-            <input type="number" min="0" class="form-control" id="InvoiceDiscount" name="InvoiceDiscount" placeholder="الخصم" onchange="CalcInvoiceDiscount()" value="@Model.InvoiceDiscount">
-        </section>
-
-        <section class="col-md-2">
             <label for="exampletext"> اجمالة الخصم   </label>
             <input type="text" readonly class="form-control" id="TotalDiscount" name="TotalDiscount" placeholder="اجمالى الخصم" value="@Model.TotalDiscount">
         </section>
+        <section class="col-md-2">
+            <label for="exampletext"> خصم عام  </label>
+            <input type="number" min="0" class="form-control" id="InvoiceDiscount" name="InvoiceDiscount" placeholder="الخصم" onchange="CalcInvoiceDiscount()" value="@Model.InvoiceDiscount">
+        </section>
+
+
 
         @if (ViewBag.Tax != 0)
         {
             <section class="col-md-2">
-                <label for="exampletext">   الصافى بدون  الضريبة    </label>
+                <label for="exampletext">   الصافى بعد الخصم      </label>
                 <input type="text" readonly class="form-control" id="NetAmountWithOutTax" name="NetAmountWithOutTax" placeholder="الصافى بدون  الضريبة " value="@Model.NetAmountWithOutTax">
             </section>
 

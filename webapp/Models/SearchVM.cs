@@ -16,5 +16,6 @@ namespace SmartAdminMvc.Models
         public decimal Quantity { get;  set; }
         public string CategoryName { get;  set; }
         public string BrandName { get;  set; }
+        public string Status { get; internal set; }
     }
 }

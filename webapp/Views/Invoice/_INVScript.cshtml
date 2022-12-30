@@ -221,7 +221,7 @@
         }
 
         var Total = $('#Total').val();
-        $('#TotalDiscount').val(NewTotalDiscount);
+      // $('#TotalDiscount').val(NewTotalDiscount);
         var NewNetAmount = parseFloat(Total) - parseFloat(NewTotalDiscount);
         $('#NetAmountWithOutTax').val(NewNetAmount);
         var Tax = (NewNetAmount * TaxValue) / 100;

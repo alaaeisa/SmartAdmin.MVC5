@@ -171,12 +171,13 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-          <Property Name="PassWord" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PassWord" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
-          <Property Name="SuperAdmin" Type="bit" />
+          <Property Name="SuperAdmin" Type="bit" Nullable="false" />
           <Property Name="StoreId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_BalanceItems_BalanceMaster">
           <End Role="BalanceMaster" Type="Self.BalanceMaster" Multiplicity="1" />
@@ -831,15 +832,16 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SuperAdmin" Type="Boolean" />
+          <Property Name="SuperAdmin" Type="Boolean" Nullable="false" />
           <Property Name="StoreId" Type="Int32" />
           <NavigationProperty Name="InvoiceServices" Relationship="CarWorkShopModel.FK_InvoiceServices_Users" FromRole="User" ToRole="InvoiceService" />
           <NavigationProperty Name="InvoiceServices1" Relationship="CarWorkShopModel.FK_InvoiceServices_Users1" FromRole="User" ToRole="InvoiceService" />
           <NavigationProperty Name="Store" Relationship="CarWorkShopModel.FK_Users_Stores" FromRole="User" ToRole="Store" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_BalanceItems_BalanceMaster">
           <End Type="CarWorkShopModel.BalanceMaster" Role="BalanceMaster" Multiplicity="1" />
@@ -1334,6 +1336,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CarWorkShopModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="SuperAdmin" ColumnName="SuperAdmin" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />

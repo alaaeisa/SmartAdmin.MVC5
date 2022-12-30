@@ -26,8 +26,9 @@ namespace SmartAdminMvc.Models
         public string PassWord { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public Nullable<bool> SuperAdmin { get; set; }
+        public bool SuperAdmin { get; set; }
         public Nullable<int> StoreId { get; set; }
+        public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceService> InvoiceServices { get; set; }
