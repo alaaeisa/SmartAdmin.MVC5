@@ -12,6 +12,9 @@ namespace SmartAdminMvc
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{resource}.aspx/{*pathInfo}");
+            routes.IgnoreRoute("Report/{resource}.aspx/{*pathInfo}");
+            routes.IgnoreRoute("CrystalImageHandler.aspx /{ *pathInfo}");
             routes.LowercaseUrls = true;
             //routes.MapRoute("Default", "{controller}/{action}/{id}", new
             //{
